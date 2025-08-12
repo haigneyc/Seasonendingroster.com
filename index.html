@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Image Gallery</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #111;
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            width: 100%;
+            max-width: 900px;
+        }
+        .gallery a {
+            display: block;
+            text-align: center;
+            background: #222;
+            border-radius: 8px;
+            padding: 5px;
+            transition: background 0.3s;
+        }
+        .gallery a:hover {
+            background: #333;
+        }
+        .gallery img {
+            max-width: 100%;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>My Image Gallery</h1>
+    <div class="gallery">
+        <a href="images/image1.jpg" target="_blank"><img src="images/image1.jpg" alt="Image 1"></a>
+        <a href="images/image2.jpg" target="_blank"><img src="images/image2.jpg" alt="Image 2"></a>
+        <a href="images/image3.jpg" target="_blank"><img src="images/image3.jpg" alt="Image 3"></a>
+        <a href="images/image4.jpg" target="_blank"><img src="images/image4.jpg" alt="Image 4"></a>
+        <a href="images/image5.jpg" target="_blank"><img src="images/image5.jpg" alt="Image 5"></a>
+        <a href="images/image6.jpg" target="_blank"><img src="images/image6.jpg" alt="Image 6"></a>
+        <a href="images/image7.jpg" target="_blank"><img src="images/image7.jpg" alt="Image 7"></a>
+        <a href="images/image8.jpg" target="_blank"><img src="images/image8.jpg" alt="Image 8"></a>
+        <a href="images/image9.jpg" target="_blank"><img src="images/image9.jpg" alt="Image 9"></a>
+        <a href="images/image10.jpg" target="_blank"><img src="images/image10.jpg" alt="Image 10"></a>
+        <a href="images/image11.jpg" target="_blank"><img src="images/image11.jpg" alt="Image 11"></a>
+        <a href="images/image12.jpg" target="_blank"><img src="images/image12.jpg" alt="Image 12"></a>
+    </div>
+</body>
+</html>
