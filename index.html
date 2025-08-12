@@ -1,61 +1,182 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>My Image Gallery</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #111;
-            color: #fff;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        h1 {
-            margin-bottom: 20px;
-        }
-        .gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 15px;
-            width: 100%;
-            max-width: 900px;
-        }
-        .gallery a {
-            display: block;
-            text-align: center;
-            background: #222;
-            border-radius: 8px;
-            padding: 5px;
-            transition: background 0.3s;
-        }
-        .gallery a:hover {
-            background: #333;
-        }
-        .gallery img {
-            max-width: 100%;
-            border-radius: 4px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>My 12‑Photo Gallery</title>
+  <style>
+    :root { --bg:#0f0f10; --card:#1b1b1d; --cardHover:#252528; --text:#fff; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg); color: var(--text); display: flex; flex-direction: column; align-items: center;
+    }
+    header { width: 100%; max-width: 1000px; padding: 20px; }
+    h1 { margin: 0 0 8px; font-size: 22px; }
+    .hint { opacity: .8; font-size: 14px; }
+
+    .gallery {
+      width: 100%; max-width: 1000px; padding: 20px; display: grid; gap: 14px;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    }
+    .item {
+      background: var(--card); border-radius: 10px; padding: 8px; cursor: zoom-in; transition: background .2s ease;
+    }
+    .item:hover { background: var(--cardHover); }
+    .thumb {
+      width: 100%; height: 0; padding-bottom: 100%; border-radius: 6px; overflow: hidden; position: relative;
+    }
+    .thumb img {
+      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    .caption { margin-top: 6px; font-size: 13px; opacity: .9; text-align: center; }
+
+    /* Lightbox */
+    .lightbox {
+      position: fixed; inset: 0; background: rgba(0,0,0,.85);
+      display: none; align-items: center; justify-content: center; padding: 20px; z-index: 9999;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox img {
+      max-width: 100%; max-height: 85vh; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,.6);
+    }
+    .close, .nav {
+      position: fixed; top: 14px; font-size: 16px; background: rgba(255,255,255,.12);
+      border: none; color: #fff; padding: 10px 12px; border-radius: 8px; cursor: pointer;
+      backdrop-filter: blur(6px);
+    }
+    .close { right: 14px; }
+    .nav { top: 50%; transform: translateY(-50%); }
+    .prev { left: 14px; }
+    .next { right: 14px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+  </style>
 </head>
 <body>
+  <header>
     <h1>My Image Gallery</h1>
-    <div class="gallery">
-        <a href="images/image1.jpg" target="_blank"><img src="images/image1.jpg" alt="Image 1"></a>
-        <a href="images/image2.jpg" target="_blank"><img src="images/image2.jpg" alt="Image 2"></a>
-        <a href="images/image3.jpg" target="_blank"><img src="images/image3.jpg" alt="Image 3"></a>
-        <a href="images/image4.jpg" target="_blank"><img src="images/image4.jpg" alt="Image 4"></a>
-        <a href="images/image5.jpg" target="_blank"><img src="images/image5.jpg" alt="Image 5"></a>
-        <a href="images/image6.jpg" target="_blank"><img src="images/image6.jpg" alt="Image 6"></a>
-        <a href="images/image7.jpg" target="_blank"><img src="images/image7.jpg" alt="Image 7"></a>
-        <a href="images/image8.jpg" target="_blank"><img src="images/image8.jpg" alt="Image 8"></a>
-        <a href="images/image9.jpg" target="_blank"><img src="images/image9.jpg" alt="Image 9"></a>
-        <a href="images/image10.jpg" target="_blank"><img src="images/image10.jpg" alt="Image 10"></a>
-        <a href="images/image11.jpg" target="_blank"><img src="images/image11.jpg" alt="Image 11"></a>
-        <a href="images/image12.jpg" target="_blank"><img src="images/image12.jpg" alt="Image 12"></a>
-    </div>
+    <div class="hint">Tap a thumbnail to view the full photo. Swipe/arrow keys to navigate, tap anywhere to close.</div>
+  </header>
+
+  <main class="gallery" id="gallery">
+    <!-- Replace captions/filenames with your own. Thumbs and full images are separate files. -->
+    <figure class="item" data-full="images/image1-full.jpg" data-alt="Image 1">
+      <div class="thumb"><img src="images/image1-thumb.jpg" alt="Image 1 thumbnail"></div>
+      <figcaption class="caption">Image 1</figcaption>
+    </figure>
+
+    <figure class="item" data-full="images/image2-full.jpg" data-alt="Image 2">
+      <div class="thumb"><img src="images/image2-thumb.jpg" alt="Image 2 thumbnail"></div>
+      <figcaption class="caption">Image 2</figcaption>
+    </figure>
+
+    <figure class="item" data-full="images/image3-full.jpg" data-alt="Image 3">
+      <div class="thumb"><img src="images/image3-thumb.jpg" alt="Image 3 thumbnail"></div>
+      <figcaption class="caption">Image 3</figcaption>
+    </figure>
+
+    <figure class="item" data-full="images/image4-full.jpg" data-alt="Image 4">
+      <div class="thumb"><img src="images/image4-thumb.jpg" alt="Image 4 thumbnail"></div>
+      <figcaption class="caption">Image 4</figcaption>
+    </figure>
+
+    <figure class="item" data-full="images/image5-full.jpg" data-alt="Image 5">
+      <div class="thumb"><img src="images/image5-thumb.jpg" alt="Image 5 thumbnail"></div>
+      <figcaption class="caption">Image 5</figcaption>
+    </figure>
+
+    <figure class="item" data-full="images/image6-full.jpg" data-alt="Image 6">
+      <div class="thumb"><img src="images/image6-thumb.jpg" alt="Image 6 thumbnail"></div>
+      <figcaption class="caption">Image 6</figcaption>
+    </figure>
+
+    <figure class="item" data-full="images/image7-full.jpg" data-alt="Image 7">
+      <div class="thumb"><img src="images/image7-thumb.jpg" alt="Image 7 thumbnail"></div>
+      <figcaption class="caption">Image 7</figcaption>
+    </figure>
+
+    <figure class="item" data-full="images/image8-full.jpg" data-alt="Image 8">
+      <div class="thumb"><img src="images/image8-thumb.jpg" alt="Image 8 thumbnail"></div>
+      <figcaption class="caption">Image 8</figcaption>
+    </figure>
+
+    <figure class="item" data-full="images/image9-full.jpg" data-alt="Image 9">
+      <div class="thumb"><img src="images/image9-thumb.jpg" alt="Image 9 thumbnail"></div>
+      <figcaption class="caption">Image 9</figcaption>
+    </figure>
+
+    <figure class="item" data-full="images/image10-full.jpg" data-alt="Image 10">
+      <div class="thumb"><img src="images/image10-thumb.jpg" alt="Image 10 thumbnail"></div>
+      <figcaption class="caption">Image 10</figcaption>
+    </figure>
+
+    <figure class="item" data-full="images/image11-full.jpg" data-alt="Image 11">
+      <div class="thumb"><img src="images/image11-thumb.jpg" alt="Image 11 thumbnail"></div>
+      <figcaption class="caption">Image 11</figcaption>
+    </figure>
+
+    <figure class="item" data-full="images/image12-full.jpg" data-alt="Image 12">
+      <div class="thumb"><img src="images/image12-thumb.jpg" alt="Image 12 thumbnail"></div>
+      <figcaption class="caption">Image 12</figcaption>
+    </figure>
+  </main>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" aria-modal="true" role="dialog">
+    <button class="close" id="closeBtn" aria-label="Close full image">Close</button>
+    <button class="nav prev" id="prevBtn" aria-label="Previous image">‹</button>
+    <img id="fullImg" alt="" />
+    <button class="nav next" id="nextBtn" aria-label="Next image">›</button>
+    <span class="sr-only" id="srHelp">Tap anywhere to close</span>
+  </div>
+
+  <script>
+    (function () {
+      const items = Array.from(document.querySelectorAll('.item'));
+      const box = document.getElementById('lightbox');
+      const full = document.getElementById('fullImg');
+      const closeBtn = document.getElementById('closeBtn');
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      let i = -1;
+
+      function openAt(idx) {
+        i = idx;
+        const el = items[i];
+        full.src = el.dataset.full;
+        full.alt = el.dataset.alt || '';
+        box.classList.add('open');
+        document.body.style.overflow = 'hidden';
+        // Preload neighbors
+        [i-1, i+1].forEach(j => {
+          if (items[j]) { const img = new Image(); img.src = items[j].dataset.full; }
+        });
+      }
+      function close() {
+        box.classList.remove('open');
+        document.body.style.overflow = '';
+        full.src = '';
+      }
+      function prev() { if (i > 0) openAt(i - 1); }
+      function next() { if (i < items.length - 1) openAt(i + 1); }
+
+      items.forEach((el, idx) => {
+        el.addEventListener('click', () => openAt(idx));
+      });
+
+      closeBtn.addEventListener('click', close);
+      prevBtn.addEventListener('click', (e) => { e.stopPropagation(); prev(); });
+      nextBtn.addEventListener('click', (e) => { e.stopPropagation(); next(); });
+      box.addEventListener('click', close);
+
+      // Keyboard support
+      window.addEventListener('keydown', (e) => {
+        if (!box.classList.contains('open')) return;
+        if (e.key === 'Escape') close();
+        if (e.key === 'ArrowLeft') prev();
+        if (e.key === 'ArrowRight') next();
+      }, { passive: true });
+    })();
+  </script>
 </body>
 </html>
