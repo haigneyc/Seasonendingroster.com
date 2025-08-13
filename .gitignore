@@ -1,5 +1,5 @@
-# keep tokens/creds out of the repo
-token.json
 oauth2.json
+token.json
+data/
 __pycache__/
 *.pyc
