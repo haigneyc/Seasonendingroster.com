@@ -1,0 +1,6 @@
+{
+  "client_id": "YOUR_YAHOO_APP_CLIENT_ID",
+  "client_secret": "YOUR_YAHOO_APP_CLIENT_SECRET",
+  "redirect_uri": "https://seasonendingroster.com/oauth2callback",
+  "scopes": "fspt-r profile email"
+}
