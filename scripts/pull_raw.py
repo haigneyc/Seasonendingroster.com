@@ -21,7 +21,8 @@ from yahoo_oauth import OAuth2
 from yahoo_fantasy_api import yhandler, league as yleague
 
 # ---------- CONFIG ----------
-CURRENT_LEAGUE_KEY = "nfl.l.123456"  # <-- replace with your current league key
+import os
+CURRENT_LEAGUE_KEY = os.getenv("LEAGUE_KEY", "nfl.l.123456")  # fallback optional
 OUTDIR = Path(__file__).resolve().parent.parent / "data" / "raw"
 SLEEP = 0.3  # seconds between API calls (be nice to the API)
 # ----------------------------
