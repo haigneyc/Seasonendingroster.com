@@ -1,0 +1,80 @@
+name: Refresh League Reports
+
+on:
+  workflow_dispatch: {}
+  schedule:
+    # Runs every day at 10:10 UTC (06:10 ET during EDT). Adjust as you like.
+    - cron: "10 10 * * *"
+
+permissions:
+  contents: write   # needed to commit report updates back to the repo
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🛎️ Checkout
+        uses: actions/checkout@v4
+
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: 📦 Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests yahoo-fantasy-api yahoo_oauth pandas
+
+      - name: 🔐 Write oauth2.json from secrets
+        run: |
+          cat > oauth2.json <<'JSON'
+          {
+            "client_id":    "${{ secrets.YAHOO_CLIENT_ID }}",
+            "client_secret":"${{ secrets.YAHOO_CLIENT_SECRET }}",
+            "redirect_uri": "${{ secrets.YAHOO_REDIRECT_URI }}",
+            "scopes":       "fspt-r profile email"
+          }
+          JSON
+
+      - name: 🔐 Write token.json with refresh token
+        run: |
+          # Minimal token file; refresh_token.py will fetch a fresh access_token
+          cat > token.json <<'JSON'
+          {
+            "refresh_token": "${{ secrets.YAHOO_REFRESH_TOKEN }}"
+          }
+          JSON
+
+      - name: ♻️ Refresh access token
+        run: |
+          python scripts/refresh_token.py
+
+      - name: ⬇️ Pull raw data
+        env:
+          LEAGUE_KEY: ${{ secrets.LEAGUE_KEY }}
+        run: |
+          python scripts/pull_raw.py
+
+      - name: 🔄 Transform to CSV
+        run: |
+          python scripts/transform.py
+
+      - name: 📊 Compute metrics JSON
+        run: |
+          python scripts/metrics.py
+
+      - name: 🧱 Build static HTML pages
+        run: |
+          python scripts/build_site.py
+
+      - name: 📝 Commit & push site artifacts
+        run: |
+          # Only commit the public outputs; never commit data/ or secrets
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A reports site_data || true
+          # If nothing changed, don't fail
+          git diff --staged --quiet && echo "No changes to commit." || git commit -m "Auto-refresh league reports"
+          git push
