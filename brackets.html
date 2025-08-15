@@ -60,10 +60,7 @@ footer{max-width:1200px;margin:22px auto 36px;padding:0 20px;color:var(--muted);
 
   <div class="note">Winners are highlighted. <span id="src"></span> Consolation (seeds 7–12) is hidden.</div>
 
-  <div class="card-col" id="cols">
-    <!-- columns inserted here -->
-  </div>
-
+  <div class="card-col" id="cols"></div>
   <div class="empty" id="empty" style="display:none"></div>
 </div>
 
@@ -71,7 +68,6 @@ footer{max-width:1200px;margin:22px auto 36px;padding:0 20px;color:var(--muted);
   <div>© 2004–<span id="yr"></span> Season Ending Roster</div>
   <div class="muted" id="footMeta"></div>
 </footer>
-
 <script>
 (function setStickyOffset(){
   function apply(){
@@ -84,76 +80,83 @@ footer{max-width:1200px;margin:22px auto 36px;padding:0 20px;color:var(--muted);
 document.getElementById('yr').textContent=new Date().getFullYear();
 
 const CSV_CAND = [
-  'data/processed/matchups.csv',
-  '/data/processed/matchups.csv',
-  'data/proccessed/matchups.csv',
-  '/data/proccessed/matchups.csv'
+  'data/processed/matchups.csv','/data/processed/matchups.csv',
+  'data/proccessed/matchups.csv','/data/proccessed/matchups.csv'
+];
+const STANDINGS_CAND = [
+  'data/processed/standings_by_season.csv','/data/processed/standings_by_season.csv',
+  'data/proccessed/standings_by_season.csv','/data/proccessed/standings_by_season.csv'
 ];
 const METRICS_CAND = [
-  'data/processed/metrics.json',
-  '/data/processed/metrics.json',
-  'data/proccessed/metrics.json',
-  '/data/proccessed/metrics.json'
+  'data/processed/metrics.json','/data/processed/metrics.json',
+  'data/proccessed/metrics.json','/data/proccessed/metrics.json'
 ];
 
 const srcEl = document.getElementById('src');
 const footMeta = document.getElementById('footMeta');
 
-function pick(o, keys){
-  for(const k of keys){ if(o[k]!=null && o[k]!=='' ) return o[k]; }
-  return null;
-}
-function num(v){ const n=+v; return Number.isFinite(n)?n:null; }
+const pick=(o,ks)=>{for(const k of ks){if(o&&o[k]!=null&&o[k]!=='') return o[k]}return null};
+const num=v=>{const n=+v;return Number.isFinite(n)?n:null};
 
-// very small CSV parser (no embedded quoted commas in our pipeline)
+// tiny csv (no embedded quoted commas)
 function parseCSV(text){
   const lines = text.trim().split(/\r?\n/);
   const head = lines.shift().split(',').map(h=>h.trim());
-  const idx = k => head.indexOf(k);
   const rows = [];
   for(const line of lines){
     const cols=line.split(',').map(s=>s.trim());
-    const obj={};
-    head.forEach((h,i)=>obj[h]=cols[i]);
-    rows.push(obj);
+    const obj={}; head.forEach((h,i)=>obj[h]=cols[i]); rows.push(obj);
   }
   return rows;
 }
 async function fetchFirst(paths, asText=false){
   for(const url of paths){
-    try{
-      const r=await fetch(url,{cache:'no-store'});
-      if(r.ok){ return asText?{url,text:await r.text()}:{url,json:await r.json()}; }
+    try{ const r=await fetch(url,{cache:'no-store'});
+      if(r.ok) return asText?{url,text:await r.text()}:{url,json:await r.json()};
     }catch{}
-  }
-  return null;
+  } return null;
 }
 
-function unifyRow(r){
-  // Season & week
-  const season = num(pick(r, ['season','Season','year','Year']));
-  const week   = num(pick(r, ['week','Week','nfl_week','NFL_Week','matchup_week']));
-  // playoff flag (several variants)
-  const pflag  = pick(r, ['is_playoff','playoff','Playoff','postseason','is_postseason','bracket_round','round']);
-  const isPlayoff = String(pflag||'').toLowerCase().includes('play') || String(pflag||'').toLowerCase()==='true' || pflag===1 || pflag==='1';
+// Build a Season+Owner → seed lookup from standings
+function buildSeedIndex(standingsRows){
+  const idx=new Map();
+  for(const r of standingsRows){
+    const season = num(pick(r,['season','Season','year','Year']));
+    const owner  = String(pick(r,['franchise_owner','owner','Owner'])||'').toLowerCase().trim();
+    const seed   = num(pick(r,['playoff_seed','seed','Seed']));
+    if(season && owner && seed) idx.set(`${season}|${owner}`, seed);
+  }
+  return idx;
+}
 
-  // home/away owners
-  const hOwner = pick(r, ['home_owner','franchise_owner_home','owner_home','home_franchise_owner','franchise_owner1']);
-  const aOwner = pick(r, ['away_owner','franchise_owner_away','owner_away','away_franchise_owner','franchise_owner2']);
-  const hTeam  = pick(r, ['home_team_name','home_team','team_name_home','home_name']);
-  const aTeam  = pick(r, ['away_team_name','away_team','team_name_away','away_name']);
+function unifyRow(r, seedIdx){
+  const season = num(pick(r,['season','Season','year','Year']));
+  const week   = num(pick(r,['week','Week','nfl_week','NFL_Week','matchup_week','playoff_week']));
+  const pflag  = pick(r,['is_playoff','is_playoffs','is_playoff_game','playoff','postseason','bracket_round','round']);
 
-  // scores
-  const hScore = num(pick(r, ['home_points','home_score','points_home','score_home','home_pts']));
-  const aScore = num(pick(r, ['away_points','away_score','points_away','score_away','away_pts']));
+  const hOwner = (pick(r,['home_owner','franchise_owner_home','owner_home','home_franchise_owner','franchise_owner1'])||'').toLowerCase().trim();
+  const aOwner = (pick(r,['away_owner','franchise_owner_away','owner_away','away_franchise_owner','franchise_owner2'])||'').toLowerCase().trim();
+  const hTeam  = pick(r,['home_team_name','home_team','team_name_home','home_name']);
+  const aTeam  = pick(r,['away_team_name','away_team','team_name_away','away_name']);
 
-  // seeds
-  const hSeed = num(pick(r, ['home_seed','seed_home','seed1','home_rank','rank_home']));
-  const aSeed = num(pick(r, ['away_seed','seed_away','seed2','away_rank','rank_away']));
+  let hSeed = num(pick(r,['home_seed','seed_home','seed1','home_rank','rank_home']));
+  let aSeed = num(pick(r,['away_seed','seed_away','seed2','away_rank','rank_away']));
+
+  // Fill seeds from standings if missing
+  if(!Number.isFinite(hSeed)) hSeed = seedIdx.get(`${season}|${hOwner}`) ?? null;
+  if(!Number.isFinite(aSeed)) aSeed = seedIdx.get(`${season}|${aOwner}`) ?? null;
+
+  const hScore = num(pick(r,['home_points','home_score','points_home','score_home','home_pts']));
+  const aScore = num(pick(r,['away_points','away_score','points_away','score_away','away_pts']));
+
+  // Accept explicit playoff flags OR infer from valid seeds (≤6)
+  const ptext = String(pflag||'').toLowerCase();
+  const isPlayoff = ['true','1','y','yes','playoff'].includes(ptext) ||
+                    (Number.isFinite(hSeed) && Number.isFinite(aSeed) && Math.max(hSeed,aSeed) <= 6);
 
   return {season,week,isPlayoff,
-    home:{owner:hOwner||'',team:hTeam||'',seed:hSeed,score:hScore},
-    away:{owner:aOwner||'',team:aTeam||'',seed:aSeed,score:aScore}
+    home:{owner:hOwner,team:hTeam||'',seed:hSeed,score:hScore},
+    away:{owner:aOwner,team:aTeam||'',seed:aSeed,score:aScore}
   };
 }
 
@@ -161,11 +164,9 @@ function buildBySeason(rows){
   const bySeason=new Map();
   for(const r of rows){
     if(!r.season || !r.isPlayoff) continue;
-    // filter out consolation: require seeds present and both ≤ 6
-    const hs=r.home.seed, as=r.away.seed;
-    if(!Number.isFinite(hs) || !Number.isFinite(as)) continue;
-    if(hs>6 || as>6) continue;
-
+    // Hide consolation: require both seeds present and ≤ 6
+    if(!Number.isFinite(r.home.seed) || !Number.isFinite(r.away.seed)) continue;
+    if(r.home.seed>6 || r.away.seed>6) continue;
     if(!bySeason.has(r.season)) bySeason.set(r.season,[]);
     bySeason.get(r.season).push(r);
   }
@@ -173,20 +174,14 @@ function buildBySeason(rows){
 }
 
 function groupRounds(games){
-  // Determine playoff weeks in ascending order
-  const weeks=[...new Set(games.map(g=>g.week).filter(n=>Number.isFinite(n)))].sort((a,b)=>a-b);
-  const label = (i,count,w)=> (count===2? (i===0?'Semifinals':'Final')
-                      : count>=3? (i===0?'Quarterfinals': i===1?'Semifinals':'Final')
-                      : (i===0?'Final':'Round '+(i+1))) + (Number.isFinite(w)?` (Week ${w})`:'');
+  const weeks=[...new Set(games.map(g=>g.week).filter(Number.isFinite))].sort((a,b)=>a-b);
+  const label=(i,count,w)=> (count===2? (i===0?'Semifinals':'Final')
+                       :count>=3? (i===0?'Quarterfinals':i===1?'Semifinals':'Final')
+                       : (i===0?'Final':`Round ${i+1}`)) + (Number.isFinite(w)?` (Week ${w})`:'');
 
-  // Map weeks to labeled rounds
-  const rounds = weeks.map((w,i,arr)=>({title:label(i,arr.length,w), week:w, games:[]}));
-  const wkToIdx=new Map(weeks.map((w,i)=>[w,i]));
-  for(const g of games){
-    if(!wkToIdx.has(g.week)) continue;
-    rounds[wkToIdx.get(g.week)].games.push(g);
-  }
-  // sort each week by min seed ASC
+  const rounds = weeks.map((w,i,arr)=>({title:label(i,arr.length,w),week:w,games:[]}));
+  const map = new Map(weeks.map((w,i)=>[w,i]));
+  for(const g of games){ if(map.has(g.week)) rounds[map.get(g.week)].games.push(g); }
   rounds.forEach(r=>r.games.sort((a,b)=>Math.min(a.home.seed,a.away.seed)-Math.min(b.home.seed,b.away.seed)));
   return rounds;
 }
@@ -199,61 +194,57 @@ function render(season, rounds, showTeams){
   empty.style.display='none';
 
   rounds.forEach(r=>{
-    const col=document.createElement('div');
-    col.className='round';
+    const col=document.createElement('div'); col.className='round';
     const h=document.createElement('h3'); h.textContent=r.title; col.appendChild(h);
-
     r.games.forEach(g=>{
-      const winHome = Number(g.home.score)>Number(g.away.score);
+      const winHome = (g.home.score??-1) > (g.away.score??-1);
       const r1=document.createElement('div'); r1.className='row'+(winHome?' w':'');
       const r2=document.createElement('div'); r2.className='row'+(!winHome?' w':'');
 
       r1.innerHTML = `<div class="seed">${g.home.seed??''}</div>
-                      <div class="name">${(showTeams?(g.home.team||g.home.owner):(g.home.owner||g.home.team))||'—'}</div>
-                      <div class="score">${g.home.score!=null?g.home.score.toFixed?g.home.score.toFixed(1):g.home.score:'—'}</div>`;
+        <div class="name">${(showTeams?(g.home.team||g.home.owner):(g.home.owner||g.home.team))||'—'}</div>
+        <div class="score">${g.home.score==null?'—':(+g.home.score).toFixed(1)}</div>`;
 
       r2.innerHTML = `<div class="seed">${g.away.seed??''}</div>
-                      <div class="name">${(showTeams?(g.away.team||g.away.owner):(g.away.owner||g.away.team))||'—'}</div>
-                      <div class="score">${g.away.score!=null?g.away.score.toFixed?g.away.score.toFixed(1):g.away.score:'—'}</div>`;
+        <div class="name">${(showTeams?(g.away.team||g.away.owner):(g.away.owner||g.away.team))||'—'}</div>
+        <div class="score">${g.away.score==null?'—':(+g.away.score).toFixed(1)}</div>`;
 
-      const gameBox=document.createElement('div'); gameBox.className='game';
-      gameBox.appendChild(r1); gameBox.appendChild(r2);
-      col.appendChild(gameBox);
+      const box=document.createElement('div'); box.className='game';
+      box.appendChild(r1); box.appendChild(r2); col.appendChild(box);
     });
-
     cols.appendChild(col);
   });
 }
 
 (async function init(){
-  // load CSV first
-  let data=null, csvSrc=null;
-  try{
-    const got = await fetchFirst(CSV_CAND,true);
-    if(got){ data=parseCSV(got.text).map(unifyRow); csvSrc=got.url; }
-  }catch{}
-  if(csvSrc){ srcEl.textContent = `Loaded ${data.length} flagged playoff rows from ${csvSrc}`; }
+  // fetch matchups
+  const mres = await fetchFirst(CSV_CAND,true);
+  // fetch standings for seeds (best-effort)
+  const sres = await fetchFirst(STANDINGS_CAND,true);
 
-  // fallback just for seasons if CSV was missing
-  if(!data){
-    const m = await fetchFirst(METRICS_CAND,false);
-    const seasons = (m?.json?.seasons) || [];
+  if(!mres){
+    // no matchups: at least populate seasons from metrics.json
+    const mr = await fetchFirst(METRICS_CAND,false);
+    const seasons = (mr?.json?.seasons)||[];
     document.getElementById('seasonSel').innerHTML = seasons.map(s=>`<option value="${s}">${s}</option>`).join('');
-    footMeta.textContent = m? `Seasons from ${m.url}` : 'No data';
+    footMeta.textContent = seasons.length? `Seasons ${seasons[0]}–${seasons[seasons.length-1]}` : 'No data';
     return;
   }
 
-  // organize
+  const matchRows = parseCSV(mres.text);
+  const seedIdx = sres ? buildSeedIndex(parseCSV(sres.text)) : new Map();
+
+  const data = matchRows.map(r=>unifyRow(r, seedIdx));
+  srcEl.textContent = `Loaded ${data.length} rows from ${mres.url}`;
+
   const bySeason = buildBySeason(data);
   const seasons = [...bySeason.keys()].sort((a,b)=>a-b);
-  // dropdown
   const sel=document.getElementById('seasonSel');
   sel.innerHTML = seasons.map(s=>`<option value="${s}">${s}</option>`).join('');
-  // pick season from URL ?season=YYYY or default last
+
   const params=new URLSearchParams(location.search);
-  const wanted = params.get('season');
-  const initial = seasons.includes(+wanted)? +wanted : seasons[seasons.length-1];
-  sel.value = initial;
+  const wanted = +params.get('season');
+  sel.value = seasons.includes(wanted)?wanted:seasons[seasons.length-1];
 
   function run(){
     const season=+sel.value;
@@ -265,8 +256,9 @@ function render(season, rounds, showTeams){
   document.getElementById('showTeams').addEventListener('change',run);
 
   run();
-  footMeta.textContent = `Seasons ${seasons[0]}–${seasons[seasons.length-1]}`;
+  if(seasons.length) footMeta.textContent = `Seasons ${seasons[0]}–${seasons[seasons.length-1]}`;
 })();
 </script>
+
 </body>
 </html>
