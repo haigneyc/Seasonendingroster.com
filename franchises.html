@@ -8,7 +8,6 @@
 :root{--bg:#0f0f10;--card:#1b1b1d;--card2:#141416;--hover:#252528;--text:#fff;--line:#26262a;--muted:#9aa0a6;--accent:#a0c4ff;--stickyTop:56px}
 *{box-sizing:border-box}
 body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text)}
-/* header */
 .sitebar{position:sticky;top:0;z-index:1000;width:100%;backdrop-filter:blur(8px);background:rgba(15,15,16,.85);border-bottom:1px solid var(--line)}
 .bar-inner{margin:0 auto;max-width:1200px;padding:12px 20px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}
 .brand{font-weight:700}
@@ -16,30 +15,23 @@ body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Aria
 .tabs a{color:var(--text);text-decoration:none;font-size:14px;padding:8px 12px;border-radius:8px;border:1px solid transparent}
 .tabs a:hover{background:var(--hover);border-color:var(--line)}
 .tabs a[aria-current="page"]{background:var(--card);border-color:var(--line)}
-/* page */
 .wrap{max-width:1200px;margin:28px auto;padding:0 20px}
 h1{margin:0 0 12px}
-.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:10px 0 14px}
-input[type="search"]{background:#121214;color:var(--text);border:1px solid #2a2a2e;border-radius:10px;padding:10px 12px;min-width:300px}
-.btn{color:var(--accent);text-decoration:none;border:1px solid var(--line);padding:8px 10px;border-radius:10px}
-.btn:hover{background:var(--hover)}
-.card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 8px 20px rgba(0,0,0,.2);margin-top:8px}
-/* table */
+.row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin:12px 0 10px}
+input[type="search"]{background:#121214;color:var(--text);border:1px solid #2a2a2e;border-radius:10px;padding:10px 12px;width:360px;max-width:100%}
+.btn{color:var(--accent);text-decoration:none;border:1px solid #2b2b30;padding:8px 10px;border-radius:10px}
+.muted{color:var(--muted);font-size:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 8px 20px rgba(0,0,0,.2);margin-top:10px}
 table{width:100%;border-collapse:separate;border-spacing:0}
-thead th{position:sticky;top:var(--stickyTop);z-index:3;background:var(--card);box-shadow:0 1px 0 #2a2a30;cursor:pointer;user-select:none}
-th,td{padding:10px 12px;border-bottom:1px solid #202024;text-align:left;vertical-align:top}
+thead th{position:sticky;top:var(--stickyTop);z-index:3;background:var(--card);box-shadow:0 1px 0 #2a2a30}
+th,td{padding:10px 12px;border-bottom:1px solid #202024;vertical-align:top}
 tbody tr:hover{background:var(--hover)}
 .right{text-align:right}
-.muted{color:var(--muted)}
 .small{font-size:12px}
-.srcnote{margin-left:6px}
-.tagbox{max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tag{display:inline-block;border:1px solid #2b2b30;border-radius:999px;padding:2px 8px;margin:2px 6px 2px 0;font-size:12px}
-.footer{max-width:1200px;margin:24px auto 36px;padding:0 20px;color:var(--muted);display:flex;gap:12px;justify-content:space-between;flex-wrap:wrap}
+footer{max-width:1200px;margin:22px auto 36px;padding:0 20px;color:var(--muted);display:flex;justify-content:space-between}
 </style>
 </head>
 <body>
-<!-- nav -->
 <div class="sitebar">
   <div class="bar-inner">
     <div class="brand">Season Ending Roster</div>
@@ -59,36 +51,37 @@ tbody tr:hover{background:var(--hover)}
 
   <div class="row">
     <input id="q" type="search" placeholder="Filter by franchise owner or team name…"/>
-    <span class="muted small" id="counts"></span>
+    <span class="small muted" id="counts"></span>
     <a class="btn" id="dlCsv" href="data/processed/franchise_career_stats.csv" download>Download CSV</a>
-    <span class="muted small srcnote" id="sourceNote"></span>
   </div>
+
+  <div class="small muted" id="srcNote"></div>
 
   <div class="card">
     <table id="tbl">
       <thead>
-        <tr>
-          <th data-k="franchise_owner">Franchise</th>
-          <th class="right" data-k="seasons">Seasons</th>
-          <th class="right" data-k="wins">W</th>
-          <th class="right" data-k="losses">L</th>
-          <th class="right" data-k="ties">T</th>
-          <th class="right" data-k="win_pct">Win %</th>
-          <th class="right" data-k="points_for">PF</th>
-          <th class="right" data-k="points_against">PA</th>
-          <th class="right" data-k="avg_pf_per_season">Avg PF/Season</th>
-          <th data-k="team_names_seen">Team Names Seen</th>
-        </tr>
+      <tr>
+        <th data-k="franchise_owner">Franchise</th>
+        <th class="right" data-k="seasons">Seasons</th>
+        <th class="right" data-k="wins">W</th>
+        <th class="right" data-k="losses">L</th>
+        <th class="right" data-k="ties">T</th>
+        <th class="right" data-k="win_pct">Win %</th>
+        <th class="right" data-k="points_for">PF</th>
+        <th class="right" data-k="points_against">PA</th>
+        <th class="right small" data-k="avg_pf_per_season">Avg PF/Season</th>
+        <th data-k="team_names_seen">Team Names Seen</th>
+      </tr>
       </thead>
       <tbody></tbody>
     </table>
   </div>
 </div>
 
-<div class="footer">
-  <div>© 2004–<span id="year"></span> Season Ending Roster</div>
-  <div class="muted">Franchises v2</div>
-</div>
+<footer>
+  <div>© 2004–<span id="yr"></span> Season Ending Roster</div>
+  <div class="muted" id="footMeta"></div>
+</footer>
 
 <script>
 (function setStickyOffset(){
@@ -99,224 +92,178 @@ tbody tr:hover{background:var(--hover)}
   }
   apply(); window.addEventListener('resize',apply,{passive:true});
 })();
+document.getElementById('yr').textContent=new Date().getFullYear();
 
-(function(){
-  const countsEl = document.getElementById('counts');
-  const tbody    = document.querySelector('#tbl tbody');
-  const q        = document.getElementById('q');
-  const dlCsv    = document.getElementById('dlCsv');
-  const srcNote  = document.getElementById('sourceNote');
+const CSV_CAND = [
+  'data/processed/franchise_career_stats.csv',
+  '/data/processed/franchise_career_stats.csv',
+  'data/proccessed/franchise_career_stats.csv',
+  '/data/proccessed/franchise_career_stats.csv'
+];
+const METRICS_CAND = [
+  'data/processed/metrics.json',
+  '/data/processed/metrics.json',
+  'data/proccessed/metrics.json',
+  '/data/proccessed/metrics.json'
+];
 
-  const METRICS = [
-    'data/processed/metrics.json',
-    '/data/processed/metrics.json',
-    'data/proccessed/metrics.json',
-    '/data/proccessed/metrics.json'
-  ];
-  const CSV = [
-    'data/processed/franchise_career_stats.csv',
-    '/data/processed/franchise_career_stats.csv',
-    'data/proccessed/franchise_career_stats.csv',
-    '/data/proccessed/franchise_career_stats.csv'
-  ];
+const srcNote = document.getElementById('srcNote');
+const footMeta = document.getElementById('footMeta');
+const dlCsv = document.getElementById('dlCsv');
 
-  function fnum(n){ if(n==null||n==='') return '—'; const x=+n; return Number.isFinite(x)? x.toLocaleString(undefined,{maximumFractionDigits:1}) : '—'; }
-  function f0(n){ if(n==null||n==='') return '—'; const x=+n; return Number.isFinite(x)? x.toLocaleString() : '—'; }
-  function fpct(p){ if(p==null||p==='') return '—'; const x=+p; if(!Number.isFinite(x)) return '—'; return (x*100).toFixed(1)+'%'; }
+function num(v){ const n=+v; return Number.isFinite(n)?n:null; }
+function pct(w,l,t){ const g=(+w||0)+(+l||0)+(+t||0); return g? (w/g) : 0; }
 
-  async function fetchFirst(paths, asText=false){
-    for(const url of paths){
-      try{
-        const r = await fetch(url,{cache:'no-store'});
-        if(r.ok) return asText ? {url, text: await r.text()} : {url, json: await r.json()};
-      }catch{}
+async function fetchFirst(paths, asText=false){
+  for (const url of paths){
+    try{
+      const r=await fetch(url,{cache:'no-store'});
+      if(r.ok){
+        return asText ? {url,text:await r.text(),headers:r.headers}
+                      : {url,json:await r.json(),headers:r.headers};
+      }
+    }catch{}
+  }
+  return null;
+}
+
+// tiny CSV (supports simple quoted fields)
+function parseCSV(text){
+  const rows=[]; let i=0, field='', row=[], inQ=false;
+  function pushField(){ row.push(field); field=''; }
+  function pushRow(){ rows.push(row); row=[]; }
+  while(i<text.length){
+    const ch=text[i++];
+    if(inQ){
+      if(ch==='"' && text[i]==='"'){ field+='"'; i++; }
+      else if(ch==='"'){ inQ=false; }
+      else field+=ch;
+    }else{
+      if(ch==='\"'){ inQ=true; }
+      else if(ch===','){ pushField(); }
+      else if(ch==='\r'){ /* skip */ }
+      else if(ch==='\n'){ pushField(); pushRow(); }
+      else field+=ch;
     }
-    return null;
   }
+  if(field.length || row.length){ pushField(); pushRow(); }
+  const head = rows.shift().map(h=>h.trim());
+  return rows.filter(r=>r.length).map(r=>{
+    const o={}; head.forEach((h,idx)=>o[h]=r[idx]!=null?r[idx]:''); return o;
+  });
+}
 
-  function coalesce(a, b){ return a==null || a==='' ? b : a; }
+function normalizeCsvRow(r){
+  const owner = r.franchise_owner || r.owner || r.Franchise || r.franchise || '';
+  const seasons = num(r.seasons)||num(r.Seasons);
+  const wins = num(r.wins||r.W), losses = num(r.losses||r.L), ties = num(r.ties||r.T)||0;
+  const pf = num(r.points_for||r.PF), pa = num(r.points_against||r.PA);
+  const avg = num(r.avg_pf_per_season||r['Avg PF/Season']);
+  const wn = r.win_pct!=null ? +r.win_pct : pct(wins,losses,ties);
+  const names = r.team_names_seen || r['Team Names Seen'] || '';
+  return {franchise_owner: owner, seasons:seasons, wins:wins, losses:losses, ties:ties,
+          win_pct: wn, points_for: pf, points_against: pa, avg_pf_per_season: avg, team_names_seen:names};
+}
 
-  function normalizeFromMetrics(m){
-    // Try leaderboards.franchises_by_career OR franchise_career_stats
-    const arr = (m?.leaderboards?.franchises_by_career) || (m?.franchise_career_stats) || [];
-    return arr.map(r=>{
-      const seasons = +coalesce(r.seasons, r.Seasons);
-      const wins    = +coalesce(r.wins, r.W);
-      const losses  = +coalesce(r.losses, r.L);
-      const ties    = +coalesce(r.ties, r.T) || 0;
-      const pf      = +coalesce(r.points_for, r.PF);
-      const pa      = +coalesce(r.points_against, r.PA);
-      let win_pct   = r.win_pct!=null ? +r.win_pct : (wins+0.5*ties)/Math.max(wins+losses+ties,1);
-      let avgpf     = r.avg_points_for_per_season!=null ? +r.avg_points_for_per_season : (Number.isFinite(pf)&&Number.isFinite(seasons)&&seasons>0 ? (pf/seasons) : null);
-      let teams     = r.team_names_seen || r.team_names || r.team_names_list || '';
-      if(Array.isArray(teams)) teams = teams.join('; ');
-      return {
-        franchise_owner: (r.franchise_owner||r.owner||'').toString(),
-        seasons, wins, losses, ties,
-        win_pct, points_for: pf, points_against: pa,
-        avg_pf_per_season: avgpf,
-        team_names_seen: teams
-      };
-    });
-  }
+function normalizeJsonRow(r){
+  // try several shapes
+  const owner = r.franchise_owner || r.owner || r.name || '';
+  const pf = r.points_for ?? r.pf ?? null;
+  const pa = r.points_against ?? r.pa ?? null;
+  const avg = r.avg_pf_per_season ?? r.avg_pf ?? null;
+  const names = Array.isArray(r.team_names_seen)? r.team_names_seen.join('; ')
+               : (r.team_names_seen || r.team_names || '');
+  const wins = r.wins ?? r.w ?? null, losses = r.losses ?? r.l ?? null, ties = r.ties ?? r.t ?? 0;
+  const seasons = r.seasons ?? r.years ?? null;
+  const win_pct = r.win_pct != null ? +r.win_pct : pct(wins,losses,ties);
+  return {franchise_owner:owner, seasons, wins, losses, ties, win_pct, points_for:pf, points_against:pa, avg_pf_per_season:avg, team_names_seen:names};
+}
 
-  function parseCSV(text){
-    // very small csv parser for our schema
-    const lines = text.trim().split(/\r?\n/);
-    const head = lines.shift().split(',').map(h=>h.trim().toLowerCase());
-    const idx = k=> head.indexOf(k);
-    const out=[];
-    for(const line of lines){
-      // naive split safe enough (no quoted commas in our file)
-      const cols = line.split(',').map(s=>s.trim());
-      const seasons = +cols[idx('seasons')];
-      const wins    = +cols[idx('wins')];
-      const losses  = +cols[idx('losses')];
-      const ties    = +(cols[idx('ties')]||0);
-      const pf      = +cols[idx('points_for')];
-      const pa      = +cols[idx('points_against')];
-      const pctCol  = idx('win_pct');
-      const avgCol  = idx('avg_pf_per_season');
-      const owner   = cols[idx('franchise_owner')] || cols[idx('owner')] || '';
-      const names   = cols[idx('team_names_seen')] || '';
-      const win_pct = pctCol>-1 && cols[pctCol]!=='' ? +cols[pctCol] : (wins+0.5*ties)/Math.max(wins+losses+ties,1);
-      const avgpf   = avgCol>-1 && cols[avgCol]!=='' ? +cols[avgCol] : (Number.isFinite(pf)&&seasons>0 ? pf/seasons : null);
-      out.push({
-        franchise_owner: owner, seasons, wins, losses, ties,
-        win_pct, points_for: pf, points_against: pa,
-        avg_pf_per_season: avgpf, team_names_seen: names
-      });
-    }
-    return out;
-  }
+function fmt(x){ return x==null || x==='' ? '—' : String(x); }
+function fmt1(x){ return x==null ? '—' : Number(x).toFixed(1); }
+function fmtPct(x){ return x==null ? '—' : (Number(x)*100).toFixed(1)+'%'; }
+function fmt0(x){ return x==null ? '—' : Number(x).toLocaleString(); }
 
-  function makeTagsCell(list){
-    const el=document.createElement('div');
-    el.className='tagbox';
-    const arr = (typeof list==='string'? list.split(';'): (Array.isArray(list)? list : [])).map(s=>s.trim()).filter(Boolean);
-    arr.forEach((name,i)=>{
-      const t=document.createElement('span');
-      t.className='tag';
-      t.textContent=name;
-      el.appendChild(t);
-    });
-    // Full list in tooltip
-    el.title = arr.join(' • ');
-    return el;
-  }
-
-  // state
+(async function init(){
   let rows = [];
-  let sortKey = 'win_pct';
-  let sortDir = -1;  // -1 desc, 1 asc
-  let filter = '';
+  let src = '';
+  // 1) Prefer CSV
+  const csv = await fetchFirst(CSV_CAND, true);
+  if (csv){
+    const parsed = parseCSV(csv.text).map(normalizeCsvRow);
+    if (parsed.length){
+      rows = parsed;
+      src = csv.url;
+      // make the download button point to the actual path that worked
+      dlCsv.href = csv.url;
+    }
+  }
+  // 2) Fallback to metrics.json ONLY if it actually contains a career array
+  if (!rows.length){
+    const mj = await fetchFirst(METRICS_CAND, false);
+    const j = mj?.json || {};
+    let arr = [];
+    if (Array.isArray(j.franchise_career_stats)) arr = j.franchise_career_stats;
+    else if (j.leaderboards && Array.isArray(j.leaderboards.franchise_career_stats)) arr = j.leaderboards.franchise_career_stats;
+    if (arr.length){
+      rows = arr.map(normalizeJsonRow);
+      src = mj.url + ' (metrics.json)';
+    }
+  }
 
-  function render(){
+  // render (even if empty, we show 0 with a clear source)
+  const tbody = document.querySelector('#tbl tbody');
+  const q = document.getElementById('q');
+  const counts = document.getElementById('counts');
+  const srcNoteEl = document.getElementById('srcNote');
+  if (srcNoteEl) srcNoteEl.textContent = src ? `Loaded from: ${src}` : 'No source found (expected franchise_career_stats.csv).';
+
+  let sortKey = 'win_pct', sortDir = -1, filter = '';
+
+  function applyFilterSort(){
     const filtered = rows.filter(r=>{
-      const hay = (r.franchise_owner + ' ' + (r.team_names_seen||'')).toLowerCase();
-      return hay.includes(filter);
+      if(!filter) return true;
+      const hay = (r.franchise_owner||'') + ' ' + (r.team_names_seen||'');
+      return hay.toLowerCase().includes(filter.toLowerCase());
     });
     filtered.sort((a,b)=>{
       const av=a[sortKey], bv=b[sortKey];
-      if(av==null && bv==null) return 0;
-      if(av==null) return 1;
-      if(bv==null) return -1;
-      if(typeof av==='number' && typeof bv==='number') return (av-bv)*sortDir;
+      if (av==null && bv==null) return 0;
+      if (av==null) return 1;
+      if (bv==null) return -1;
+      if (typeof av==='number' && typeof bv==='number') return (av-bv)*sortDir;
       return String(av).localeCompare(String(bv))*sortDir;
     });
-
-    tbody.innerHTML='';
-    for(const r of filtered){
-      const tr=document.createElement('tr');
-      tr.innerHTML = `
-        <td>${r.franchise_owner||'—'}</td>
-        <td class="right">${f0(r.seasons)}</td>
-        <td class="right">${f0(r.wins)}</td>
-        <td class="right">${f0(r.losses)}</td>
-        <td class="right">${f0(r.ties)}</td>
-        <td class="right">${fpct(r.win_pct)}</td>
-        <td class="right">${fnum(r.points_for)}</td>
-        <td class="right">${fnum(r.points_against)}</td>
-        <td class="right">${fnum(r.avg_pf_per_season)}</td>
-        <td></td>
-      `;
-      const cell = tr.lastElementChild;
-      cell.appendChild(makeTagsCell(r.team_names_seen));
-      tbody.appendChild(tr);
-    }
-    countsEl.textContent = `${filtered.length} franchises • sorted by ${headerLabel(sortKey)} ${sortDir===-1?'↓':'↑'}`;
+    tbody.innerHTML = filtered.map(r=>`
+      <tr>
+        <td>${fmt(r.franchise_owner)}</td>
+        <td class="right">${fmt0(r.seasons)}</td>
+        <td class="right">${fmt0(r.wins)}</td>
+        <td class="right">${fmt0(r.losses)}</td>
+        <td class="right">${fmt0(r.ties)}</td>
+        <td class="right">${fmtPct(r.win_pct)}</td>
+        <td class="right">${fmt0(r.points_for)}</td>
+        <td class="right">${fmt0(r.points_against)}</td>
+        <td class="right small">${fmt1(r.avg_pf_per_season)}</td>
+        <td>${fmt(r.team_names_seen)}</td>
+      </tr>
+    `).join('');
+    counts.textContent = `${filtered.length} franchises • sorted by ${sortKey} ${sortDir===-1?'↓':'↑'}`;
   }
 
-  function headerLabel(k){
-    const map={
-      franchise_owner:'Franchise', seasons:'Seasons', wins:'W', losses:'L', ties:'T',
-      win_pct:'Win %', points_for:'PF', points_against:'PA', avg_pf_per_season:'Avg PF/Season',
-      team_names_seen:'Team Names Seen'
-    };
-    return map[k]||k;
-  }
-
-  // header sort click
   document.querySelectorAll('#tbl thead th[data-k]').forEach(th=>{
-    th.addEventListener('click',()=>{
+    th.addEventListener('click', ()=>{
       const k = th.getAttribute('data-k');
-      if (k==='team_names_seen') return; // not sortable
-      if (k===sortKey) sortDir*=-1; else { sortKey=k; sortDir=(k==='franchise_owner')?1:-1; }
-      render();
+      if (k===sortKey) sortDir *= -1; else { sortKey = k; sortDir = (k==='franchise_owner' || k==='team_names_seen') ? 1 : -1; }
+      applyFilterSort();
     });
   });
-  q.addEventListener('input',()=>{ filter = q.value.trim().toLowerCase(); render(); });
+  q.addEventListener('input', ()=>{ filter=q.value.trim(); applyFilterSort(); });
 
-  // load data
-  (async function load(){
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    // 1) Try metrics.json
-    const m = await fetchFirst(METRICS,false);
-    if(m?.json){
-      rows = normalizeFromMetrics(m.json);
-      srcNote.textContent = `Loaded from: ${m.url}`;
-      render();
-      return;
-    }
-    // 2) Fallback to CSV
-    const c = await fetchFirst(CSV,true);
-    if(c?.text){
-      rows = parseCSV(c.text);
-      srcNote.textContent = `Loaded from: ${c.url}`;
-      render();
-      return;
-    }
-    // 3) Last resort: empty + create client CSV when user clicks
-    rows = [];
-    srcNote.textContent = 'No data found.';
-    render();
-  })();
-
-  // If the actual CSV file 404s, generate a CSV from current rows when clicked
-  dlCsv.addEventListener('click', async (e)=>{
-    try{
-      const r = await fetch(dlCsv.href,{cache:'no-store'});
-      if(!r.ok){
-        e.preventDefault();
-        if(!rows.length) return;
-        const head = ['franchise_owner','seasons','wins','losses','ties','win_pct','points_for','points_against','avg_pf_per_season','team_names_seen'];
-        const csv = [head.join(',')].concat(rows.map(r=> head.map(k=>{
-          const v = r[k]==null? '' : r[k];
-          return String(v).replace(/"/g,'""');
-        }).map(x=>/[,"]/.test(x)?`"${x}"`:x).join(','))).join('\n');
-        const blob = new Blob([csv],{type:'text/csv'});
-        const url = URL.createObjectURL(blob);
-        dlCsv.href = url;
-        dlCsv.download = 'franchise_career_stats.csv';
-        // trigger download
-        setTimeout(()=>{ dlCsv.click(); }, 0);
-      }
-    }catch{}
-  });
-
+  applyFilterSort();
+  // footer data version-ish
+  footMeta.textContent = rows.length ? `Franchises v2 • ${rows.length} rows` : 'Franchises v2 • 0 rows';
 })();
-document.getElementById('year').textContent = new Date().getFullYear();
 </script>
 </body>
 </html>
