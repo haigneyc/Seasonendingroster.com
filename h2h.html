@@ -113,6 +113,31 @@ h2{margin:0 0 8px;font-size:16px;color:#cbd5e1}
   ownerB.innerHTML = owners.map(o=>`<option value="${esc(o)}">${esc(o)}</option>`).join("");
   ownerA.value = owners[0] || ""; ownerB.value = owners[1] || owners[0] || "";
 
+// --- deep links: read
+const q = new URLSearchParams(location.search);
+const qa = q.get('a'), qb = q.get('b');
+if (qa && owners.includes(qa)) ownerA.value = qa;
+if (qb && owners.includes(qb)) ownerB.value = qb;
+playoffsOnly.checked = q.get('playoffs') === '1';
+
+// --- deep links: write on change
+function syncURL(){
+  const p = new URLSearchParams(location.search);
+  p.set('a', ownerA.value);
+  p.set('b', ownerB.value);
+  if (playoffsOnly.checked) p.set('playoffs','1'); else p.delete('playoffs');
+  history.replaceState(null, '', `${location.pathname}?${p}`);
+}
+['change','input'].forEach(evt=>{
+  ownerA.addEventListener(evt, ()=>{ syncURL(); render(); });
+  ownerB.addEventListener(evt, ()=>{ syncURL(); render(); });
+});
+playoffsOnly.addEventListener('change', ()=>{ syncURL(); render(); });
+
+// initial sync
+syncURL();
+
+  
   // Top Rivalries
   const pairKey = (x,y)=>[x,y].sort().join(" ⟂ ");
   const agg = {};
