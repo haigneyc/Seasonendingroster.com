@@ -1,5 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+  <script>
+(function setStickyOffset(){
+  function apply(){
+    const bar = document.querySelector('.sitebar');
+    const h = bar ? Math.ceil(bar.getBoundingClientRect().height) : 56;
+    // Add a little breathing room so the header doesn’t sit ON the bar
+    document.documentElement.style.setProperty('--stickyTop', (h + 8) + 'px');
+  }
+  apply();
+  window.addEventListener('resize', apply, { passive: true });
+})();
+</script>
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -22,7 +35,14 @@
     .btn { color:#a0c4ff; text-decoration:none; border:1px solid #2b2b30; padding:8px 10px; border-radius:10px; }
     .card { background:var(--card); border:1px solid var(--line); border-radius:16px; overflow:hidden; box-shadow:0 8px 20px rgba(0,0,0,.2); margin-top:10px; }
     table { width:100%; border-collapse:collapse; font-size:14px; }
-    thead th { text-align:left; font-weight:600; padding:12px; border-bottom:1px solid #2a2a30; position:sticky; top:64px; background:var(--card); cursor:pointer; }
+    :root { --stickyTop: 56px; }              /* default; JS will overwrite */
+thead th {
+  position: sticky;
+  top: var(--stickyTop);
+  z-index: 3;                              /* sit above rows */
+  background: var(--card);                 /* hide row underlay */
+  border-bottom: 1px solid #2a2a30;
+}
     tbody td { padding:10px 12px; border-bottom:1px solid #202024; vertical-align:top; }
     tbody tr:hover { background:var(--cardHover); }
     .right { text-align:right; }
