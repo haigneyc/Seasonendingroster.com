@@ -1,0 +1,20 @@
+:root { --bg:#0f0f10; --card:#1b1b1d; --card2:#141416; --hover:#252528; --text:#fff; --line:#26262a; --muted:#9aa0a6; --stickyTop:56px; }
+
+.sitebar { position:sticky; top:0; z-index:1000; width:100%; backdrop-filter:blur(8px);
+  background:rgba(15,15,16,.85); border-bottom:1px solid var(--line); }
+.sitebar .bar-inner { margin:0 auto; max-width:1100px; padding:12px 20px;
+  display:grid; grid-template-columns:1fr auto; gap:12px; align-items:center; }
+.sitebar .brand { font-weight:700; letter-spacing:.2px; }
+
+.tabs { display:inline-flex; gap:6px; padding:6px; border:1px solid var(--line);
+  border-radius:12px; background:var(--card2); }
+.tabs a { color:var(--text); text-decoration:none; font-size:14px; padding:8px 12px; border-radius:8px; line-height:1; border:1px solid transparent; }
+.tabs a:hover { background:var(--hover); border-color:var(--line); }
+.tabs a[aria-current="page"] { background:var(--card); border-color:var(--line); }
+
+.site-footer{
+  max-width:1100px; margin:28px auto 40px; padding:12px 20px;
+  display:flex; gap:12px; justify-content:space-between; align-items:center; flex-wrap:wrap;
+  border-top:1px solid var(--line); color:var(--muted); font-size:13px;
+}
+.site-footer .foot-meta{opacity:.95} .site-footer .src-wrap{opacity:.8}
