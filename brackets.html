@@ -5,40 +5,36 @@
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Playoff Brackets</title>
 <style>
-:root { --bg:#0f0f10; --card:#1b1b1d; --card2:#141416; --hover:#252528; --text:#fff; --line:#26262a; --muted:#9aa0a6; --stickyTop:56px; }
-*{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text)}
-/* Header tabs */
+:root{--bg:#0f0f10;--card:#1b1b1d;--card2:#141416;--hover:#252528;--text:#fff;--line:#26262a;--muted:#9aa0a6;--accent:#a0c4ff;--stickyTop:56px}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text)}
 .sitebar{position:sticky;top:0;z-index:1000;width:100%;backdrop-filter:blur(8px);background:rgba(15,15,16,.85);border-bottom:1px solid var(--line)}
-.bar-inner{margin:0 auto;max-width:1100px;padding:12px 20px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}
-.brand{font-weight:700;letter-spacing:.2px}
+.bar-inner{margin:0 auto;max-width:1200px;padding:12px 20px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}
+.brand{font-weight:700}
 .tabs{display:inline-flex;gap:6px;padding:6px;border:1px solid var(--line);border-radius:12px;background:var(--card2)}
 .tabs a{color:var(--text);text-decoration:none;font-size:14px;padding:8px 12px;border-radius:8px;border:1px solid transparent}
 .tabs a:hover{background:var(--hover);border-color:var(--line)}
 .tabs a[aria-current="page"]{background:var(--card);border-color:var(--line)}
-/* Page */
-.wrap{max-width:1100px;margin:28px auto;padding:0 20px}
+.wrap{max-width:1200px;margin:28px auto;padding:0 20px}
 h1{margin:0 0 12px}
-.row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:8px 0 12px}
-select,input[type="checkbox"]{background:#121214;color:var(--text);border:1px solid #2a2a2e;border-radius:10px;padding:8px 10px}
-.muted{color:var(--muted);font-size:12px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 8px 20px rgba(0,0,0,.2);padding:12px}
-/* Bracket layout */
-.bracket{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
-.round{background:#151518;border:1px solid #202024;border-radius:14px;padding:10px}
-.round h3{margin:0 0 8px;font-size:14px;color:#cbd5e1}
-.game{border:1px solid #2a2a2e;border-radius:12px;margin-bottom:10px;overflow:hidden;background:#141416}
-.rowTeam{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center;padding:8px 10px;border-bottom:1px solid #202024}
-.rowTeam:last-child{border-bottom:none}
-.seed{font-size:11px;opacity:.85;border:1px solid #2b2b30;border-radius:999px;padding:1px 6px}
-.name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.score{font-variation-settings:"wght" 600}
-.win{background:#182318}
-.tag{font-size:11px;opacity:.9;margin-left:6px;color:#a3e635}
-.legend{margin:8px 0}
+.controls{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin:10px 0 8px}
+select, label{font-size:14px}
+select{background:#121214;color:var(--text);border:1px solid #2a2a2e;border-radius:10px;padding:8px 10px}
+.card-col{display:grid;grid-template-columns:repeat(3,minmax(260px,1fr));gap:18px;margin-top:12px}
+.round{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:10px 10px 12px;box-shadow:0 8px 20px rgba(0,0,0,.2)}
+.round h3{margin:2px 6px 10px;font-size:15px;color:#ddd;font-weight:600}
+.game{display:flex;flex-direction:column;gap:8px;margin:10px}
+.row{display:grid;grid-template-columns:28px 1fr 64px;align-items:center;gap:8px;padding:8px 10px;border-radius:10px;background:#131315;border:1px solid #222}
+.row.w{background:#152016;border-color:#274a2a}
+.seed{font-size:12px;color:#bbb;border:1px solid #2b2b30;border-radius:999px;padding:2px 6px;text-align:center}
+.name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.score{text-align:right}
+.note{color:var(--muted);font-size:12px;margin-top:10px}
+.empty{padding:10px 12px;color:var(--muted)}
+footer{max-width:1200px;margin:22px auto 36px;padding:0 20px;color:var(--muted);display:flex;justify-content:space-between}
 </style>
 </head>
 <body>
-<!-- Top nav -->
 <div class="sitebar">
   <div class="bar-inner">
     <div class="brand">Season Ending Roster</div>
@@ -55,212 +51,221 @@ select,input[type="checkbox"]{background:#121214;color:var(--text);border:1px so
 
 <div class="wrap">
   <h1>Playoff Brackets</h1>
-  <div class="row">
-    <label>Season
-      <select id="seasonSel"></select>
-    </label>
-    <label><input type="checkbox" id="showTeams"> Show team names (instead of franchise)</label>
-    <span class="muted" id="note"></span>
-  </div>
-  <div class="muted legend">Winners are highlighted. Consolation (seeds 7–12) is hidden.</div>
 
-  <div class="bracket" id="bracket"></div>
+  <div class="controls">
+    <label for="seasonSel"><strong>Season</strong></label>
+    <select id="seasonSel"></select>
+    <label><input type="checkbox" id="showTeams"> Show team names (instead of franchise)</label>
+  </div>
+
+  <div class="note">Winners are highlighted. <span id="src"></span> Consolation (seeds 7–12) is hidden.</div>
+
+  <div class="card-col" id="cols">
+    <!-- columns inserted here -->
+  </div>
+
+  <div class="empty" id="empty" style="display:none"></div>
 </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const bar = document.querySelector('.sitebar');
-  const h = bar ? Math.ceil(bar.getBoundingClientRect().height) : 56;
-  document.documentElement.style.setProperty('--stickyTop', (h + 8) + 'px');
-});
-</script>
+<footer>
+  <div>© 2004–<span id="yr"></span> Season Ending Roster</div>
+  <div class="muted" id="footMeta"></div>
+</footer>
 
 <script>
-(async function(){
-  // Paths helper (handles processed/proccessed and absolute/relative)
-  const CAND = (p)=>[
-    `data/processed/${p}`, `/data/processed/${p}`,
-    `data/proccessed/${p}`, `/data/proccessed/${p}`
-  ];
-
-  async function fetchText(paths){
-    for(const p of paths){ try{ const r=await fetch(p,{cache:'no-store'}); if(r.ok) return {text:await r.text(), path:p}; }catch{} }
-    return {text:null, path:null};
+(function setStickyOffset(){
+  function apply(){
+    const bar=document.querySelector('.sitebar');
+    const h=bar?Math.ceil(bar.getBoundingClientRect().height):56;
+    document.documentElement.style.setProperty('--stickyTop',(h+8)+'px');
   }
-  async function fetchJSON(paths){
-    for(const p of paths){ try{ const r=await fetch(p,{cache:'no-store'}); if(r.ok) return {json:await r.json(), path:p}; }catch{} }
-    return {json:null, path:null};
+  apply(); window.addEventListener('resize',apply,{passive:true});
+})();
+document.getElementById('yr').textContent=new Date().getFullYear();
+
+const CSV_CAND = [
+  'data/processed/matchups.csv',
+  '/data/processed/matchups.csv',
+  'data/proccessed/matchups.csv',
+  '/data/proccessed/matchups.csv'
+];
+const METRICS_CAND = [
+  'data/processed/metrics.json',
+  '/data/processed/metrics.json',
+  'data/proccessed/metrics.json',
+  '/data/proccessed/metrics.json'
+];
+
+const srcEl = document.getElementById('src');
+const footMeta = document.getElementById('footMeta');
+
+function pick(o, keys){
+  for(const k of keys){ if(o[k]!=null && o[k]!=='' ) return o[k]; }
+  return null;
+}
+function num(v){ const n=+v; return Number.isFinite(n)?n:null; }
+
+// very small CSV parser (no embedded quoted commas in our pipeline)
+function parseCSV(text){
+  const lines = text.trim().split(/\r?\n/);
+  const head = lines.shift().split(',').map(h=>h.trim());
+  const idx = k => head.indexOf(k);
+  const rows = [];
+  for(const line of lines){
+    const cols=line.split(',').map(s=>s.trim());
+    const obj={};
+    head.forEach((h,i)=>obj[h]=cols[i]);
+    rows.push(obj);
   }
-  function parseCSV(text){
-    const rows=[]; let cur="", q=false, i=0; const out=[]; const push=()=>{rows[rows.length-1].push(cur);cur="";}; const start=()=>rows.push([]); start();
-    while(i<text.length){ const c=text[i++]; if(q){ if(c=='"'){ if(text[i]=='"'){cur+='"';i++;} else q=false; } else cur+=c; }
-      else{ if(c=='"') q=true; else if(c==',') push(); else if(c=='\r'){} else if(c=='\n'){push();start();} else cur+=c; } }
-    if(cur!==""||rows[rows.length-1].length) push(); if(rows[rows.length-1].length===0) rows.pop();
-    const header=rows.shift()||[]; return rows.map(r=>Object.fromEntries(header.map((h,j)=>[h, r[j]??""])));
+  return rows;
+}
+async function fetchFirst(paths, asText=false){
+  for(const url of paths){
+    try{
+      const r=await fetch(url,{cache:'no-store'});
+      if(r.ok){ return asText?{url,text:await r.text()}:{url,json:await r.json()}; }
+    }catch{}
   }
-  const esc = s => String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
-  const num = x => (x===""||x==null)?null:Number(x);
-  const boolish = v => String(v).trim().toLowerCase().match(/^(1|t|true|y|yes)$/);
+  return null;
+}
 
-  // ---------- Load matchups
-  const mres = await fetchText(CAND("matchups.csv"));
-  const bracketEl = document.getElementById("bracket");
-  const note = document.getElementById("note");
-  if(!mres.text){ bracketEl.innerHTML = '<div class="muted">No matchups.csv found.</div>'; return; }
+function unifyRow(r){
+  // Season & week
+  const season = num(pick(r, ['season','Season','year','Year']));
+  const week   = num(pick(r, ['week','Week','nfl_week','NFL_Week','matchup_week']));
+  // playoff flag (several variants)
+  const pflag  = pick(r, ['is_playoff','playoff','Playoff','postseason','is_postseason','bracket_round','round']);
+  const isPlayoff = String(pflag||'').toLowerCase().includes('play') || String(pflag||'').toLowerCase()==='true' || pflag===1 || pflag==='1';
 
-  const raw = parseCSV(mres.text);
+  // home/away owners
+  const hOwner = pick(r, ['home_owner','franchise_owner_home','owner_home','home_franchise_owner','franchise_owner1']);
+  const aOwner = pick(r, ['away_owner','franchise_owner_away','owner_away','away_franchise_owner','franchise_owner2']);
+  const hTeam  = pick(r, ['home_team_name','home_team','team_name_home','home_name']);
+  const aTeam  = pick(r, ['away_team_name','away_team','team_name_away','away_name']);
 
-  // Normalize rows
-  const gamesAll = raw.map(r=>{
-    const flag = (r.is_playoffs ?? r.is_playoff ?? r.playoffs ?? r.playoff ?? r.phase ?? "").toString().trim().toLowerCase();
-    const isPO = boolish(flag) || ["playoff","playoffs","post","postseason","p"].includes(flag);
-    const roundName = (r.round ?? r.stage ?? "").toString().trim();
-    let week = num(r.week); if (week==null && roundName) week = null;
-    const A = (r.franchise_owner_a ?? r.owner_a ?? r.a_owner ?? "").trim();
-    const B = (r.franchise_owner_b ?? r.owner_b ?? r.b_owner ?? "").trim();
-    const tA = (r.team_name_a ?? r.team_a ?? "").trim();
-    const tB = (r.team_name_b ?? r.team_b ?? "").trim();
-    const pa = num(r.points_a ?? r.a_points);
-    const pb = num(r.points_b ?? r.b_points);
-    let winner = (r.winner_owner ?? "").trim();
-    if(!winner && pa!=null && pb!=null){ winner = pa>pb ? A : pb>pa ? B : ""; }
-    const tie = boolish(r.is_tie ?? r.tie) || (pa!=null && pb!=null && pa===pb);
-    return { season:(r.season||"").trim(), week, roundName, is_playoffs:isPO, A,B,tA,tB, pa,pb, winner, tie };
-  }).filter(g=>g.A && g.B);
+  // scores
+  const hScore = num(pick(r, ['home_points','home_score','points_home','score_home','home_pts']));
+  const aScore = num(pick(r, ['away_points','away_score','points_away','score_away','away_pts']));
 
-  // Use flagged playoff games if present; else infer from last 2–3 weeks
-  let playoffGames = gamesAll.filter(g=>g.is_playoffs);
-  let modeNote = `Loaded ${playoffGames.length} flagged playoff games from ${esc(mres.path)}.`;
-  if (playoffGames.length === 0) {
-    const bySeason = {};
-    for(const g of gamesAll){ (bySeason[g.season] ||= []).push(g); }
-    playoffGames = [];
-    Object.entries(bySeason).forEach(([season, gs])=>{
-      const weeks = [...new Set(gs.map(x=>x.week).filter(w=>w!=null))].sort((a,b)=>a-b);
-      if(weeks.length){
-        const take = Math.min(3, Math.max(1, weeks.length>=2?2:1));
-        const chosen = weeks.slice(-take);
-        playoffGames.push(...gs.filter(x=>x.week!=null && chosen.includes(x.week)));
-      }
+  // seeds
+  const hSeed = num(pick(r, ['home_seed','seed_home','seed1','home_rank','rank_home']));
+  const aSeed = num(pick(r, ['away_seed','seed_away','seed2','away_rank','rank_away']));
+
+  return {season,week,isPlayoff,
+    home:{owner:hOwner||'',team:hTeam||'',seed:hSeed,score:hScore},
+    away:{owner:aOwner||'',team:aTeam||'',seed:aSeed,score:aScore}
+  };
+}
+
+function buildBySeason(rows){
+  const bySeason=new Map();
+  for(const r of rows){
+    if(!r.season || !r.isPlayoff) continue;
+    // filter out consolation: require seeds present and both ≤ 6
+    const hs=r.home.seed, as=r.away.seed;
+    if(!Number.isFinite(hs) || !Number.isFinite(as)) continue;
+    if(hs>6 || as>6) continue;
+
+    if(!bySeason.has(r.season)) bySeason.set(r.season,[]);
+    bySeason.get(r.season).push(r);
+  }
+  return bySeason;
+}
+
+function groupRounds(games){
+  // Determine playoff weeks in ascending order
+  const weeks=[...new Set(games.map(g=>g.week).filter(n=>Number.isFinite(n)))].sort((a,b)=>a-b);
+  const label = (i,count,w)=> (count===2? (i===0?'Semifinals':'Final')
+                      : count>=3? (i===0?'Quarterfinals': i===1?'Semifinals':'Final')
+                      : (i===0?'Final':'Round '+(i+1))) + (Number.isFinite(w)?` (Week ${w})`:'');
+
+  // Map weeks to labeled rounds
+  const rounds = weeks.map((w,i,arr)=>({title:label(i,arr.length,w), week:w, games:[]}));
+  const wkToIdx=new Map(weeks.map((w,i)=>[w,i]));
+  for(const g of games){
+    if(!wkToIdx.has(g.week)) continue;
+    rounds[wkToIdx.get(g.week)].games.push(g);
+  }
+  // sort each week by min seed ASC
+  rounds.forEach(r=>r.games.sort((a,b)=>Math.min(a.home.seed,a.away.seed)-Math.min(b.home.seed,b.away.seed)));
+  return rounds;
+}
+
+function render(season, rounds, showTeams){
+  const cols=document.getElementById('cols');
+  const empty=document.getElementById('empty');
+  cols.innerHTML='';
+  if(!rounds.length){ empty.style.display='block'; empty.textContent=`No playoff bracket found for ${season} (after filtering seeds 1–6).`; return; }
+  empty.style.display='none';
+
+  rounds.forEach(r=>{
+    const col=document.createElement('div');
+    col.className='round';
+    const h=document.createElement('h3'); h.textContent=r.title; col.appendChild(h);
+
+    r.games.forEach(g=>{
+      const winHome = Number(g.home.score)>Number(g.away.score);
+      const r1=document.createElement('div'); r1.className='row'+(winHome?' w':'');
+      const r2=document.createElement('div'); r2.className='row'+(!winHome?' w':'');
+
+      r1.innerHTML = `<div class="seed">${g.home.seed??''}</div>
+                      <div class="name">${(showTeams?(g.home.team||g.home.owner):(g.home.owner||g.home.team))||'—'}</div>
+                      <div class="score">${g.home.score!=null?g.home.score.toFixed?g.home.score.toFixed(1):g.home.score:'—'}</div>`;
+
+      r2.innerHTML = `<div class="seed">${g.away.seed??''}</div>
+                      <div class="name">${(showTeams?(g.away.team||g.away.owner):(g.away.owner||g.away.team))||'—'}</div>
+                      <div class="score">${g.away.score!=null?g.away.score.toFixed?g.away.score.toFixed(1):g.away.score:'—'}</div>`;
+
+      const gameBox=document.createElement('div'); gameBox.className='game';
+      gameBox.appendChild(r1); gameBox.appendChild(r2);
+      col.appendChild(gameBox);
     });
-    modeNote = `No playoff flags found; inferred from last 2–3 weeks (${playoffGames.length} games).`;
+
+    cols.appendChild(col);
+  });
+}
+
+(async function init(){
+  // load CSV first
+  let data=null, csvSrc=null;
+  try{
+    const got = await fetchFirst(CSV_CAND,true);
+    if(got){ data=parseCSV(got.text).map(unifyRow); csvSrc=got.url; }
+  }catch{}
+  if(csvSrc){ srcEl.textContent = `Loaded ${data.length} flagged playoff rows from ${csvSrc}`; }
+
+  // fallback just for seasons if CSV was missing
+  if(!data){
+    const m = await fetchFirst(METRICS_CAND,false);
+    const seasons = (m?.json?.seasons) || [];
+    document.getElementById('seasonSel').innerHTML = seasons.map(s=>`<option value="${s}">${s}</option>`).join('');
+    footMeta.textContent = m? `Seasons from ${m.url}` : 'No data';
+    return;
   }
 
-  // ---------- Seeds + champion
-  let champs = {};
-  const pm = await fetchJSON(CAND("playoff_metrics.json"));
-  if (pm.json && pm.json.champions_by_season) champs = pm.json.champions_by_season;
+  // organize
+  const bySeason = buildBySeason(data);
+  const seasons = [...bySeason.keys()].sort((a,b)=>a-b);
+  // dropdown
+  const sel=document.getElementById('seasonSel');
+  sel.innerHTML = seasons.map(s=>`<option value="${s}">${s}</option>`).join('');
+  // pick season from URL ?season=YYYY or default last
+  const params=new URLSearchParams(location.search);
+  const wanted = params.get('season');
+  const initial = seasons.includes(+wanted)? +wanted : seasons[seasons.length-1];
+  sel.value = initial;
 
-  const sres = await fetchText(CAND("standings_by_season.csv"));
-  const seeds = {};
-  if (sres.text){
-    const srows = parseCSV(sres.text);
-    for(const r of srows){
-      const season = r.season;
-      const owner  = (r.franchise_owner || r.owner || "").trim();
-      const seed   = r.playoff_seed===""?null:num(r.playoff_seed);
-      (seeds[season] ||= {})[owner] = seed;
-      const rk = r.rank===""?null:num(r.rank);
-      if (rk===1 && !champs[season]) champs[season] = {franchise_owner: owner};
-    }
+  function run(){
+    const season=+sel.value;
+    const games = (bySeason.get(season)||[]).slice().sort((a,b)=>a.week-b.week);
+    const rounds = groupRounds(games);
+    render(season, rounds, document.getElementById('showTeams').checked);
   }
+  sel.addEventListener('change',run);
+  document.getElementById('showTeams').addEventListener('change',run);
 
-  // Filter out consolation: keep only games where BOTH teams are seeds 1..6
-  const MAX_MAIN_SEED = 6;
-  let filteredReason = "";
-  if (Object.keys(seeds).length){
-    const before = playoffGames.length;
-    playoffGames = playoffGames.filter(g => {
-      const sMap = seeds[g.season] || {};
-      const sa = sMap[g.A], sb = sMap[g.B];
-      if (sa == null || sb == null) return false;          // drop if seed unknown
-      return sa <= MAX_MAIN_SEED && sb <= MAX_MAIN_SEED;   // keep true playoffs only
-    });
-    filteredReason = ` Showing only seeds 1–${MAX_MAIN_SEED} (removed ${before - playoffGames.length} consolation games).`;
-  } else {
-    filteredReason = ` (Could not load seeds; showing all playoff-tagged games.)`;
-  }
-
-  // ---------- Seasons & controls
-  const seasons = [...new Set(playoffGames.map(g=>g.season))].sort((a,b)=>Number(a)-Number(b));
-  const sel = document.getElementById("seasonSel");
-  sel.innerHTML = seasons.map(s=>`<option value="${esc(s)}">${esc(s)}</option>`).join("");
-  if (seasons.length) sel.value = seasons[seasons.length-1];
-
-  const showTeams = document.getElementById("showTeams");
-  const note = document.getElementById("note");
-  note.textContent = modeNote + filteredReason;
-
-  // Round labels
-  function labelRound(ix,total){
-    if(total===1) return "Final";
-    if(total===2) return ix===0?"Semifinals":"Final";
-    if(total===3) return ["Quarterfinals","Semifinals","Final"][ix];
-    if(total===4) return ["Round 1","Quarterfinals","Semifinals","Final"][ix];
-    return "Round " + (ix+1);
-  }
-
-  function render(){
-    const season = sel.value;
-    const gs = playoffGames.filter(g=>g.season===season);
-    const champOwner = (champs[season] && (champs[season].franchise_owner || champs[season])) || null;
-
-    // Prefer explicit round names; else weeks
-    let groups = [];
-    const byRoundName = [...new Set(gs.map(g=>g.roundName).filter(Boolean))];
-    if (byRoundName.length){
-      groups = byRoundName.map(name => ({ label: name, games: gs.filter(g=>g.roundName===name) }));
-    } else {
-      const weeks = [...new Set(gs.map(g=>g.week).filter(w=>w!=null))].sort((a,b)=>a-b);
-      groups = weeks.map((w,ix)=>({ label: labelRound(ix, weeks.length) + (w!=null?` (Week ${w})`:""), games: gs.filter(g=>g.week===w) }));
-    }
-
-    const container = document.getElementById("bracket");
-    container.innerHTML = groups.map((grp,ix,arr)=>{
-      const cards = grp.games.map(g=>{
-        const sMap = seeds[season] || {};
-        const seedA = sMap[g.A] ?? '—';
-        const seedB = sMap[g.B] ?? '—';
-        const nameA = showTeams.checked ? (g.tA || g.A) : g.A;
-        const nameB = showTeams.checked ? (g.tB || g.B) : g.B;
-        const winA = !g.tie && g.winner===g.A;
-        const winB = !g.tie && g.winner===g.B;
-        const tagA = (champOwner && g.A===champOwner && winA && ix===arr.length-1) ? '<span class="tag">Champion</span>' : '';
-        const tagB = (champOwner && g.B===champOwner && winB && ix===arr.length-1) ? '<span class="tag">Champion</span>' : '';
-        return `
-          <div class="game">
-            <div class="rowTeam ${winA?'win':''}">
-              <span class="seed">${esc(seedA)}</span>
-              <div class="name">${esc(nameA)} ${tagA}</div>
-              <div class="score">${g.pa==null?'—':g.pa.toFixed(1)}</div>
-            </div>
-            <div class="rowTeam ${winB?'win':''}">
-              <span class="seed">${esc(seedB)}</span>
-              <div class="name">${esc(nameB)} ${tagB}</div>
-              <div class="score">${g.pb==null?'—':g.pb.toFixed(1)}</div>
-            </div>
-          </div>`;
-      }).join("");
-      return `<section class="round"><h3>${esc(grp.label)}</h3>${cards || '<div class="muted" style="padding:8px">No games</div>'}</section>`;
-    }).join("") || '<div class="muted">No main-bracket games for this season.</div>';
-  }
-
-  // Deep links (?season=YYYY&teams=1)
-  const params = new URLSearchParams(location.search);
-  if (params.has('season') && seasons.includes(params.get('season'))) sel.value = params.get('season');
-  if (params.get('teams') === '1') showTeams.checked = true;
-  function updateURL(){
-    const p = new URLSearchParams(location.search);
-    if (sel.value) p.set('season', sel.value);
-    if (showTeams.checked) p.set('teams','1'); else p.delete('teams');
-    history.replaceState(null, '', `${location.pathname}?${p}`);
-  }
-
-  sel.addEventListener('change', ()=>{ updateURL(); render(); });
-  showTeams.addEventListener('change', ()=>{ updateURL(); render(); });
-
-  render();
-  updateURL();
+  run();
+  footMeta.textContent = `Seasons ${seasons[0]}–${seasons[seasons.length-1]}`;
 })();
 </script>
 </body>
