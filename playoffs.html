@@ -4,7 +4,21 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Playoff Metrics</title>
-  <!-- … your existing <head> opening tags … -->
+  <style>
+  /* keep this where your other styles live */
+  /* Sticky header only on the owners table */
+  #tblOwners thead th{
+    position: sticky;
+    top: var(--stickyTop);
+    z-index: 5;
+    background: var(--card);
+    box-shadow: 0 1px 0 #2a2a30;
+  }
+
+  /* Allow the sticky header to float above the card’s top edge */
+  #ownersCard{ overflow: visible; }       /* was overflow:hidden on .card */
+</style>
+
 <style>
   :root { --bg:#0f0f10; --card:#1b1b1d; --card2:#141416; --hover:#252528; --text:#fff; --line:#26262a; --muted:#9aa0a6; --stickyTop:56px; }
   * { box-sizing:border-box; }
@@ -93,7 +107,7 @@
       <input id="q" type="search" placeholder="Filter by franchise…" />
       <span class="muted" id="counts"></span>
     </div>
-    <div class="card">
+    <div class="card" id="ownersCard">
       <table id="tblOwners">
         <thead>
           <tr>
