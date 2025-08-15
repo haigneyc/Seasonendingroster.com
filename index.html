@@ -3,71 +3,75 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <title>The League — Season Ending Roster</title>
-  <meta name="description" content="Pick a clown to see his 2024 roster. Season Ending Roster for our long-running league." />
-
-  <!-- Open Graph (used by iMessage, Facebook, Slack, etc.) -->
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="Season Ending Roster" />
-  <meta property="og:description" content="Pick a clown to see his 2024 roster." />
-  <!-- Use an absolute HTTPS URL; 1200×630 is ideal -->
-  <meta property="og:image" content="https://seasonendingroster.com/images/IMG_5371.jpeg5" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
-  <meta property="og:url" content="https://seasonendingroster.com/" />
-  <meta property="og:site_name" content="The League" />
-
-  <!-- Twitter Card (nice on X/Twitter and some others) -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Season Ending Roster" />
-  <meta name="twitter:description" content="Pick a clown to see his 2024 roster." />
-  <meta name="twitter:image" content="https://example.com/og/league-preview.jpg?v=2025-08-15" />
-
-  <!-- Nice-to-haves -->
-  <link rel="icon" href="/favicon.ico" />
-  <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
-  <meta name="theme-color" content="#0f0f10" />
-  
+  <title>The League</title>
   <style>
-    :root { --bg:#0f0f10; --card:#1b1b1d; --cardHover:#252528; --text:#fff; }
+    :root { --bg:#0f0f10; --card:#1b1b1d; --cardHover:#252528; --text:#fff; --line:#26262a; --muted:#a0a0a8; }
     * { box-sizing: border-box; }
     body {
       margin: 0; font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
       background: var(--bg); color: var(--text); display: flex; flex-direction: column; align-items: center;
     }
-    header { width: 100%; max-width: 1000px; padding: 20px; }
-    h1 { margin: 0 0 8px; font-size: 22px; }
-    .hint { opacity: .8; font-size: 14px; }
 
+    /* ===== Top bar ===== */
+    .sitebar {
+      position: sticky; top: 0; z-index: 1000;
+      width: 100%; backdrop-filter: blur(8px);
+      background: rgba(15,15,16,0.85); border-bottom: 1px solid var(--line);
+    }
+    .bar-inner {
+      margin: 0 auto; max-width: 1000px; padding: 12px 20px;
+      display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: center;
+    }
+    .brand { font-size: 18px; font-weight: 700; letter-spacing:.2px; }
+    .sub { font-size:12px; color: var(--muted); margin-top: 4px; }
+
+    .tabs {
+      display: inline-flex; gap: 6px; padding: 6px; border:1px solid var(--line);
+      border-radius: 12px; background: #141416;
+    }
+    .tabs a {
+      color: var(--text); text-decoration: none; font-size: 14px;
+      padding: 8px 12px; border-radius: 8px; line-height: 1;
+      border: 1px solid transparent; transition: background .15s ease, border-color .15s ease;
+    }
+    .tabs a:hover { background: var(--cardHover); border-color: var(--line); }
+    .tabs a[aria-current="page"] { background: var(--card); border-color: var(--line); }
+
+    /* ===== Page header below the bar ===== */
+    header { width: 100%; max-width: 1000px; padding: 16px 20px 8px; }
+    h1 { margin: 0 0 6px; font-size: 24px; }
+    .hint { opacity: .85; font-size: 14px; color: var(--muted); }
+
+    /* ===== Gallery ===== */
     .gallery {
       width: 100%; max-width: 1000px; padding: 20px; display: grid; gap: 14px;
       grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
     }
     .item {
-      background: var(--card); border-radius: 10px; padding: 8px; cursor: zoom-in; transition: background .2s ease;
+      background: var(--card); border-radius: 12px; padding: 10px; cursor: zoom-in; transition: background .2s ease, transform .08s ease;
+      border: 1px solid var(--line);
     }
-    .item:hover { background: var(--cardHover); }
+    .item:hover { background: var(--cardHover); transform: translateY(-1px); }
     .thumb {
-      width: 100%; height: 0; padding-bottom: 100%; border-radius: 6px; overflow: hidden; position: relative;
+      width: 100%; height: 0; padding-bottom: 100%; border-radius: 8px; overflow: hidden; position: relative;
     }
     .thumb img {
       position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block;
     }
-    .caption { margin-top: 6px; font-size: 13px; opacity: .9; text-align: center; }
+    .caption { margin-top: 8px; font-size: 13px; opacity: .95; text-align: center; }
 
-    /* Lightbox */
+    /* ===== Lightbox ===== */
     .lightbox {
       position: fixed; inset: 0; background: rgba(0,0,0,.85);
       display: none; align-items: center; justify-content: center; padding: 20px; z-index: 9999;
     }
     .lightbox.open { display: flex; }
     .lightbox img {
-      max-width: 100%; max-height: 85vh; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,.6);
+      max-width: 100%; max-height: 85vh; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,.6);
     }
     .close, .nav {
-      position: fixed; top: 14px; font-size: 16px; background: rgba(255,255,255,.12);
-      border: none; color: #fff; padding: 10px 12px; border-radius: 8px; cursor: pointer;
+      position: fixed; top: 14px; font-size: 14px; background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.2); color: #fff; padding: 10px 12px; border-radius: 10px; cursor: pointer;
       backdrop-filter: blur(6px);
     }
     .close { right: 14px; }
@@ -78,13 +82,25 @@
   </style>
 </head>
 <body>
-  <header>
-    <h1>Season Ending Roster</h1>
-    <div class="hint">Pick a clown to see his 2024 roster.</div>
-  </header>
+  <!-- Sticky top bar with tabs -->
+  <div class="sitebar">
+    <div class="bar-inner">
+      <div>
+        <div class="brand">Season Ending Roster</div>
+        <div class="sub">Pick a clown to see his 2024 roster.</div>
+      </div>
+      <nav class="tabs" aria-label="Primary">
+        <a href="index.html" aria-current="page">Home</a>
+        <a href="franchises.html">Franchises</a>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Optional page header area for breadcrumbs or notes -->
+  <header></header>
 
   <main class="gallery" id="gallery">
-    <!-- Replace captions/filenames with your own. Thumbs and full images are separate files. -->
+    <!-- Existing figures preserved -->
     <figure class="item" data-full="images/IMG_6024.jpeg" data-alt="Loser">
       <div class="thumb"><img src="images/IMG_5371.jpeg" alt="Commish"></div>
       <figcaption class="caption">Commish</figcaption>
@@ -185,10 +201,7 @@
       function prev() { if (i > 0) openAt(i - 1); }
       function next() { if (i < items.length - 1) openAt(i + 1); }
 
-      items.forEach((el, idx) => {
-        el.addEventListener('click', () => openAt(idx));
-      });
-
+      items.forEach((el, idx) => el.addEventListener('click', () => openAt(idx)));
       closeBtn.addEventListener('click', close);
       prevBtn.addEventListener('click', (e) => { e.stopPropagation(); prev(); });
       nextBtn.addEventListener('click', (e) => { e.stopPropagation(); next(); });
