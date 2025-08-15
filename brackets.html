@@ -202,3 +202,65 @@ document.addEventListener('DOMContentLoaded', () => {
   function render(){
     const season = sel.value;
     const gs = playoffGames.filter(g=>g.season===season);
+    const champOwner = (champs[season] && (champs[season].franchise_owner || champs[season])) || null;
+
+    // Prefer explicit round names; else weeks
+    let groups = [];
+    const byRoundName = [...new Set(gs.map(g=>g.roundName).filter(Boolean))];
+    if (byRoundName.length){
+      groups = byRoundName.map(name => ({ label: name, games: gs.filter(g=>g.roundName===name) }));
+    } else {
+      const weeks = [...new Set(gs.map(g=>g.week).filter(w=>w!=null))].sort((a,b)=>a-b);
+      groups = weeks.map((w,ix)=>({ label: labelRound(ix, weeks.length) + (w!=null?` (Week ${w})`:""), games: gs.filter(g=>g.week===w) }));
+    }
+
+    const container = document.getElementById("bracket");
+    container.innerHTML = groups.map((grp,ix,arr)=>{
+      const cards = grp.games.map(g=>{
+        const sMap = seeds[season] || {};
+        const seedA = sMap[g.A] ?? '—';
+        const seedB = sMap[g.B] ?? '—';
+        const nameA = showTeams.checked ? (g.tA || g.A) : g.A;
+        const nameB = showTeams.checked ? (g.tB || g.B) : g.B;
+        const winA = !g.tie && g.winner===g.A;
+        const winB = !g.tie && g.winner===g.B;
+        const tagA = (champOwner && g.A===champOwner && winA && ix===arr.length-1) ? '<span class="tag">Champion</span>' : '';
+        const tagB = (champOwner && g.B===champOwner && winB && ix===arr.length-1) ? '<span class="tag">Champion</span>' : '';
+        return `
+          <div class="game">
+            <div class="rowTeam ${winA?'win':''}">
+              <span class="seed">${esc(seedA)}</span>
+              <div class="name">${esc(nameA)} ${tagA}</div>
+              <div class="score">${g.pa==null?'—':g.pa.toFixed(1)}</div>
+            </div>
+            <div class="rowTeam ${winB?'win':''}">
+              <span class="seed">${esc(seedB)}</span>
+              <div class="name">${esc(nameB)} ${tagB}</div>
+              <div class="score">${g.pb==null?'—':g.pb.toFixed(1)}</div>
+            </div>
+          </div>`;
+      }).join("");
+      return `<section class="round"><h3>${esc(grp.label)}</h3>${cards || '<div class="muted" style="padding:8px">No games</div>'}</section>`;
+    }).join("") || '<div class="muted">No main-bracket games for this season.</div>';
+  }
+
+  // Deep links (?season=YYYY&teams=1)
+  const params = new URLSearchParams(location.search);
+  if (params.has('season') && seasons.includes(params.get('season'))) sel.value = params.get('season');
+  if (params.get('teams') === '1') showTeams.checked = true;
+  function updateURL(){
+    const p = new URLSearchParams(location.search);
+    if (sel.value) p.set('season', sel.value);
+    if (showTeams.checked) p.set('teams','1'); else p.delete('teams');
+    history.replaceState(null, '', `${location.pathname}?${p}`);
+  }
+
+  sel.addEventListener('change', ()=>{ updateURL(); render(); });
+  showTeams.addEventListener('change', ()=>{ updateURL(); render(); });
+
+  render();
+  updateURL();
+})();
+</script>
+</body>
+</html>
