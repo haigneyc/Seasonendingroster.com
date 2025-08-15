@@ -209,6 +209,43 @@
   render();
 })();
 </script>
+  <script>
+  // Size sticky headers correctly
+  function applyStickyOffset(){
+    const bar = document.querySelector('.sitebar');
+    const h = bar ? Math.ceil(bar.getBoundingClientRect().height) : 56;
+    document.documentElement.style.setProperty('--stickyTop', (h + 8) + 'px');
+  }
+  (document.readyState==='loading'
+    ? document.addEventListener('DOMContentLoaded', applyStickyOffset)
+    : applyStickyOffset());
+  window.addEventListener('resize', applyStickyOffset, {passive:true});
+</script>
+
+<script>
+  // Footer: year + data version + source path
+  document.getElementById('footYear').textContent = new Date().getFullYear();
+  (async function(){
+    const CAND = p => [`data/processed/${p}`,`/data/processed/${p}`,`data/proccessed/${p}`,`/data/proccessed/${p}`];
+    const tryFiles = [...CAND('playoff_metrics.json'), ...CAND('metrics.json'), ...CAND('franchise_career_stats.csv')];
+    async function firstOk(paths){
+      for (const url of paths){
+        try{ const r=await fetch(url,{cache:'no-store'}); if(r.ok) return {url, text:await r.text(), lm:r.headers.get('last-modified')}; }catch{}
+      }
+      return null;
+    }
+    const res = await firstOk(tryFiles);
+    const vEl = document.querySelector('#siteFoot .v'), uEl = document.querySelector('#siteFoot .u'), sEl = document.querySelector('#siteFoot .src');
+    if(!res){ vEl.textContent='v–'; uEl.textContent='no data'; sEl.textContent='not found'; return; }
+    const enc = new TextEncoder().encode(res.text);
+    const buf = await crypto.subtle.digest('SHA-256', enc);
+    const ver = Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('').slice(0,8);
+    vEl.textContent = 'v'+ver;
+    uEl.textContent = res.lm ? new Date(res.lm).toLocaleString() : new Date().toLocaleString();
+    sEl.textContent = res.url.replace(location.origin,'');
+  })();
+</script>
+
   <footer class="site-footer" id="siteFoot">
   <div>© 2004–<span id="footYear"></span> Season Ending Roster</div>
   <div class="foot-meta">
