@@ -218,6 +218,70 @@
         if (e.key === 'ArrowRight') next();
       }, { passive: true });
     })();
+
+    document.getElementById('footYear').textContent = new Date().getFullYear();
+
+(async function(){
+  // Try these in order; page works with either /processed or /proccessed
+  const CAND = (p)=>[
+    `data/processed/${p}`, `/data/processed/${p}`,
+    `data/proccessed/${p}`, `/data/proccessed/${p}`
+  ];
+  const sources = [
+    ...CAND("playoff_metrics.json"),
+    ...CAND("metrics.json"),
+    ...CAND("franchise_career_stats.csv"),
+  ];
+
+  async function fetchFirst(paths){
+    for(const url of paths){
+      try{
+        const r = await fetch(url, {cache:"no-store"});
+        if (r.ok) {
+          const text = await r.text();      // we’ll hash this
+          const lm = r.headers.get("last-modified");
+          return {url, text, lastModified: lm};
+        }
+      }catch(e){}
+    }
+    return null;
+  }
+
+  function toHex(buf){
+    return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("");
+  }
+
+  const res = await fetchFirst(sources);
+  const foot = document.getElementById("siteFoot");
+  const vEl = foot.querySelector(".v");
+  const uEl = foot.querySelector(".u");
+  const sEl = foot.querySelector(".src");
+
+  if (!res){
+    vEl.textContent = "v–";
+    uEl.textContent = "no data";
+    sEl.textContent = "not found";
+    return;
+  }
+
+  // Hash the file to create a stable “version” badge (first 8 chars of SHA-256)
+  const enc = new TextEncoder().encode(res.text);
+  const hashBuf = await crypto.subtle.digest("SHA-256", enc);
+  const ver = toHex(hashBuf).slice(0, 8);
+
+  const when = res.lastModified ? new Date(res.lastModified) : new Date();
+  vEl.textContent = "v" + ver;
+  uEl.textContent = when.toLocaleString();
+  sEl.textContent = res.url.replace(location.origin, "");
+})();
   </script>
+  <footer class="site-footer" id="siteFoot">
+  <div>© 2004–<span id="footYear"></span> Season Ending Roster</div>
+  <div class="foot-meta">
+    Data <span class="v">v—</span> • Updated <span class="u">—</span>
+    <span class="src-wrap"> • <span class="src"></span></span>
+  </div>
+</footer>
+
 </body>
 </html>
