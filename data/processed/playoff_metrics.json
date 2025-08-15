@@ -1,0 +1,397 @@
+{
+  "source": {
+    "standings": "data\\processed\\standings_by_season.csv",
+    "matchups": "data\\processed\\matchups.csv"
+  },
+  "counts": {
+    "finishes_rows": 255,
+    "franchises": 14,
+    "seasons": 22,
+    "playoff_games": 257
+  },
+  "champions_by_season": {
+    "2004": {
+      "franchise_owner": "ian",
+      "team_name": "Grunting Grundles",
+      "seed": 3,
+      "rank": 1
+    },
+    "2005": {
+      "franchise_owner": "winter",
+      "team_name": "Rancid Douche Cunts",
+      "seed": 1,
+      "rank": 1
+    },
+    "2006": {
+      "franchise_owner": "haigney",
+      "team_name": "Hags House of Whores",
+      "seed": 1,
+      "rank": 1
+    },
+    "2007": {
+      "franchise_owner": "slater",
+      "team_name": "Goat",
+      "seed": 3,
+      "rank": 1
+    },
+    "2008": {
+      "franchise_owner": "altman",
+      "team_name": "DickShinersConnivers",
+      "seed": 2,
+      "rank": 1
+    },
+    "2009": {
+      "franchise_owner": "slater",
+      "team_name": "Goat",
+      "seed": 1,
+      "rank": 1
+    },
+    "2010": {
+      "franchise_owner": "slater",
+      "team_name": "Goat",
+      "seed": 2,
+      "rank": 1
+    },
+    "2011": {
+      "franchise_owner": "slater",
+      "team_name": "Goat",
+      "seed": 1,
+      "rank": 1
+    },
+    "2012": {
+      "franchise_owner": "trendo",
+      "team_name": "Professor Keystone",
+      "seed": 2,
+      "rank": 1
+    },
+    "2013": {
+      "franchise_owner": "haigney",
+      "team_name": "The Horsemasters",
+      "seed": 5,
+      "rank": 1
+    },
+    "2014": {
+      "franchise_owner": "ml",
+      "team_name": "The Non-Factors",
+      "seed": 5,
+      "rank": 1
+    },
+    "2015": {
+      "franchise_owner": "haigney",
+      "team_name": "The Horsemasters",
+      "seed": 1,
+      "rank": 1
+    },
+    "2016": {
+      "franchise_owner": "ott",
+      "team_name": "Kiss my cock",
+      "seed": 1,
+      "rank": 1
+    },
+    "2017": {
+      "franchise_owner": "winter",
+      "team_name": "The RDCs",
+      "seed": 2,
+      "rank": 1
+    },
+    "2018": {
+      "franchise_owner": "altman",
+      "team_name": "DickShinersConnivers",
+      "seed": 3,
+      "rank": 1
+    },
+    "2019": {
+      "franchise_owner": "kratz",
+      "team_name": "HowTheWestWon",
+      "seed": 5,
+      "rank": 1
+    },
+    "2020": {
+      "franchise_owner": "ott",
+      "team_name": "Ottoman Empire",
+      "seed": 2,
+      "rank": 1
+    },
+    "2021": {
+      "franchise_owner": "kratz",
+      "team_name": "howthewesTWOn",
+      "seed": 1,
+      "rank": 1
+    },
+    "2022": {
+      "franchise_owner": "vern",
+      "team_name": "the stunods",
+      "seed": 2,
+      "rank": 1
+    },
+    "2023": {
+      "franchise_owner": "vern",
+      "team_name": "the stunods",
+      "seed": 5,
+      "rank": 1
+    },
+    "2024": {
+      "franchise_owner": "vern",
+      "team_name": "the stunods",
+      "seed": 2,
+      "rank": 1
+    }
+  },
+  "per_owner": [
+    {
+      "franchise_owner": "altman",
+      "titles": 2,
+      "titles_by_year": [
+        "2008",
+        "2018"
+      ],
+      "playoff_appearances": 19,
+      "wins": 19,
+      "losses": 22,
+      "ties": 1,
+      "points_for": 4037.58,
+      "points_against": 4135.09,
+      "best_seed": 1,
+      "worst_seed": 11,
+      "win_pct": 0.464,
+      "avg_points_for_per_playoff_game": 96.13,
+      "avg_points_against_per_playoff_game": 98.45
+    },
+    {
+      "franchise_owner": "haigney",
+      "titles": 3,
+      "titles_by_year": [
+        "2006",
+        "2013",
+        "2015"
+      ],
+      "playoff_appearances": 20,
+      "wins": 21,
+      "losses": 24,
+      "ties": 1,
+      "points_for": 4029.75,
+      "points_against": 4302.25,
+      "best_seed": 1,
+      "worst_seed": 12,
+      "win_pct": 0.467,
+      "avg_points_for_per_playoff_game": 87.6,
+      "avg_points_against_per_playoff_game": 93.53
+    },
+    {
+      "franchise_owner": "ian",
+      "titles": 1,
+      "titles_by_year": [
+        "2004"
+      ],
+      "playoff_appearances": 20,
+      "wins": 20,
+      "losses": 28,
+      "ties": 0,
+      "points_for": 4345.0,
+      "points_against": 4697.9,
+      "best_seed": 1,
+      "worst_seed": 12,
+      "win_pct": 0.417,
+      "avg_points_for_per_playoff_game": 90.52,
+      "avg_points_against_per_playoff_game": 97.87
+    },
+    {
+      "franchise_owner": "johnny",
+      "titles": 0,
+      "titles_by_year": [],
+      "playoff_appearances": 20,
+      "wins": 28,
+      "losses": 18,
+      "ties": 0,
+      "points_for": 4377.03,
+      "points_against": 4142.32,
+      "best_seed": 3,
+      "worst_seed": 11,
+      "win_pct": 0.609,
+      "avg_points_for_per_playoff_game": 95.15,
+      "avg_points_against_per_playoff_game": 90.05
+    },
+    {
+      "franchise_owner": "matty",
+      "titles": 0,
+      "titles_by_year": [],
+      "playoff_appearances": 10,
+      "wins": 12,
+      "losses": 13,
+      "ties": 0,
+      "points_for": 2485.74,
+      "points_against": 2491.84,
+      "best_seed": 3,
+      "worst_seed": 12,
+      "win_pct": 0.48,
+      "avg_points_for_per_playoff_game": 99.43,
+      "avg_points_against_per_playoff_game": 99.67
+    },
+    {
+      "franchise_owner": "ott",
+      "titles": 2,
+      "titles_by_year": [
+        "2016",
+        "2020"
+      ],
+      "playoff_appearances": 17,
+      "wins": 20,
+      "losses": 18,
+      "ties": 1,
+      "points_for": 3567.88,
+      "points_against": 3820.11,
+      "best_seed": 1,
+      "worst_seed": 12,
+      "win_pct": 0.526,
+      "avg_points_for_per_playoff_game": 91.48,
+      "avg_points_against_per_playoff_game": 97.95
+    },
+    {
+      "franchise_owner": "slater",
+      "titles": 4,
+      "titles_by_year": [
+        "2007",
+        "2009",
+        "2010",
+        "2011"
+      ],
+      "playoff_appearances": 21,
+      "wins": 24,
+      "losses": 20,
+      "ties": 1,
+      "points_for": 4081.15,
+      "points_against": 4060.1,
+      "best_seed": 1,
+      "worst_seed": 12,
+      "win_pct": 0.544,
+      "avg_points_for_per_playoff_game": 90.69,
+      "avg_points_against_per_playoff_game": 90.22
+    },
+    {
+      "franchise_owner": "trendo",
+      "titles": 1,
+      "titles_by_year": [
+        "2012"
+      ],
+      "playoff_appearances": 10,
+      "wins": 10,
+      "losses": 10,
+      "ties": 0,
+      "points_for": 1784.92,
+      "points_against": 1681.94,
+      "best_seed": 2,
+      "worst_seed": 8,
+      "win_pct": 0.5,
+      "avg_points_for_per_playoff_game": 89.25,
+      "avg_points_against_per_playoff_game": 84.1
+    },
+    {
+      "franchise_owner": "vern",
+      "titles": 3,
+      "titles_by_year": [
+        "2022",
+        "2023",
+        "2024"
+      ],
+      "playoff_appearances": 20,
+      "wins": 23,
+      "losses": 20,
+      "ties": 0,
+      "points_for": 4121.77,
+      "points_against": 3942.98,
+      "best_seed": 1,
+      "worst_seed": 12,
+      "win_pct": 0.535,
+      "avg_points_for_per_playoff_game": 95.86,
+      "avg_points_against_per_playoff_game": 91.7
+    },
+    {
+      "franchise_owner": "winter",
+      "titles": 2,
+      "titles_by_year": [
+        "2005",
+        "2017"
+      ],
+      "playoff_appearances": 19,
+      "wins": 23,
+      "losses": 19,
+      "ties": 1,
+      "points_for": 4508.9,
+      "points_against": 4074.71,
+      "best_seed": 1,
+      "worst_seed": 10,
+      "win_pct": 0.547,
+      "avg_points_for_per_playoff_game": 104.86,
+      "avg_points_against_per_playoff_game": 94.76
+    },
+    {
+      "franchise_owner": "z",
+      "titles": 0,
+      "titles_by_year": [],
+      "playoff_appearances": 9,
+      "wins": 7,
+      "losses": 13,
+      "ties": 0,
+      "points_for": 1712.72,
+      "points_against": 1904.56,
+      "best_seed": 1,
+      "worst_seed": 12,
+      "win_pct": 0.35,
+      "avg_points_for_per_playoff_game": 85.64,
+      "avg_points_against_per_playoff_game": 95.23
+    },
+    {
+      "franchise_owner": "ml",
+      "titles": 1,
+      "titles_by_year": [
+        "2014"
+      ],
+      "playoff_appearances": 16,
+      "wins": 20,
+      "losses": 18,
+      "ties": 0,
+      "points_for": 3595.74,
+      "points_against": 3517.82,
+      "best_seed": 1,
+      "worst_seed": 12,
+      "win_pct": 0.526,
+      "avg_points_for_per_playoff_game": 94.62,
+      "avg_points_against_per_playoff_game": 92.57
+    },
+    {
+      "franchise_owner": "sterbank",
+      "titles": 0,
+      "titles_by_year": [],
+      "playoff_appearances": 16,
+      "wins": 19,
+      "losses": 20,
+      "ties": 1,
+      "points_for": 4160.25,
+      "points_against": 4010.61,
+      "best_seed": 1,
+      "worst_seed": 12,
+      "win_pct": 0.487,
+      "avg_points_for_per_playoff_game": 104.01,
+      "avg_points_against_per_playoff_game": 100.27
+    },
+    {
+      "franchise_owner": "kratz",
+      "titles": 2,
+      "titles_by_year": [
+        "2019",
+        "2021"
+      ],
+      "playoff_appearances": 8,
+      "wins": 9,
+      "losses": 10,
+      "ties": 0,
+      "points_for": 1911.77,
+      "points_against": 1937.97,
+      "best_seed": 1,
+      "worst_seed": 10,
+      "win_pct": 0.474,
+      "avg_points_for_per_playoff_game": 100.62,
+      "avg_points_against_per_playoff_game": 102.0
+    }
+  ]
+}
