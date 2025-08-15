@@ -111,6 +111,27 @@ select,input[type="checkbox"]{background:#121214;color:var(--text);border:1px so
     }
   }
 
+// --- deep links: read
+const params = new URLSearchParams(location.search);
+if (params.has('season')) {
+  const target = params.get('season');
+  if ([...sel.options].some(o => o.value === target)) sel.value = target;
+}
+if (params.get('teams') === '1') showTeams.checked = true;
+
+// --- deep links: write on change
+function updateURL(){
+  const p = new URLSearchParams(location.search);
+  p.set('season', sel.value);
+  if (showTeams.checked) p.set('teams', '1'); else p.delete('teams');
+  history.replaceState(null, '', `${location.pathname}?${p}`);
+}
+sel.addEventListener('change', () => { updateURL(); render(); });
+showTeams.addEventListener('change', () => { updateURL(); render(); });
+
+// call once after initial render
+updateURL();
+  
   // Build seasons list
   const seasons = [...new Set(matchups.map(g=>g.season))].sort((a,b)=>Number(a)-Number(b));
   const sel = document.getElementById("seasonSel");
