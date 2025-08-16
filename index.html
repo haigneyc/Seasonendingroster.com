@@ -60,6 +60,18 @@
     }
     .caption { margin-top: 8px; font-size: 13px; opacity: .95; text-align: center; }
 
+    /* ===== Crown strip ===== */
+    .crown-strip{
+      position:absolute; top:6px; left:6px;
+      display:flex; gap:2px; font-size:18px; line-height:1;
+      filter: drop-shadow(0 1px 2px rgba(0,0,0,.8));
+      user-select:none; pointer-events:none;
+    }
+    .crown-strip .count{
+      margin-left:6px; font-size:12px; padding:2px 6px; border-radius:999px;
+      background: rgba(0,0,0,.55); border:1px solid rgba(255,255,255,.15);
+    }
+
     /* ===== Lightbox ===== */
     .lightbox {
       position: fixed; inset: 0; background: rgba(0,0,0,.85);
@@ -222,66 +234,172 @@
 
     document.getElementById('footYear').textContent = new Date().getFullYear();
 
-(async function(){
-  // Try these in order; page works with either /processed or /proccessed
-  const CAND = (p)=>[
-    `data/processed/${p}`, `/data/processed/${p}`,
-    `data/proccessed/${p}`, `/data/proccessed/${p}`
-  ];
-  const sources = [
-    ...CAND("playoff_metrics.json"),
-    ...CAND("metrics.json"),
-    ...CAND("franchise_career_stats.csv"),
-  ];
-
-  async function fetchFirst(paths){
-    for(const url of paths){
-      try{
-        const r = await fetch(url, {cache:"no-store"});
-        if (r.ok) {
-          const text = await r.text();      // we’ll hash this
-          const lm = r.headers.get("last-modified");
-          return {url, text, lastModified: lm};
+    // ===== Footer data/version badge (unchanged) =====
+    (async function(){
+      const CAND = (p)=>[
+        `data/processed/${p}`, `/data/processed/${p}`,
+        `data/proccessed/${p}`, `/data/proccessed/${p}`
+      ];
+      async function fetchFirst(paths){
+        for(const url of paths){
+          try{
+            const r = await fetch(url, {cache:"no-store"});
+            if (r.ok) {
+              const text = await r.text();
+              const lm = r.headers.get("last-modified");
+              return {url, text, lastModified: lm};
+            }
+          }catch(e){}
         }
-      }catch(e){}
-    }
-    return null;
-  }
+        return null;
+      }
+      function toHex(buf){
+        return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("");
+      }
 
-  function toHex(buf){
-    return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("");
-  }
+      const sources = [
+        ...CAND("playoff_metrics.json"),
+        ...CAND("metrics.json"),
+        ...CAND("franchise_career_stats.csv"),
+      ];
+      const res = await fetchFirst(sources);
+      const foot = document.getElementById("siteFoot");
+      const vEl = foot.querySelector(".v");
+      const uEl = foot.querySelector(".u");
+      const sEl = foot.querySelector(".src");
 
-  const res = await fetchFirst(sources);
-  const foot = document.getElementById("siteFoot");
-  const vEl = foot.querySelector(".v");
-  const uEl = foot.querySelector(".u");
-  const sEl = foot.querySelector(".src");
+      if (!res){
+        vEl.textContent = "v–";
+        uEl.textContent = "no data";
+        sEl.textContent = "not found";
+        return;
+      }
 
-  if (!res){
-    vEl.textContent = "v–";
-    uEl.textContent = "no data";
-    sEl.textContent = "not found";
-    return;
-  }
+      const enc = new TextEncoder().encode(res.text);
+      const hashBuf = await crypto.subtle.digest("SHA-256", enc);
+      const ver = toHex(hashBuf).slice(0, 8);
 
-  // Hash the file to create a stable “version” badge (first 8 chars of SHA-256)
-  const enc = new TextEncoder().encode(res.text);
-  const hashBuf = await crypto.subtle.digest("SHA-256", enc);
-  const ver = toHex(hashBuf).slice(0, 8);
+      const when = res.lastModified ? new Date(res.lastModified) : new Date();
+      vEl.textContent = "v" + ver;
+      uEl.textContent = when.toLocaleString();
+      sEl.textContent = res.url.replace(location.origin, "");
+    })();
 
-  const when = res.lastModified ? new Date(res.lastModified) : new Date();
-  vEl.textContent = "v" + ver;
-  uEl.textContent = when.toLocaleString();
-  sEl.textContent = res.url.replace(location.origin, "");
-})();
+    // ===== Crown badges from franchise_career_stats.csv =====
+    (async function addCrowns(){
+      const CAND = (p)=>[
+        `data/processed/${p}`, `/data/processed/${p}`,
+        `data/proccessed/${p}`, `/data/proccessed/${p}`
+      ];
+      async function fetchCSV(){
+        for (const url of CAND("franchise_career_stats.csv")){
+          try{
+            const r = await fetch(url, {cache:"no-store"});
+            if (r.ok) return await r.text();
+          }catch(e){}
+        }
+        return null;
+      }
+      function parseCSVRows(text){
+        // minimal CSV row parser (handles quoted commas)
+        const rows=[]; let cur=[], buf="", q=false;
+        for (let i=0;i<text.length;i++){
+          const ch=text[i], nx=text[i+1];
+          if (ch === '"'){ if (q && nx === '"'){ buf+='"'; i++; } else { q=!q; } }
+          else if (ch === ',' && !q){ cur.push(buf); buf=""; }
+          else if ((ch === '\n' || ch === '\r') && !q){
+            if (buf.length || cur.length){ cur.push(buf); rows.push(cur); cur=[]; buf=""; }
+            // swallow paired \r\n
+            if (ch === '\r' && nx === '\n') i++;
+          } else { buf += ch; }
+        }
+        if (buf.length || cur.length){ cur.push(buf); rows.push(cur); }
+        return rows;
+      }
+      function norm(s){ return s.toLowerCase().replace(/\s+/g,' ').trim(); }
+
+      // Fallback if CSV missing — at least cover the requested aliases
+      const fallback = {
+        haigney: 3, kratz: 2
+      };
+
+      const csvText = await fetchCSV();
+      let titlesByFranchise = {};
+      if (csvText){
+        const rows = parseCSVRows(csvText);
+        const header = rows[0].map(h=>norm(h));
+        const iFr = header.indexOf('franchise');
+        const iTi = header.indexOf('titles');
+        if (iFr !== -1 && iTi !== -1){
+          for (let r=1;r<rows.length;r++){
+            const fr = norm(rows[r][iFr] ?? "");
+            const ti = parseInt((rows[r][iTi] ?? "0").toString().replace(/[^0-9]/g,''),10) || 0;
+            if (fr) titlesByFranchise[fr] = ti;
+          }
+        }
+      } else {
+        titlesByFranchise = fallback;
+      }
+
+      // Caption → franchise key mapping (aliases)
+      const alias = {
+        'commish': 'haigney',
+        'brian jk cory': 'kratz',
+        'v': 'vern',
+        'ml': 'ml',
+        'winter': 'winter',
+        'ott': 'ott',
+        'slater': 'slater',
+        'altman': 'altman',
+        'ian': 'ian',
+        'sterbank': 'sterbank',
+        'matty': 'matty'
+        // If needed: 'johnny': 'trendo'
+      };
+
+      function captionToFranchise(caption){
+        const cap = norm(caption);
+        if (alias[cap]) return alias[cap];
+        // fallback: try exact match to a franchise key in CSV
+        if (titlesByFranchise[cap] != null) return cap;
+        // last resort: single-letter 'v' etc handled above
+        return null;
+      }
+
+      document.querySelectorAll('.item').forEach(fig=>{
+        const cap = fig.querySelector('.caption')?.textContent || '';
+        const fr = captionToFranchise(cap);
+        if (!fr) return;
+        const titles = titlesByFranchise[fr] ?? 0;
+        if (titles > 0){
+          const strip = document.createElement('div');
+          strip.className = 'crown-strip';
+          // Show up to 5 emojis, then a +N counter to avoid overflow
+          const maxCrowns = 5;
+          const crownsToShow = Math.min(titles, maxCrowns);
+          for (let i=0;i<crownsToShow;i++){
+            const span = document.createElement('span');
+            span.textContent = '👑';
+            strip.appendChild(span);
+          }
+          if (titles > maxCrowns){
+            const more = document.createElement('span');
+            more.className = 'count';
+            more.textContent = `+${titles - maxCrowns}`;
+            strip.appendChild(more);
+          }
+          fig.querySelector('.thumb').appendChild(strip);
+        }
+      });
+    })();
   </script>
+
   <footer class="site-footer" id="siteFoot">
-  <div>© 2004–<span id="footYear"></span> Season Ending Roster</div>
-  <div class="foot-meta">
-    Data <span class="v">v—</span> • Updated <span class="u">—</span>
-    <span class="src-wrap"> • <span class="src"></span></span>
-  </div>
-</footer>
+    <div>© 2004–<span id="footYear"></span> Season Ending Roster</div>
+    <div class="foot-meta">
+      Data <span class="v">v—</span> • Updated <span class="u">—</span>
+      <span class="src-wrap"> • <span class="src"></span></span>
+    </div>
+  </footer>
 </body>
 </html>
