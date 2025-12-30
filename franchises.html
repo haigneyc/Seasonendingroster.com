@@ -131,10 +131,14 @@
 
     function normalizeCsvRow(r) {
       const owner = r.franchise_owner || r.owner || r.Franchise || r.franchise || '';
-      const seasons = num(r.seasons) || num(r.Seasons);
+      const seasons = num(r.seasons_played) || num(r.seasons) || num(r.Seasons);
       const wins = num(r.wins || r.W), losses = num(r.losses || r.L), ties = num(r.ties || r.T) || 0;
       const pf = num(r.points_for || r.PF), pa = num(r.points_against || r.PA);
-      const avg = num(r.avg_pf_per_season || r['Avg PF/Season']);
+      // Compute avg_pf_per_season if not present
+      let avg = num(r.avg_pf_per_season || r['Avg PF/Season']);
+      if (avg == null && pf != null && seasons != null && seasons > 0) {
+        avg = pf / seasons;
+      }
       const wn = r.win_pct != null ? +r.win_pct : pct(wins, losses, ties);
       const names = r.team_names_seen || r['Team Names Seen'] || '';
       return { franchise_owner: owner, seasons, wins, losses, ties, win_pct: wn, points_for: pf, points_against: pa, avg_pf_per_season: avg, team_names_seen: names };
@@ -144,11 +148,15 @@
       const owner = r.franchise_owner || r.owner || r.name || '';
       const pf = r.points_for ?? r.pf ?? null;
       const pa = r.points_against ?? r.pa ?? null;
-      const avg = r.avg_pf_per_season ?? r.avg_pf ?? null;
       const names = Array.isArray(r.team_names_seen) ? r.team_names_seen.join('; ') : (r.team_names_seen || r.team_names || '');
       const wins = r.wins ?? r.w ?? null, losses = r.losses ?? r.l ?? null, ties = r.ties ?? r.t ?? 0;
-      const seasons = r.seasons ?? r.years ?? null;
+      const seasons = r.seasons_played ?? r.seasons ?? r.years ?? null;
       const win_pct = r.win_pct != null ? +r.win_pct : pct(wins, losses, ties);
+      // Compute avg_pf_per_season if not present
+      let avg = r.avg_pf_per_season ?? r.avg_pf ?? null;
+      if (avg == null && pf != null && seasons != null && seasons > 0) {
+        avg = pf / seasons;
+      }
       return { franchise_owner: owner, seasons, wins, losses, ties, win_pct, points_for: pf, points_against: pa, avg_pf_per_season: avg, team_names_seen: names };
     }
 
