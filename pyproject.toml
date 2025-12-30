@@ -1,0 +1,20 @@
+[project]
+name = "seasonendingroster"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "chris haigney",email = "chris.haigney@gmail.com"}
+]
+readme = "README.md"
+requires-python = "^3.10"
+dependencies = [
+    "requests (>=2.32.5,<3.0.0)",
+    "yahoo-fantasy-api (>=2.12.2,<3.0.0)",
+    "yahoo-oauth (>=2.1.1,<3.0.0)",
+    "pandas (>=2.3.3,<3.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

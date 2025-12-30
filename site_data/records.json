@@ -1,0 +1,23 @@
+{
+  "single_week_high": {
+    "season": 2019,
+    "week": 5,
+    "team_name": "Trust the Process",
+    "points": 183.74
+  },
+  "single_week_margin": {
+    "season": 2018,
+    "week": 10,
+    "team_name": "HowTheWestWillWin",
+    "opp_name": "Leave It Matty",
+    "margin": 120.25999999999999,
+    "pts_for": 180.72,
+    "pts_against": 60.46
+  },
+  "longest_win_streak": {
+    "team_name": "Goat",
+    "longest_win_streak": 12,
+    "season": 2012,
+    "week": 1
+  }
+}
