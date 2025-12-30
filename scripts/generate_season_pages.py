@@ -835,7 +835,7 @@ def generate_season_page(season: int, matchups: pd.DataFrame, standings: pd.Data
                 <a href="../index.html">Home</a>
                 <a href="../franchises.html">Franchises</a>
                 <a href="../playoffs.html">Playoffs</a>
-                <a href="../brackets.html">Brackets</a>
+                <a href="index.html">Seasons</a>
                 <a href="../h2h.html">H2H</a>
                 <a href="../history.html">History</a>
             </nav>
@@ -963,7 +963,7 @@ def generate_seasons_index(seasons: list, champions: dict) -> str:
                 <a href="../index.html">Home</a>
                 <a href="../franchises.html">Franchises</a>
                 <a href="../playoffs.html">Playoffs</a>
-                <a href="../brackets.html">Brackets</a>
+                <a href="index.html">Seasons</a>
                 <a href="../h2h.html">H2H</a>
                 <a href="../history.html" aria-current="page">History</a>
             </nav>
