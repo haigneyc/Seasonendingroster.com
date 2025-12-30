@@ -22,7 +22,7 @@ from yahoo_fantasy_api import yhandler, league as yleague
 
 # ---------- CONFIG ----------
 import os
-CURRENT_LEAGUE_KEY = os.getenv("LEAGUE_KEY", "206734")  #  fallback optional
+CURRENT_LEAGUE_KEY = os.getenv("LEAGUE_KEY", "449.l.47540")  # 2024 season full key
 OUTDIR = Path(__file__).resolve().parent.parent / "data" / "raw"
 SLEEP = 0.3  # seconds between API calls (be nice to the API)
 # ----------------------------
@@ -33,7 +33,7 @@ def auth():
         sc.refresh_access_token()
     return sc
 
-def discover_league_keys(yh, start_key: str) -> list[str]:
+def discover_league_keys(sc, start_key: str) -> list[str]:
     """
     Follow the league 'renew' chain to previous seasons.
     Returns keys newest -> oldest.
@@ -42,9 +42,21 @@ def discover_league_keys(yh, start_key: str) -> list[str]:
     key = start_key
     while key and key not in seen:
         seen.add(key)
-        meta = yh.get_league_metadata(key)
         keys.append(key)
-        key = meta.get("renew")  # pointer to prior season's league
+        try:
+            lg = yleague.League(sc, key)
+            settings = lg.settings()
+            renew = settings.get("renew")  # format: "423_34101"
+            if renew:
+                # Convert "423_34101" to "423.l.34101"
+                parts = renew.split("_")
+                key = f"{parts[0]}.l.{parts[1]}" if len(parts) == 2 else None
+            else:
+                key = None
+        except Exception as e:
+            print(f"⚠️ Could not get settings for {key}: {e}")
+            key = None
+        time.sleep(SLEEP)
     return keys
 
 def safe_write(path: Path, obj):
@@ -67,7 +79,7 @@ def pull_one_season(sc, league_key: str):
 
     # 3) Matchups (week-by-week)
     matchups_all = {}
-    for wk in range(1, settings["end_week"] + 1):
+    for wk in range(1, int(settings["end_week"]) + 1):
         matchups_all[wk] = lg.matchups(wk)
         time.sleep(SLEEP)
     safe_write(season_dir / "matchups.json", matchups_all)
@@ -79,10 +91,13 @@ def pull_one_season(sc, league_key: str):
         draft = {"error": str(e)}
     safe_write(season_dir / "draft.json", draft)
 
-    # 5) Rosters (per team)
+    # 5) Teams (with manager info)
+    teams = lg.teams()
+    safe_write(season_dir / "teams.json", teams)
+
+    # 6) Rosters (per team) - may fail on some API versions
     rosters = {}
-    for t in lg.teams():
-        team_key = t["team_key"]
+    for team_key, t in teams.items():
         try:
             rosters[team_key] = lg.roster(team_key=team_key)
         except Exception as e:
@@ -90,7 +105,7 @@ def pull_one_season(sc, league_key: str):
         time.sleep(SLEEP)
     safe_write(season_dir / "rosters.json", rosters)
 
-    # 6) Optional: transactions (trades, adds/drops)
+    # 7) Optional: transactions (trades, adds/drops)
     try:
         # yahoo-fantasy-api exposes transactions via freeform handler; some seasons may vary
         yh = yhandler.YHandler(sc)
@@ -103,9 +118,8 @@ def pull_one_season(sc, league_key: str):
 
 def main():
     sc = auth()
-    yh = yhandler.YHandler(sc)
 
-    all_keys = discover_league_keys(yh, CURRENT_LEAGUE_KEY)
+    all_keys = discover_league_keys(sc, CURRENT_LEAGUE_KEY)
     print(f"Found {len(all_keys)} seasons: {all_keys}")
 
     for key in all_keys:
