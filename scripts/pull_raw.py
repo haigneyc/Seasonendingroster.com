@@ -63,6 +63,17 @@ def safe_write(path: Path, obj):
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(obj, indent=2))
 
+def normalize_teams(teams):
+    if isinstance(teams, dict):
+        return teams
+    if isinstance(teams, list):
+        return {
+            t.get("team_key"): t
+            for t in teams
+            if isinstance(t, dict) and t.get("team_key")
+        }
+    return {}
+
 def pull_one_season(sc, league_key: str):
     lg = yleague.League(sc, league_key)
     settings = lg.settings()
@@ -92,7 +103,8 @@ def pull_one_season(sc, league_key: str):
     safe_write(season_dir / "draft.json", draft)
 
     # 5) Teams (with manager info)
-    teams = lg.teams()
+    teams_raw = lg.teams()
+    teams = normalize_teams(teams_raw)
     safe_write(season_dir / "teams.json", teams)
 
     # 6) Rosters (per team) - may fail on some API versions

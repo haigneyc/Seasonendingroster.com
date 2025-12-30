@@ -19,6 +19,17 @@ OUT_DIR = Path(__file__).resolve().parent.parent / "data" / "processed"
 def load_json(p: Path):
     return json.loads(p.read_text())
 
+def normalize_team_map(data):
+    if isinstance(data, dict):
+        return data
+    if isinstance(data, list):
+        return {
+            t.get("team_key"): t
+            for t in data
+            if isinstance(t, dict) and t.get("team_key")
+        }
+    return {}
+
 
 def get_manager_nickname(t: dict) -> str:
     """Extract manager nickname from team data (handles both old and new formats)."""
@@ -49,12 +60,14 @@ def transform_standings():
 
         # Handle both list and dict formats
         if isinstance(standings_list, dict):
-            standings_list = list(standings_list.values())
+            standings_list = [
+                v for v in standings_list.values() if isinstance(v, dict)
+            ]
 
         # Load team manager info from teams.json if available
         team_managers = {}
         if teams_p.exists():
-            teams_data = load_json(teams_p)
+            teams_data = normalize_team_map(load_json(teams_p))
             for team_key, team_info in teams_data.items():
                 team_managers[team_key] = get_manager_nickname(team_info)
 
@@ -123,6 +136,16 @@ def parse_team_from_nested(team_data: list) -> dict:
     return result
 
 
+def get_scoreboard(league):
+    if isinstance(league, dict):
+        return league.get("scoreboard")
+    if isinstance(league, list):
+        for item in league:
+            if isinstance(item, dict) and "scoreboard" in item:
+                return item["scoreboard"]
+    return None
+
+
 def transform_matchups():
     rows = []
     for season_dir in sorted(RAW_DIR.iterdir()):
@@ -144,7 +167,9 @@ def transform_matchups():
                 if isinstance(week_content, dict) and "fantasy_content" in week_content:
                     fc = week_content["fantasy_content"]
                     league = fc["league"]
-                    scoreboard = league[1]["scoreboard"]
+                    scoreboard = get_scoreboard(league)
+                    if not scoreboard:
+                        continue
 
                     # Iterate through matchups (keys are "0", "1", etc.)
                     matchup_idx = 0
@@ -157,7 +182,9 @@ def transform_matchups():
                             matchup = matchups_container[str(m_idx)].get("matchup", {})
 
                             # Get teams from matchup
-                            teams_container = matchup.get("0", {}).get("teams", {})
+                            teams_container = matchup.get("teams")
+                            if teams_container is None:
+                                teams_container = matchup.get("0", {}).get("teams", {})
                             team_list = []
                             t_idx = 0
                             while str(t_idx) in teams_container:
