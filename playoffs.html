@@ -2,67 +2,18 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Playoff Metrics</title>
+  <link rel="stylesheet" href="assets/styles.css" />
   <style>
-  /* keep this where your other styles live */
-  /* Sticky header only on the owners table */
-  #tblOwners thead th{
-    position: sticky;
-    top: var(--stickyTop);
-    z-index: 5;
-    background: var(--card);
-    box-shadow: 0 1px 0 #2a2a30;
-  }
-
-  /* Allow the sticky header to float above the card’s top edge */
-  #ownersCard{ overflow: visible; }       /* was overflow:hidden on .card */
-</style>
-
-<style>
-  :root { --bg:#0f0f10; --card:#1b1b1d; --card2:#141416; --hover:#252528; --text:#fff; --line:#26262a; --muted:#9aa0a6; --stickyTop:56px; }
-  * { box-sizing:border-box; }
-  body { margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; background:var(--bg); color:var(--text); }
-
-  .sitebar { position:sticky; top:0; z-index:1000; width:100%; backdrop-filter:blur(8px); background:rgba(15,15,16,.85); border-bottom:1px solid var(--line); }
-  .bar-inner { margin:0 auto; max-width:1100px; padding:12px 20px; display:grid; grid-template-columns:1fr auto; gap:12px; align-items:center; }
-  .brand { font-weight:700; letter-spacing:.2px; }
-
-  .tabs { display:inline-flex; gap:6px; padding:6px; border:1px solid var(--line); border-radius:12px; background:var(--card2); }
-  .tabs a { color:var(--text); text-decoration:none; font-size:14px; padding:8px 12px; border-radius:8px; border:1px solid transparent; }
-  .tabs a:hover { background:var(--hover); border-color:var(--line); }
-  .tabs a[aria-current="page"] { background:var(--card); border-color:var(--line); }
-
-  .wrap { max-width:1100px; margin:28px auto; padding:0 20px; }
-  h1 { margin:0 0 12px; }
-  .row { display:flex; gap:14px; align-items:center; flex-wrap:wrap; margin-bottom:12px; }
-  .btn { color:#a0c4ff; text-decoration:none; border:1px solid #2b2b30; padding:8px 10px; border-radius:10px; }
-  .card { background:var(--card); border:1px solid var(--line); border-radius:16px; overflow:hidden; box-shadow:0 8px 20px rgba(0,0,0,.2); margin-top:10px; }
-
-  /* tables */
-  table { width:100%; border-collapse:separate; border-spacing:0; font-size:14px; }
-  thead th, tbody td { padding:10px 12px; border-bottom:1px solid #202024; vertical-align:top; }
-  tbody tr:hover { background:var(--hover); }
-  .right { text-align:right; }
-  .muted { color:var(--muted); font-size:12px; }
-  .section-title { margin-top:24px; margin-bottom:6px; }
-  .small { font-size:12px; }
-
-  /* ✅ Sticky header ONLY for the long summary table */
-  #tblOwners thead th {
-    position:sticky;
-    top:var(--stickyTop);
-    z-index:3;
-    background:var(--card);
-    box-shadow:0 1px 0 #2a2a30;
-  }
-  /* ❌ No sticky on Champions table (prevents the “rows above header” look) */
-  #tblChamps thead th { position:static; top:auto; box-shadow:none; }
-</style>
-
+    /* Champions table doesn't need sticky header */
+    #tblChamps thead th {
+      position: static;
+      box-shadow: none;
+    }
+  </style>
 </head>
 <body>
-  <!-- Top nav -->
   <div class="sitebar">
     <div class="bar-inner">
       <div class="brand">Season Ending Roster</div>
@@ -78,13 +29,15 @@
   </div>
 
   <div class="wrap">
-    <h1>Playoff Metrics</h1>
+    <div class="page-header">
+      <h1>Playoff Metrics</h1>
+    </div>
 
     <h2 class="section-title">Champions by Year</h2>
-    <div class="row">
+    <div class="controls">
       <a class="btn" id="dlChamps" href="data/processed/playoff_champions.csv" download>Download Champions CSV</a>
       <a class="btn" id="dlFinishes" href="data/processed/playoff_finishes_by_season.csv" download>Download Finishes CSV</a>
-      <span class="muted" id="sourceNote"></span>
+      <span class="muted small" id="sourceNote"></span>
     </div>
 
     <div class="card">
@@ -102,19 +55,19 @@
       </table>
     </div>
 
-    <h2 class="section-title">Franchise Playoff Summary</h2>
-    <div class="row">
-      <input id="q" type="search" placeholder="Filter by franchise…" />
-      <span class="muted" id="counts"></span>
+    <h2 class="section-title mt-3">Franchise Playoff Summary</h2>
+    <div class="controls">
+      <input id="q" type="search" placeholder="Filter by franchise..." />
+      <span class="count" id="counts"></span>
     </div>
-    <div class="card" id="ownersCard">
+    <div class="card">
       <table id="tblOwners">
         <thead>
           <tr>
             <th data-k="franchise_owner">Franchise</th>
             <th class="right" data-k="titles">Titles</th>
             <th data-k="titles_by_year">Title Years</th>
-            <th class="right" data-k="playoff_appearances">Appearances</th>
+            <th class="right" data-k="playoff_appearances">Apps</th>
             <th class="right" data-k="wins">W</th>
             <th class="right" data-k="losses">L</th>
             <th class="right" data-k="ties">T</th>
@@ -122,226 +75,204 @@
             <th class="right" data-k="points_for">PF</th>
             <th class="right" data-k="points_against">PA</th>
             <th class="right small" data-k="avg_points_for_per_playoff_game">Avg PF/G</th>
-            <th class="right small" data-k="best_seed">Best Seed</th>
-            <th class="right small" data-k="worst_seed">Worst Seed</th>
+            <th class="right small" data-k="best_seed">Best</th>
+            <th class="right small" data-k="worst_seed">Worst</th>
           </tr>
         </thead>
         <tbody></tbody>
       </table>
     </div>
 
-    <p class="muted small" style="margin-top:8px">
-      Primary source: <code>data/processed/playoff_metrics.json</code> (falls back to <code>metrics.json</code> if needed).
+    <p class="muted small mt-2">
+      Primary source: <code>data/processed/playoff_metrics.json</code>
     </p>
   </div>
 
-  <script>
-  // Set sticky offset AFTER the bar exists
-  (function setStickyOffset(){
-    function apply(){
-      const bar = document.querySelector('.sitebar');
-      const h = bar ? Math.ceil(bar.getBoundingClientRect().height) : 56;
-      document.documentElement.style.setProperty('--stickyTop', (h + 8) + 'px');
-    }
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', apply);
-    } else {
-      apply();
-    }
-    window.addEventListener('resize', apply, { passive: true });
-  })();
-  </script>
-
-  <script>
-  (async function () {
-    // Support processed/ and proccessed/
-    const CAND = p => [
-      `data/processed/${p}`, `/data/processed/${p}`,
-      `data/proccessed/${p}`, `/data/proccessed/${p}`
-    ];
-
-    const dlChamps   = document.getElementById("dlChamps");
-    const dlFinishes = document.getElementById("dlFinishes");
-    const sourceNote = document.getElementById("sourceNote");
-
-    async function fetchFirstJSON(paths){
-      for (const p of paths){
-        try { const r = await fetch(p, {cache:"no-store"}); if (r.ok) return {json: await r.json(), path:p}; } catch {}
-      }
-      return {json:null, path:null};
-    }
-
-    function num(x){ if(x===null||x===undefined||x==="") return null; const n=+x; return Number.isFinite(n)?n:null; }
-    function fmt(x){ return x==null?"—":String(x); }
-    function fmt1(x){ return x==null?"—":Number(x).toFixed(1); }
-    function fmtPct(x){ return x==null?"—":(Number(x)*100).toFixed(1)+"%"; }
-    function esc(s){ return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m])); }
-
-    let champs = [];
-    let owners = [];
-    let usedSource = null;
-
-    // Prefer playoff_metrics.json
-    const pr = await fetchFirstJSON(CAND("playoff_metrics.json"));
-    if (pr.json) {
-      usedSource = pr.path;
-      const cobj = pr.json.champions_by_season || {};
-      champs = Object.entries(cobj).map(([season, v]) => ({
-        season, franchise_owner: v.franchise_owner || v.owner || "", team_name: v.team_name || "",
-        seed: num(v.seed), rank: num(v.rank)
-      })).sort((a,b) => (+a.season) - (+b.season));
-
-      owners = (pr.json.per_owner || []).map(r => ({
-        franchise_owner: r.franchise_owner || r.owner || "",
-        titles: num(r.titles) || 0,
-        titles_by_year: Array.isArray(r.titles_by_year) ? r.titles_by_year.join(", ") : (r.titles_by_year || ""),
-        playoff_appearances: num(r.playoff_appearances),
-        wins: num(r.wins), losses: num(r.losses), ties: num(r.ties),
-        win_pct: r.win_pct == null ? null : +r.win_pct,
-        points_for: r.points_for == null ? null : +r.points_for,
-        points_against: r.points_against == null ? null : +r.points_against,
-        avg_points_for_per_playoff_game: r.avg_points_for_per_playoff_game == null ? null : +r.avg_points_for_per_playoff_game,
-        best_seed: r.best_seed == null ? null : +r.best_seed,
-        worst_seed: r.worst_seed == null ? null : +r.worst_seed,
-      }));
-
-      const base = pr.path.replace(/playoff_metrics\.json$/, "");
-      dlChamps.href   = base + "playoff_champions.csv";
-      dlFinishes.href = base + "playoff_finishes_by_season.csv";
-    }
-
-    // Fallback: metrics.json (playoffs_by_franchise only)
-    if (!owners.length) {
-      const mr = await fetchFirstJSON(CAND("metrics.json"));
-      if (mr.json?.leaderboards?.playoffs_by_franchise) {
-        usedSource = mr.path + " (fallback)";
-        owners = mr.json.leaderboards.playoffs_by_franchise.map(r => ({
-          franchise_owner: r.franchise_owner || r.owner || "",
-          titles: null, titles_by_year: "",
-          playoff_appearances: null,
-          wins: num(r.playoff_wins), losses: num(r.playoff_losses), ties: num(r.playoff_ties),
-          win_pct: r.playoff_win_pct == null ? null : +r.playoff_win_pct,
-          points_for: r.playoff_points_for == null ? null : +r.playoff_points_for,
-          points_against: r.playoff_points_against == null ? null : +r.playoff_points_against,
-          avg_points_for_per_playoff_game: null,
-          best_seed: null, worst_seed: null,
-        }));
-        dlChamps.style.display = "none";
-        dlFinishes.style.display = "none";
-      }
-    }
-
-    if (sourceNote && usedSource) sourceNote.textContent = "Loaded from: " + usedSource;
-
-    // Champions table
-    const champsBody = document.querySelector("#tblChamps tbody");
-    champsBody.innerHTML = champs.map(r => `
-      <tr>
-        <td>${esc(r.season)}</td>
-        <td>${esc(r.franchise_owner)}</td>
-        <td>${esc(r.team_name || "")}</td>
-        <td class="right">${fmt(r.seed)}</td>
-        <td class="right">${fmt(r.rank)}</td>
-      </tr>
-    `).join("") || `<tr><td class="muted" colspan="5" style="padding:12px">No champion data available.</td></tr>`;
-
-    // Owners table (sort + filter)
-    const tbody = document.querySelector("#tblOwners tbody");
-    const q = document.getElementById("q");
-    const counts = document.getElementById("counts");
-    let sortKey = "win_pct";
-    let sortDir = -1;
-    let filter = "";
-
-    function renderOwners() {
-      const filtered = owners.filter(r => (r.franchise_owner || "").toLowerCase().includes(filter.toLowerCase()));
-      filtered.sort((a,b) => {
-        const av = a[sortKey], bv = b[sortKey];
-        if (av == null && bv == null) return 0;
-        if (av == null) return 1;
-        if (bv == null) return -1;
-        if (typeof av === "number" && typeof bv === "number") return (av - bv) * sortDir;
-        return String(av).localeCompare(String(bv)) * sortDir;
-      });
-      tbody.innerHTML = filtered.map(r => `
-        <tr>
-          <td>${esc(r.franchise_owner)}</td>
-          <td class="right">${fmt(r.titles)}</td>
-          <td>${esc(r.titles_by_year || "")}</td>
-          <td class="right">${fmt(r.playoff_appearances)}</td>
-          <td class="right">${fmt(r.wins)}</td>
-          <td class="right">${fmt(r.losses)}</td>
-          <td class="right">${fmt(r.ties)}</td>
-          <td class="right">${fmtPct(r.win_pct)}</td>
-          <td class="right">${fmt1(r.points_for)}</td>
-          <td class="right">${fmt1(r.points_against)}</td>
-          <td class="right small">${fmt1(r.avg_points_for_per_playoff_game)}</td>
-          <td class="right small">${fmt(r.best_seed)}</td>
-          <td class="right small">${fmt(r.worst_seed)}</td>
-        </tr>
-      `).join("");
-      counts.textContent = `${filtered.length} franchises • sorted by ${sortKey} ${sortDir===-1?"↓":"↑"}`;
-    }
-
-    document.querySelectorAll("#tblOwners thead th[data-k]").forEach(th => {
-      th.addEventListener("click", () => {
-        const k = th.getAttribute("data-k");
-        if (k === sortKey) sortDir *= -1;
-        else { sortKey = k; sortDir = (k === "franchise_owner" || k === "titles_by_year") ? 1 : -1; }
-        renderOwners();
-      });
-    });
-    q.addEventListener("input", () => { filter = q.value.trim(); renderOwners(); });
-
-    renderOwners();
-  })();
-  </script>
-
   <footer class="site-footer" id="siteFoot">
-    <div>© 2004–<span id="footYear"></span> Season Ending Roster</div>
+    <div>&copy; 2004&ndash;<span id="footYear"></span> Season Ending Roster</div>
     <div class="foot-meta">
-      Data <span class="v">v—</span> • Updated <span class="u">—</span>
-      <span class="src-wrap"> • <span class="src"></span></span>
+      Data <span class="v">v&mdash;</span> &bull; Updated <span class="u">&mdash;</span>
     </div>
   </footer>
 
   <script>
-  // Footer: year + data version + source path (runs after footer exists)
-  (async function(){
-    document.getElementById('footYear').textContent = new Date().getFullYear();
-    const CAND = p => [`data/processed/${p}`,`/data/processed/${p}`,`data/proccessed/${p}`,`/data/proccessed/${p}`];
-    const tryFiles = [...CAND('playoff_metrics.json'), ...CAND('metrics.json'), ...CAND('franchise_career_stats.csv')];
-
-    async function firstOk(paths){
-      for (const url of paths){
-        try{ const r=await fetch(url,{cache:'no-store'}); if(r.ok) return {url, text:await r.text(), lm:r.headers.get('last-modified')}; }catch{}
+    // Set sticky offset
+    (function setStickyOffset() {
+      function apply() {
+        const bar = document.querySelector('.sitebar');
+        const h = bar ? Math.ceil(bar.getBoundingClientRect().height) : 60;
+        document.documentElement.style.setProperty('--sticky-top', (h + 8) + 'px');
       }
-      return null;
-    }
-    const res = await firstOk(tryFiles);
-    const vEl = document.querySelector('#siteFoot .v'), uEl = document.querySelector('#siteFoot .u'), sEl = document.querySelector('#siteFoot .src');
-    if(!res){ vEl.textContent='v–'; uEl.textContent='no data'; sEl.textContent='not found'; return; }
-    const enc = new TextEncoder().encode(res.text);
-    const buf = await crypto.subtle.digest('SHA-256', enc);
-    const ver = Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('').slice(0,8);
-    vEl.textContent = 'v'+ver;
-    uEl.textContent = res.lm ? new Date(res.lm).toLocaleString() : new Date().toLocaleString();
-    sEl.textContent = res.url.replace(location.origin,'');
-  })();
+      apply();
+      window.addEventListener('resize', apply, { passive: true });
+    })();
   </script>
-  <!-- Put this once near the end of <body> (replace the two older sticky scripts) -->
-<script>
-  // Keep table headers below the nav on all pages
-  (function applyStickyOffset(){
-    function set() {
-      const bar = document.querySelector('.sitebar');
-      const h = bar ? Math.ceil(bar.getBoundingClientRect().height) : 56;
-      document.documentElement.style.setProperty('--stickyTop', (h + 8) + 'px');
-    }
-    set();
-    window.addEventListener('resize', set, {passive:true});
-  })();
-</script>
 
+  <script>
+    (async function () {
+      const CAND = p => [
+        `data/processed/${p}`, `/data/processed/${p}`
+      ];
+
+      const dlChamps = document.getElementById("dlChamps");
+      const dlFinishes = document.getElementById("dlFinishes");
+      const sourceNote = document.getElementById("sourceNote");
+
+      async function fetchFirstJSON(paths) {
+        for (const p of paths) {
+          try { const r = await fetch(p, { cache: "no-store" }); if (r.ok) return { json: await r.json(), path: p }; } catch {}
+        }
+        return { json: null, path: null };
+      }
+
+      function num(x) { if (x === null || x === undefined || x === "") return null; const n = +x; return Number.isFinite(n) ? n : null; }
+      function fmt(x) { return x == null ? "&mdash;" : String(x); }
+      function fmt1(x) { return x == null ? "&mdash;" : Number(x).toFixed(1); }
+      function fmtPct(x) { return x == null ? "&mdash;" : (Number(x) * 100).toFixed(1) + "%"; }
+      function esc(s) { return String(s).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m])); }
+
+      let champs = [];
+      let owners = [];
+      let usedSource = null;
+
+      // Prefer playoff_metrics.json
+      const pr = await fetchFirstJSON(CAND("playoff_metrics.json"));
+      if (pr.json) {
+        usedSource = pr.path;
+        const cobj = pr.json.champions_by_season || {};
+        champs = Object.entries(cobj).map(([season, v]) => ({
+          season, franchise_owner: v.franchise_owner || v.owner || "", team_name: v.team_name || "",
+          seed: num(v.seed), rank: num(v.rank)
+        })).sort((a, b) => (+a.season) - (+b.season));
+
+        owners = (pr.json.per_owner || []).map(r => ({
+          franchise_owner: r.franchise_owner || r.owner || "",
+          titles: num(r.titles) || 0,
+          titles_by_year: Array.isArray(r.titles_by_year) ? r.titles_by_year.join(", ") : (r.titles_by_year || ""),
+          playoff_appearances: num(r.playoff_appearances),
+          wins: num(r.wins), losses: num(r.losses), ties: num(r.ties),
+          win_pct: r.win_pct == null ? null : +r.win_pct,
+          points_for: r.points_for == null ? null : +r.points_for,
+          points_against: r.points_against == null ? null : +r.points_against,
+          avg_points_for_per_playoff_game: r.avg_points_for_per_playoff_game == null ? null : +r.avg_points_for_per_playoff_game,
+          best_seed: r.best_seed == null ? null : +r.best_seed,
+          worst_seed: r.worst_seed == null ? null : +r.worst_seed,
+        }));
+
+        const base = pr.path.replace(/playoff_metrics\.json$/, "");
+        dlChamps.href = base + "playoff_champions.csv";
+        dlFinishes.href = base + "playoff_finishes_by_season.csv";
+      }
+
+      // Fallback: metrics.json
+      if (!owners.length) {
+        const mr = await fetchFirstJSON(CAND("metrics.json"));
+        if (mr.json?.leaderboards?.playoffs_by_franchise) {
+          usedSource = mr.path + " (fallback)";
+          owners = mr.json.leaderboards.playoffs_by_franchise.map(r => ({
+            franchise_owner: r.franchise_owner || r.owner || "",
+            titles: null, titles_by_year: "",
+            playoff_appearances: null,
+            wins: num(r.playoff_wins), losses: num(r.playoff_losses), ties: num(r.playoff_ties),
+            win_pct: r.playoff_win_pct == null ? null : +r.playoff_win_pct,
+            points_for: r.playoff_points_for == null ? null : +r.playoff_points_for,
+            points_against: r.playoff_points_against == null ? null : +r.playoff_points_against,
+            avg_points_for_per_playoff_game: null,
+            best_seed: null, worst_seed: null,
+          }));
+          dlChamps.style.display = "none";
+          dlFinishes.style.display = "none";
+        }
+      }
+
+      if (sourceNote && usedSource) sourceNote.textContent = "Loaded from: " + usedSource;
+
+      // Champions table
+      const champsBody = document.querySelector("#tblChamps tbody");
+      champsBody.innerHTML = champs.map(r => `
+        <tr>
+          <td>${esc(r.season)}</td>
+          <td>${esc(r.franchise_owner)}</td>
+          <td>${esc(r.team_name || "")}</td>
+          <td class="right">${fmt(r.seed)}</td>
+          <td class="right">${fmt(r.rank)}</td>
+        </tr>
+      `).join("") || `<tr><td class="muted" colspan="5" style="padding:12px">No champion data available.</td></tr>`;
+
+      // Owners table (sort + filter)
+      const tbody = document.querySelector("#tblOwners tbody");
+      const q = document.getElementById("q");
+      const counts = document.getElementById("counts");
+      let sortKey = "win_pct";
+      let sortDir = -1;
+      let filter = "";
+
+      function renderOwners() {
+        const filtered = owners.filter(r => (r.franchise_owner || "").toLowerCase().includes(filter.toLowerCase()));
+        filtered.sort((a, b) => {
+          const av = a[sortKey], bv = b[sortKey];
+          if (av == null && bv == null) return 0;
+          if (av == null) return 1;
+          if (bv == null) return -1;
+          if (typeof av === "number" && typeof bv === "number") return (av - bv) * sortDir;
+          return String(av).localeCompare(String(bv)) * sortDir;
+        });
+        tbody.innerHTML = filtered.map(r => `
+          <tr>
+            <td>${esc(r.franchise_owner)}</td>
+            <td class="right">${fmt(r.titles)}</td>
+            <td>${esc(r.titles_by_year || "")}</td>
+            <td class="right">${fmt(r.playoff_appearances)}</td>
+            <td class="right">${fmt(r.wins)}</td>
+            <td class="right">${fmt(r.losses)}</td>
+            <td class="right">${fmt(r.ties)}</td>
+            <td class="right">${fmtPct(r.win_pct)}</td>
+            <td class="right">${fmt1(r.points_for)}</td>
+            <td class="right">${fmt1(r.points_against)}</td>
+            <td class="right small">${fmt1(r.avg_points_for_per_playoff_game)}</td>
+            <td class="right small">${fmt(r.best_seed)}</td>
+            <td class="right small">${fmt(r.worst_seed)}</td>
+          </tr>
+        `).join("");
+        counts.textContent = `${filtered.length} franchises`;
+      }
+
+      document.querySelectorAll("#tblOwners thead th[data-k]").forEach(th => {
+        th.addEventListener("click", () => {
+          const k = th.getAttribute("data-k");
+          if (k === sortKey) sortDir *= -1;
+          else { sortKey = k; sortDir = (k === "franchise_owner" || k === "titles_by_year") ? 1 : -1; }
+          renderOwners();
+        });
+      });
+      q.addEventListener("input", () => { filter = q.value.trim(); renderOwners(); });
+
+      renderOwners();
+    })();
+  </script>
+
+  <script>
+    // Footer
+    document.getElementById('footYear').textContent = new Date().getFullYear();
+    (async function () {
+      const CAND = p => [`data/processed/${p}`, `/data/processed/${p}`];
+      const tryFiles = [...CAND('playoff_metrics.json'), ...CAND('metrics.json')];
+
+      async function firstOk(paths) {
+        for (const url of paths) {
+          try { const r = await fetch(url, { cache: 'no-store' }); if (r.ok) return { url, text: await r.text(), lm: r.headers.get('last-modified') }; } catch {}
+        }
+        return null;
+      }
+      const res = await firstOk(tryFiles);
+      const vEl = document.querySelector('#siteFoot .v'), uEl = document.querySelector('#siteFoot .u');
+      if (!res) { vEl.textContent = 'v&ndash;'; uEl.textContent = 'no data'; return; }
+      const enc = new TextEncoder().encode(res.text);
+      const buf = await crypto.subtle.digest('SHA-256', enc);
+      const ver = Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('').slice(0, 8);
+      vEl.textContent = 'v' + ver;
+      uEl.textContent = res.lm ? new Date(res.lm).toLocaleString() : new Date().toLocaleString();
+    })();
+  </script>
 </body>
 </html>

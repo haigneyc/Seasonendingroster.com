@@ -1,249 +1,255 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Head-to-Head</title>
-<style>
-:root { --bg:#0f0f10; --card:#1b1b1d; --card2:#141416; --hover:#252528; --text:#fff; --line:#26262a; --muted:#9aa0a6; }
-*{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text)}
-.sitebar{position:sticky;top:0;z-index:1000;width:100%;backdrop-filter:blur(8px);background:rgba(15,15,16,.85);border-bottom:1px solid var(--line)}
-.bar-inner{margin:0 auto;max-width:1100px;padding:12px 20px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}
-.brand{font-weight:700;letter-spacing:.2px}
-.tabs{display:inline-flex;gap:6px;padding:6px;border:1px solid var(--line);border-radius:12px;background:var(--card2)}
-.tabs a{color:var(--text);text-decoration:none;font-size:14px;padding:8px 12px;border-radius:8px;border:1px solid transparent}
-.tabs a:hover{background:var(--hover);border-color:var(--line)} .tabs a[aria-current="page"]{background:var(--card);border-color:var(--line)}
-.wrap{max-width:1100px;margin:28px auto;padding:0 20px}
-h1{margin:0 0 12px} .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
-select,input[type="checkbox"]{background:#121214;color:var(--text);border:1px solid #2a2a2e;border-radius:10px;padding:8px 10px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 8px 20px rgba(0,0,0,.2)}
-.grid{display:grid;gap:14px;grid-template-columns:1fr}
-@media (min-width:900px){ .grid{grid-template-columns:1fr 1fr} }
-.box{padding:12px}
-h2{margin:0 0 8px;font-size:16px;color:#cbd5e1}
-.table{width:100%;border-collapse:collapse;font-size:14px}
-.table th{position:sticky;top:64px;background:var(--card);border-bottom:1px solid #2a2a30;text-align:left;padding:10px}
-.table td{border-bottom:1px solid #202024;padding:8px 10px}
-.right{text-align:right} .muted{color:var(--muted);font-size:12px}
-.badge{font-size:11px;border:1px solid #2b2b30;border-radius:999px;padding:1px 6px}
-.win{color:#86efac} .loss{color:#fca5a5} .tie{color:#e0e7ff}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Head-to-Head</title>
+  <link rel="stylesheet" href="assets/styles.css" />
 </head>
 <body>
-<!-- Top nav -->
-<div class="sitebar">
-  <div class="bar-inner">
-    <div class="brand">Season Ending Roster</div>
-    <nav class="tabs" aria-label="Primary">
-      <a href="index.html">Home</a>
-      <a href="franchises.html">Franchises</a>
-      <a href="playoffs.html">Playoffs</a>
-      <a href="brackets.html">Brackets</a>
-      <a href="h2h.html">H2H</a>
-      <a href="history.html">History</a>
-    </nav>
-  </div>
-</div>
-
-
-<div class="wrap">
-  <h1>Head-to-Head</h1>
-  <div class="row">
-    <label>Owner A <select id="ownerA"></select></label>
-    <label>Owner B <select id="ownerB"></select></label>
-    <label><input type="checkbox" id="playoffsOnly"> Playoffs only</label>
-    <span class="muted" id="note"></span>
+  <div class="sitebar">
+    <div class="bar-inner">
+      <div class="brand">Season Ending Roster</div>
+      <nav class="tabs" aria-label="Primary">
+        <a href="index.html">Home</a>
+        <a href="franchises.html">Franchises</a>
+        <a href="playoffs.html">Playoffs</a>
+        <a href="brackets.html">Brackets</a>
+        <a href="h2h.html" aria-current="page">H2H</a>
+        <a href="history.html">History</a>
+      </nav>
+    </div>
   </div>
 
-  <div class="grid">
-    <div class="card"><div class="box">
-      <h2>Summary</h2>
-      <div id="summary" class="muted">Pick two franchises to see the record.</div>
-    </div></div>
+  <div class="wrap">
+    <div class="page-header">
+      <h1>Head-to-Head</h1>
+    </div>
 
-    <div class="card"><div class="box">
-      <h2>Top Rivalries (by games played)</h2>
-      <table class="table" id="tblTop">
-        <thead><tr>
-          <th>Owners</th><th class="right">Games</th>
-          <th class="right">W-L-T (A as first)</th>
-          <th class="right">PF (A)</th><th class="right">PA (A)</th>
-        </tr></thead>
-        <tbody></tbody>
-      </table>
-    </div></div>
+    <div class="controls">
+      <label>Owner A <select id="ownerA"></select></label>
+      <label>Owner B <select id="ownerB"></select></label>
+      <label><input type="checkbox" id="playoffsOnly" /> Playoffs only</label>
+      <span class="count" id="note"></span>
+    </div>
 
-    <div class="card" style="grid-column:1/-1"><div class="box">
-      <h2>Game Log</h2>
-      <table class="table" id="tblLog">
-        <thead><tr>
-          <th>Season</th><th>Week</th><th>Owner A</th><th class="right">Pts</th><th>Owner B</th><th class="right">Pts</th><th>Result</th>
-        </tr></thead>
-        <tbody></tbody>
-      </table>
-    </div></div>
+    <div class="grid grid-2 mb-2">
+      <div class="card">
+        <div class="card-body">
+          <h2 class="mb-1">Summary</h2>
+          <div id="summary" class="muted">Pick two franchises to see the record.</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-body">
+          <h2 class="mb-1">Top Rivalries</h2>
+          <table id="tblTop">
+            <thead>
+              <tr>
+                <th>Owners</th>
+                <th class="right">Games</th>
+                <th class="right">W-L-T</th>
+                <th class="right">PF</th>
+                <th class="right">PA</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <h2 class="mb-1">Game Log</h2>
+        <table id="tblLog">
+          <thead>
+            <tr>
+              <th>Season</th>
+              <th>Week</th>
+              <th>Owner A</th>
+              <th class="right">Pts</th>
+              <th>Owner B</th>
+              <th class="right">Pts</th>
+              <th>Result</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
   </div>
-</div>
-
-<script>
-(async function(){
-  const CAND=(p)=>[`data/processed/${p}`,`/data/processed/${p}`,`data/proccessed/${p}`,`/data/proccessed/${p}`];
-  async function fetchText(paths){ for(const p of paths){ try{ const r=await fetch(p,{cache:"no-store"}); if(r.ok) return {text:await r.text(), path:p}; }catch{} } return {text:null,path:null}; }
-  function parseCSV(text){
-    const out=[]; const rows=[]; let i=0,cur="",inQ=false; const push=()=>{ rows[rows.length-1].push(cur); cur=""; };
-    const start=()=>rows.push([]); start();
-    while(i<text.length){ const c=text[i++]; if(inQ){ if(c=='"'){ if(text[i]=='"'){cur+='"';i++;}else inQ=false; } else cur+=c; }
-      else{ if(c=='"') inQ=true; else if(c==',') push(); else if(c=='\r'){ } else if(c=='\n'){ push(); start(); } else cur+=c; } }
-    if(cur!==""||rows[rows.length-1].length) push(); if(rows[rows.length-1].length===0) rows.pop();
-    const header=rows.shift(); if(!header) return []; return rows.map(r=>Object.fromEntries(header.map((h,i)=>[h, r[i]??""])));
-  }
-  const boolish = v => String(v).toLowerCase().match(/^(1|t|true|y|yes)$/);
-  const num = x => (x===""||x==null)?null:Number(x);
-  const esc = s => String(s).replace(/[&<>"']/g, m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]));
-
-  const mres = await fetchText(CAND("matchups.csv"));
-  if(!mres.text){ document.getElementById("summary").textContent="matchups.csv not found."; return; }
-  const games = parseCSV(mres.text).map(r=>({
-    season:r.season, week:num(r.week), playoffs:boolish(r.is_playoffs),
-    A:r.franchise_owner_a, B:r.franchise_owner_b,
-    ptsA:num(r.points_a), ptsB:num(r.points_b),
-    winner:r.winner_owner || "", tie:boolish(r.is_tie)
-  }));
-
-  const owners = [...new Set(games.flatMap(g=>[g.A,g.B]))].filter(Boolean).sort((a,b)=>a.localeCompare(b));
-
-  // Populate selects
-  const ownerA = document.getElementById("ownerA"), ownerB=document.getElementById("ownerB"), playoffsOnly=document.getElementById("playoffsOnly");
-  ownerA.innerHTML = owners.map(o=>`<option value="${esc(o)}">${esc(o)}</option>`).join("");
-  ownerB.innerHTML = owners.map(o=>`<option value="${esc(o)}">${esc(o)}</option>`).join("");
-  ownerA.value = owners[0] || ""; ownerB.value = owners[1] || owners[0] || "";
-
-// --- deep links: read
-const q = new URLSearchParams(location.search);
-const qa = q.get('a'), qb = q.get('b');
-if (qa && owners.includes(qa)) ownerA.value = qa;
-if (qb && owners.includes(qb)) ownerB.value = qb;
-playoffsOnly.checked = q.get('playoffs') === '1';
-
-// --- deep links: write on change
-function syncURL(){
-  const p = new URLSearchParams(location.search);
-  p.set('a', ownerA.value);
-  p.set('b', ownerB.value);
-  if (playoffsOnly.checked) p.set('playoffs','1'); else p.delete('playoffs');
-  history.replaceState(null, '', `${location.pathname}?${p}`);
-}
-['change','input'].forEach(evt=>{
-  ownerA.addEventListener(evt, ()=>{ syncURL(); render(); });
-  ownerB.addEventListener(evt, ()=>{ syncURL(); render(); });
-});
-playoffsOnly.addEventListener('change', ()=>{ syncURL(); render(); });
-
-// initial sync
-syncURL();
-
-  
-  // Top Rivalries
-  const pairKey = (x,y)=>[x,y].sort().join(" ⟂ ");
-  const agg = {};
-  for(const g of games){
-    const k = pairKey(g.A,g.B);
-    const rec = agg[k] || (agg[k]={A:g.A,B:g.B,games:0,wA:0,lA:0,t:0,pfA:0,paA:0});
-    rec.games++; rec.pfA += g.ptsA||0; rec.paA += g.ptsB||0;
-    if(g.tie) rec.t++;
-    else if(g.winner===g.A) rec.wA++; else rec.lA++;
-  }
-  const top = Object.entries(agg).map(([k,v])=>({owners:k,...v})).sort((a,b)=>b.games-a.games).slice(0,20);
-  document.querySelector("#tblTop tbody").innerHTML = top.map(r=>`
-    <tr><td>${esc(r.owners)}</td><td class="right">${r.games}</td>
-        <td class="right">${r.wA}-${r.lA}-${r.t}</td>
-        <td class="right">${(r.pfA).toFixed(1)}</td>
-        <td class="right">${(r.paA).toFixed(1)}</td></tr>`).join("");
-
-  function render(){
-    const A = ownerA.value, B = ownerB.value;
-    const filt = games.filter(g => (g.A===A && g.B===B) || (g.A===B && g.B===A))
-                      .filter(g => playoffsOnly.checked ? g.playoffs : true)
-                      .sort((x,y)=> (Number(x.season)-Number(y.season)) || ((x.week||0)-(y.week||0)));
-
-    let wins=0,losses=0,ties=0,pf=0,pa=0;
-    const rows = filt.map(g=>{
-      let asA = (g.A===A); // orientation
-      const myPts = asA ? g.ptsA : g.ptsB;
-      const oppPts = asA ? g.ptsB : g.ptsA;
-      pf += myPts||0; pa += oppPts||0;
-      let res="T"; if(!g.tie){ res = (g.winner===A) ? "W" : "L"; if(res==="W") wins++; else losses++; } else ties++;
-      return `<tr>
-        <td>${esc(g.season)}</td>
-        <td>${g.week==null?'—':g.week}</td>
-        <td>${esc(A)}</td><td class="right">${myPts==null?'—':myPts.toFixed(1)}</td>
-        <td>${esc(asA?g.B:g.A)}</td><td class="right">${oppPts==null?'—':oppPts.toFixed(1)}</td>
-        <td class="${res==='W'?'win':res==='L'?'loss':'tie'}">${res}</td>
-      </tr>`;
-    }).join("");
-
-    const gms = wins+losses+ties;
-    const pct = gms ? ((wins + 0.5*ties)/gms) : null;
-    document.getElementById("summary").innerHTML =
-      gms ? `<b>${esc(A)}</b> vs <b>${esc(B)}</b> — <span class="badge">${wins}-${losses}-${ties}</span>
-             · Win% ${pct===null?'—':(pct*100).toFixed(1)}%
-             · PF ${pf.toFixed(1)} / PA ${pa.toFixed(1)} ${playoffsOnly.checked?'<span class="badge">Playoffs</span>':''}`
-          : `No games between ${esc(A)} and ${esc(B)}${playoffsOnly.checked?' in playoffs':''}.`;
-
-    document.querySelector("#tblLog tbody").innerHTML = rows || `<tr><td class="muted" colspan="7">No games.</td></tr>`;
-    document.getElementById("note").textContent = `${gms} games`;
-  }
-
-  ownerA.addEventListener("change", render);
-  ownerB.addEventListener("change", render);
-  playoffsOnly.addEventListener("change", render);
-  render();
-})();
-</script>
-  <script>
-  // Size sticky headers correctly
-  function applyStickyOffset(){
-    const bar = document.querySelector('.sitebar');
-    const h = bar ? Math.ceil(bar.getBoundingClientRect().height) : 56;
-    document.documentElement.style.setProperty('--stickyTop', (h + 8) + 'px');
-  }
-  (document.readyState==='loading'
-    ? document.addEventListener('DOMContentLoaded', applyStickyOffset)
-    : applyStickyOffset());
-  window.addEventListener('resize', applyStickyOffset, {passive:true});
-</script>
-
-<script>
-  // Footer: year + data version + source path
-  document.getElementById('footYear').textContent = new Date().getFullYear();
-  (async function(){
-    const CAND = p => [`data/processed/${p}`,`/data/processed/${p}`,`data/proccessed/${p}`,`/data/proccessed/${p}`];
-    const tryFiles = [...CAND('playoff_metrics.json'), ...CAND('metrics.json'), ...CAND('franchise_career_stats.csv')];
-    async function firstOk(paths){
-      for (const url of paths){
-        try{ const r=await fetch(url,{cache:'no-store'}); if(r.ok) return {url, text:await r.text(), lm:r.headers.get('last-modified')}; }catch{}
-      }
-      return null;
-    }
-    const res = await firstOk(tryFiles);
-    const vEl = document.querySelector('#siteFoot .v'), uEl = document.querySelector('#siteFoot .u'), sEl = document.querySelector('#siteFoot .src');
-    if(!res){ vEl.textContent='v–'; uEl.textContent='no data'; sEl.textContent='not found'; return; }
-    const enc = new TextEncoder().encode(res.text);
-    const buf = await crypto.subtle.digest('SHA-256', enc);
-    const ver = Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('').slice(0,8);
-    vEl.textContent = 'v'+ver;
-    uEl.textContent = res.lm ? new Date(res.lm).toLocaleString() : new Date().toLocaleString();
-    sEl.textContent = res.url.replace(location.origin,'');
-  })();
-</script>
 
   <footer class="site-footer" id="siteFoot">
-  <div>© 2004–<span id="footYear"></span> Season Ending Roster</div>
-  <div class="foot-meta">
-    Data <span class="v">v—</span> • Updated <span class="u">—</span>
-    <span class="src-wrap"> • <span class="src"></span></span>
-  </div>
-</footer>
+    <div>&copy; 2004&ndash;<span id="footYear"></span> Season Ending Roster</div>
+    <div class="foot-meta">
+      Data <span class="v">v&mdash;</span> &bull; Updated <span class="u">&mdash;</span>
+    </div>
+  </footer>
 
+  <script>
+    // Set sticky offset
+    (function setStickyOffset() {
+      function apply() {
+        const bar = document.querySelector('.sitebar');
+        const h = bar ? Math.ceil(bar.getBoundingClientRect().height) : 60;
+        document.documentElement.style.setProperty('--sticky-top', (h + 8) + 'px');
+      }
+      apply();
+      window.addEventListener('resize', apply, { passive: true });
+    })();
+  </script>
+
+  <script>
+    (async function () {
+      const CAND = (p) => [`data/processed/${p}`, `/data/processed/${p}`];
+      async function fetchText(paths) {
+        for (const p of paths) {
+          try { const r = await fetch(p, { cache: "no-store" }); if (r.ok) return { text: await r.text(), path: p }; } catch {}
+        }
+        return { text: null, path: null };
+      }
+
+      function parseCSV(text) {
+        const out = []; const rows = []; let i = 0, cur = "", inQ = false;
+        const push = () => { rows[rows.length - 1].push(cur); cur = ""; };
+        const start = () => rows.push([]); start();
+        while (i < text.length) {
+          const c = text[i++];
+          if (inQ) { if (c == '"') { if (text[i] == '"') { cur += '"'; i++; } else inQ = false; } else cur += c; }
+          else { if (c == '"') inQ = true; else if (c == ',') push(); else if (c == '\r') { } else if (c == '\n') { push(); start(); } else cur += c; }
+        }
+        if (cur !== "" || rows[rows.length - 1].length) push(); if (rows[rows.length - 1].length === 0) rows.pop();
+        const header = rows.shift(); if (!header) return [];
+        return rows.map(r => Object.fromEntries(header.map((h, i) => [h, r[i] ?? ""])));
+      }
+
+      const boolish = v => String(v).toLowerCase().match(/^(1|t|true|y|yes)$/);
+      const num = x => (x === "" || x == null) ? null : Number(x);
+      const esc = s => String(s).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
+
+      const mres = await fetchText(CAND("matchups.csv"));
+      if (!mres.text) { document.getElementById("summary").textContent = "matchups.csv not found."; return; }
+
+      const games = parseCSV(mres.text).map(r => ({
+        season: r.season, week: num(r.week), playoffs: boolish(r.is_playoffs),
+        A: r.franchise_owner_a, B: r.franchise_owner_b,
+        ptsA: num(r.points_a), ptsB: num(r.points_b),
+        winner: r.winner_owner || "", tie: boolish(r.is_tie)
+      }));
+
+      const owners = [...new Set(games.flatMap(g => [g.A, g.B]))].filter(Boolean).sort((a, b) => a.localeCompare(b));
+
+      const ownerA = document.getElementById("ownerA"), ownerB = document.getElementById("ownerB"), playoffsOnly = document.getElementById("playoffsOnly");
+      ownerA.innerHTML = owners.map(o => `<option value="${esc(o)}">${esc(o)}</option>`).join("");
+      ownerB.innerHTML = owners.map(o => `<option value="${esc(o)}">${esc(o)}</option>`).join("");
+      ownerA.value = owners[0] || ""; ownerB.value = owners[1] || owners[0] || "";
+
+      // Deep links
+      const q = new URLSearchParams(location.search);
+      const qa = q.get('a'), qb = q.get('b');
+      if (qa && owners.includes(qa)) ownerA.value = qa;
+      if (qb && owners.includes(qb)) ownerB.value = qb;
+      playoffsOnly.checked = q.get('playoffs') === '1';
+
+      function syncURL() {
+        const p = new URLSearchParams(location.search);
+        p.set('a', ownerA.value);
+        p.set('b', ownerB.value);
+        if (playoffsOnly.checked) p.set('playoffs', '1'); else p.delete('playoffs');
+        history.replaceState(null, '', `${location.pathname}?${p}`);
+      }
+
+      ['change', 'input'].forEach(evt => {
+        ownerA.addEventListener(evt, () => { syncURL(); render(); });
+        ownerB.addEventListener(evt, () => { syncURL(); render(); });
+      });
+      playoffsOnly.addEventListener('change', () => { syncURL(); render(); });
+      syncURL();
+
+      // Top Rivalries
+      const pairKey = (x, y) => [x, y].sort().join(" vs ");
+      const agg = {};
+      for (const g of games) {
+        const k = pairKey(g.A, g.B);
+        const rec = agg[k] || (agg[k] = { A: g.A, B: g.B, games: 0, wA: 0, lA: 0, t: 0, pfA: 0, paA: 0 });
+        rec.games++; rec.pfA += g.ptsA || 0; rec.paA += g.ptsB || 0;
+        if (g.tie) rec.t++;
+        else if (g.winner === g.A) rec.wA++; else rec.lA++;
+      }
+      const top = Object.entries(agg).map(([k, v]) => ({ owners: k, ...v })).sort((a, b) => b.games - a.games).slice(0, 15);
+      document.querySelector("#tblTop tbody").innerHTML = top.map(r => `
+        <tr>
+          <td>${esc(r.owners)}</td>
+          <td class="right">${r.games}</td>
+          <td class="right">${r.wA}-${r.lA}-${r.t}</td>
+          <td class="right">${(r.pfA).toFixed(1)}</td>
+          <td class="right">${(r.paA).toFixed(1)}</td>
+        </tr>`).join("");
+
+      function render() {
+        const A = ownerA.value, B = ownerB.value;
+        const filt = games.filter(g => (g.A === A && g.B === B) || (g.A === B && g.B === A))
+          .filter(g => playoffsOnly.checked ? g.playoffs : true)
+          .sort((x, y) => (Number(x.season) - Number(y.season)) || ((x.week || 0) - (y.week || 0)));
+
+        let wins = 0, losses = 0, ties = 0, pf = 0, pa = 0;
+        const rows = filt.map(g => {
+          let asA = (g.A === A);
+          const myPts = asA ? g.ptsA : g.ptsB;
+          const oppPts = asA ? g.ptsB : g.ptsA;
+          pf += myPts || 0; pa += oppPts || 0;
+          let res = "T"; if (!g.tie) { res = (g.winner === A) ? "W" : "L"; if (res === "W") wins++; else losses++; } else ties++;
+          return `<tr>
+            <td>${esc(g.season)}</td>
+            <td>${g.week == null ? '&mdash;' : g.week}</td>
+            <td>${esc(A)}</td><td class="right">${myPts == null ? '&mdash;' : myPts.toFixed(1)}</td>
+            <td>${esc(asA ? g.B : g.A)}</td><td class="right">${oppPts == null ? '&mdash;' : oppPts.toFixed(1)}</td>
+            <td class="${res === 'W' ? 'win' : res === 'L' ? 'loss' : 'tie'}">${res}</td>
+          </tr>`;
+        }).join("");
+
+        const gms = wins + losses + ties;
+        const pct = gms ? ((wins + 0.5 * ties) / gms) : null;
+        document.getElementById("summary").innerHTML =
+          gms ? `<strong>${esc(A)}</strong> vs <strong>${esc(B)}</strong> &mdash; <span class="badge">${wins}-${losses}-${ties}</span>
+                 &bull; Win% ${pct === null ? '&mdash;' : (pct * 100).toFixed(1)}%
+                 &bull; PF ${pf.toFixed(1)} / PA ${pa.toFixed(1)} ${playoffsOnly.checked ? '<span class="badge">Playoffs</span>' : ''}`
+              : `No games between ${esc(A)} and ${esc(B)}${playoffsOnly.checked ? ' in playoffs' : ''}.`;
+
+        document.querySelector("#tblLog tbody").innerHTML = rows || `<tr><td class="muted" colspan="7">No games.</td></tr>`;
+        document.getElementById("note").textContent = `${gms} games`;
+      }
+
+      ownerA.addEventListener("change", render);
+      ownerB.addEventListener("change", render);
+      playoffsOnly.addEventListener("change", render);
+      render();
+    })();
+  </script>
+
+  <script>
+    // Footer
+    document.getElementById('footYear').textContent = new Date().getFullYear();
+    (async function () {
+      const CAND = p => [`data/processed/${p}`, `/data/processed/${p}`];
+      const tryFiles = [...CAND('playoff_metrics.json'), ...CAND('metrics.json')];
+      async function firstOk(paths) {
+        for (const url of paths) {
+          try { const r = await fetch(url, { cache: 'no-store' }); if (r.ok) return { url, text: await r.text(), lm: r.headers.get('last-modified') }; } catch {}
+        }
+        return null;
+      }
+      const res = await firstOk(tryFiles);
+      const vEl = document.querySelector('#siteFoot .v'), uEl = document.querySelector('#siteFoot .u');
+      if (!res) { vEl.textContent = 'v&ndash;'; uEl.textContent = 'no data'; return; }
+      const enc = new TextEncoder().encode(res.text);
+      const buf = await crypto.subtle.digest('SHA-256', enc);
+      const ver = Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('').slice(0, 8);
+      vEl.textContent = 'v' + ver;
+      uEl.textContent = res.lm ? new Date(res.lm).toLocaleString() : new Date().toLocaleString();
+    })();
+  </script>
 </body>
 </html>

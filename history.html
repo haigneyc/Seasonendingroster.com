@@ -1,310 +1,306 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>League History</title>
-<style>
-:root{--bg:#0f0f10;--card:#1b1b1d;--card2:#141416;--hover:#252528;--text:#fff;--line:#26262a;--muted:#9aa0a6;--accent:#a0c4ff;--stickyTop:56px}
-*{box-sizing:border-box}
-body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text)}
-/* header */
-.sitebar{position:sticky;top:0;z-index:1000;width:100%;backdrop-filter:blur(8px);background:rgba(15,15,16,.85);border-bottom:1px solid var(--line)}
-.bar-inner{margin:0 auto;max-width:1200px;padding:12px 20px;display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}
-.brand{font-weight:700}
-.tabs{display:inline-flex;gap:6px;padding:6px;border:1px solid var(--line);border-radius:12px;background:var(--card2)}
-.tabs a{color:var(--text);text-decoration:none;font-size:14px;padding:8px 12px;border-radius:8px;border:1px solid transparent}
-.tabs a:hover{background:var(--hover);border-color:var(--line)}
-.tabs a[aria-current="page"]{background:var(--card);border-color:var(--line)}
-/* layout */
-.wrap{max-width:1200px;margin:28px auto;padding:0 20px;display:grid;grid-template-columns:1fr 280px;gap:22px}
-@media (max-width:1000px){.wrap{grid-template-columns:1fr}}
-.content{min-width:0}
-.aside{position:sticky;top:calc(var(--stickyTop) + 12px);height:fit-content}
-.card{background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:0 8px 20px rgba(0,0,0,.2)}
-.section{padding:16px 18px;margin-bottom:14px}
-h1{margin:0 0 12px}
-h2{margin:18px 0 8px;border-bottom:1px solid #202024;padding-bottom:6px}
-h3{margin:14px 0 6px;color:#cbd5e1}
-p{line-height:1.6}
-.muted{color:var(--muted)}
-small{color:var(--muted)}
-/* toc */
-.toc{padding:12px 14px}
-.toc h3{margin:0 0 8px}
-.toc a{display:block;color:#cbd5e1;text-decoration:none;padding:6px 8px;border-radius:8px}
-.toc a:hover{background:var(--hover)}
-.toc .sub{margin-left:10px;font-size:13px;color:#9aa0a6}
-/* tables & lists */
-table{width:100%;border-collapse:collapse;margin:8px 0 12px}
-th,td{padding:8px 10px;border-bottom:1px solid #202024;text-align:left}
-th{background:#151518;position:sticky;top:calc(var(--stickyTop) + 0px);z-index:1}
-.kv{display:grid;grid-template-columns:220px 1fr;gap:8px}
-@media (max-width:640px){.kv{grid-template-columns:1fr}}
-.badge{display:inline-block;border:1px solid #2b2b30;border-radius:999px;padding:2px 8px;font-size:12px;margin-left:6px}
-.btn{display:inline-block;color:var(--accent);text-decoration:none;border:1px solid var(--line);padding:8px 10px;border-radius:10px}
-.btn:hover{background:var(--hover)}
-/* collapsible transcript */
-details{border:1px solid var(--line);border-radius:14px;overflow:hidden}
-summary{cursor:pointer;list-style:none;user-select:none;padding:12px 14px;background:#151518}
-summary::-webkit-details-marker{display:none}
-details .body{padding:14px}
-pre.trans{white-space:pre-wrap;word-wrap:break-word;font-family:ui-monospace,Consolas,Menlo,monospace;background:#121214;border:1px solid #202024;border-radius:12px;padding:12px}
-.footer{max-width:1200px;margin:24px auto 36px;padding:0 20px;color:var(--muted);display:flex;gap:12px;justify-content:space-between;flex-wrap:wrap}
-</style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>League History</title>
+  <link rel="stylesheet" href="assets/styles.css" />
+  <style>
+    /* History page specific layout */
+    .history-wrap {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 24px 20px;
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 24px;
+    }
+    @media (max-width: 1000px) {
+      .history-wrap { grid-template-columns: 1fr; }
+      .aside { display: none; }
+    }
+    .content { min-width: 0; }
+    .aside {
+      position: sticky;
+      top: calc(var(--sticky-top) + 12px);
+      height: fit-content;
+    }
+    .section {
+      padding: 20px 24px;
+      margin-bottom: 16px;
+    }
+    .section h2 {
+      margin: 0 0 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--line);
+    }
+    .section h3 {
+      margin: 20px 0 10px;
+      color: var(--text-secondary);
+    }
+    .section p {
+      line-height: 1.7;
+    }
+    .section ul {
+      padding-left: 20px;
+      line-height: 1.8;
+    }
+    .section table th {
+      position: static;
+      box-shadow: none;
+    }
+  </style>
 </head>
 <body>
-<!-- top nav -->
-<div class="sitebar">
-  <div class="bar-inner">
-    <div class="brand">Season Ending Roster</div>
-    <nav class="tabs" aria-label="Primary">
-      <a href="index.html">Home</a>
-      <a href="franchises.html">Franchises</a>
-      <a href="playoffs.html">Playoffs</a>
-      <a href="brackets.html">Brackets</a>
-      <a href="h2h.html">H2H</a>
-      <a href="history.html" aria-current="page">History</a>
-    </nav>
-  </div>
-</div>
-
-<div class="wrap">
-  <!-- MAIN CONTENT -->
-  <main class="content">
-    <div class="section card">
-      <h1>League History <span class="badge">2017 Edition</span></h1>
-      <p class="muted">A living web version of the original “League History” book. We’ve preserved the original 2017 text below and are progressively formatting each section for the site.</p>
-      <div class="row" style="display:flex;gap:8px;flex-wrap:wrap">
-        <a class="btn" href="#transcript">Jump to Full 2017 Transcript</a>
-      </div>
+  <div class="sitebar">
+    <div class="bar-inner">
+      <div class="brand">Season Ending Roster</div>
+      <nav class="tabs" aria-label="Primary">
+        <a href="index.html">Home</a>
+        <a href="franchises.html">Franchises</a>
+        <a href="playoffs.html">Playoffs</a>
+        <a href="brackets.html">Brackets</a>
+        <a href="h2h.html">H2H</a>
+        <a href="history.html" aria-current="page">History</a>
+      </nav>
     </div>
+  </div>
 
-    <!-- Charter -->
-    <section id="charter" class="section card">
-      <h2>League Charter</h2>
-      <p>This league was formed out of 25% friendship, 1% love of football, and 75% pure idiocy. It is a keeper league, and forever shall remain a keeper league. The league was formed by Commissioner Chris Haigney and consisted of nine founding members: Matt Altman, Matt Winter, Ian Lane, John Condon, Matt Condon, Dave Slater, Joe Trendowski, Peter Ott, and Matt Verone.</p>
-      <p>Notable changes over time include: Greg Cupelo replacing Matt Condon (2005), expansion to 12 teams adding Mike Lane and Mike Sterbank (2008), Joe Trendowski’s franchise moving to Matt Condon (2015), and in 2017 Kratz &amp; Corey replacing Greg Cupelo.</p>
-      <p class="muted">“This Charter is worth its weight in Guinness.”</p>
-    </section>
-
-    <!-- Rules (2017) -->
-    <section id="rules" class="section card">
-      <h2>General Rules</h2>
-      <ul>
-        <li>All rules live in this document.</li>
-        <li>Pre-season rule changes require &gt; 50% approval. In-season changes require &gt; 75% approval.</li>
-        <li>Each team may keep up to <strong>3 players</strong> from the previous roster.</li>
-        <li>No collusion, conspiring, cheating, or skullduggery (conniving excluded).</li>
-        <li>Last-place team must dress per the champion’s choice at the draft. No photos.</li>
-        <li>Champions must engrave their victory on the Glorious Meat Plate.</li>
-      </ul>
-    </section>
-
-    <!-- Draft order -->
-    <section id="draft" class="section card">
-      <h2>Draft Order</h2>
-      <div class="kv">
-        <div>12th Pick</div><div>Previous year’s champion</div>
-        <div>11th Pick</div><div>Previous year’s runner-up</div>
-        <div>10th / 9th</div><div>Consolation winner / loser</div>
-        <div>8th / 7th</div><div>Whiskey Bowl winner chooses 8th or 7th; loser gets other</div>
+  <div class="history-wrap">
+    <main class="content">
+      <div class="section card">
+        <h1>League History <span class="badge">2017 Edition</span></h1>
+        <p class="muted">A living web version of the original "League History" book. We've preserved the original 2017 text below and are progressively formatting each section for the site.</p>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px">
+          <a class="btn" href="#transcript">Jump to Full 2017 Transcript</a>
+        </div>
       </div>
-      <h3 style="margin-top:12px">Draft Lottery (non-playoff teams)</h3>
-      <table>
-        <thead><tr><th>Finish</th><th style="width:120px">Odds</th></tr></thead>
-        <tbody>
-          <tr><td>12th</td><td>40%</td></tr>
-          <tr><td>11th</td><td>27%</td></tr>
-          <tr><td>10th</td><td>15%</td></tr>
-          <tr><td>9th</td><td>8%</td></tr>
-          <tr><td>8th</td><td>6%</td></tr>
-          <tr><td>7th</td><td>4%</td></tr>
-        </tbody>
-      </table>
-      <p class="muted">Lottery held at the Christmas Party or July 3rd Tournament; otherwise day-of-draft.</p>
-    </section>
 
-    <!-- Trades -->
-    <section id="trades" class="section card">
-      <h2>Trades</h2>
-      <ul>
-        <li><strong>Veto Power:</strong> Commissioner vetoes only for egregious cases or collusion.</li>
-        <li><strong>Off-season:</strong> Keepers only; must be 1-for-1, 2-for-2, etc. Uneven deals process after draft starts. Players traded in the off-season <em>must</em> be kept.</li>
-        <li><strong>Draft Picks:</strong> Equal number of picks each way; future picks allowed. If unspecified, the returned pick is the manager’s last remaining pick.</li>
-        <li><strong>Waiting Period:</strong> In-season trades: 24h (12h if Thursday players involved). Off-season: immediate.</li>
-        <li><strong>Deadline:</strong> Whiskey Wednesday (Wednesday before Thanksgiving).</li>
-      </ul>
-    </section>
+      <!-- Charter -->
+      <section id="charter" class="section card">
+        <h2>League Charter</h2>
+        <p>This league was formed out of 25% friendship, 1% love of football, and 75% pure idiocy. It is a keeper league, and forever shall remain a keeper league. The league was formed by Commissioner Chris Haigney and consisted of nine founding members: Matt Altman, Matt Winter, Ian Lane, John Condon, Matt Condon, Dave Slater, Joe Trendowski, Peter Ott, and Matt Verone.</p>
+        <p>Notable changes over time include: Greg Cupelo replacing Matt Condon (2005), expansion to 12 teams adding Mike Lane and Mike Sterbank (2008), Joe Trendowski's franchise moving to Matt Condon (2015), and in 2017 Kratz &amp; Corey replacing Greg Cupelo.</p>
+        <p class="muted">"This Charter is worth its weight in Guinness."</p>
+      </section>
 
-    <!-- Rosters -->
-    <section id="rosters" class="section card">
-      <h2>Rosters</h2>
-      <table>
-        <thead><tr><th>Slot</th><th>Count</th></tr></thead>
-        <tbody>
-          <tr><td>QB, RB, WR, TE</td><td>1 each</td></tr>
-          <tr><td>RB/WR, R/W/T</td><td>1 each</td></tr>
-          <tr><td>K, D/ST</td><td>1 each</td></tr>
-          <tr><td>Bench</td><td>7</td></tr>
-        </tbody>
-      </table>
-      <ul>
-        <li>Active player required at each position.</li>
-        <li><strong>The Vern Rule:</strong> Starting an inactive player (bye/IR/ruled out pre-Sunday) costs a 6th-round pick; repeat violations move the penalty up each time.</li>
-        <li>Benching to protect a lead is allowed.</li>
-        <li>New fathers (&lt; 6 months) or managers abroad are exempt from same-week “ruled out” surprises.</li>
-      </ul>
-    </section>
+      <!-- Rules -->
+      <section id="rules" class="section card">
+        <h2>General Rules</h2>
+        <ul>
+          <li>All rules live in this document.</li>
+          <li>Pre-season rule changes require &gt; 50% approval. In-season changes require &gt; 75% approval.</li>
+          <li>Each team may keep up to <strong>3 players</strong> from the previous roster.</li>
+          <li>No collusion, conspiring, cheating, or skullduggery (conniving excluded).</li>
+          <li>Last-place team must dress per the champion's choice at the draft. No photos.</li>
+          <li>Champions must engrave their victory on the Glorious Meat Plate.</li>
+        </ul>
+      </section>
 
-    <!-- Waivers -->
-    <section id="waivers" class="section card">
-      <h2>Waivers</h2>
-      <ul>
-        <li>All non-rostered players enter waivers at kickoff until Tuesday; bye players enter Monday 8:30 PM ET.</li>
-        <li><strong>FAAB:</strong> $100 budget. Ties resolve by waiver priority; successful claim moves you to the end.</li>
-        <li>Dropped players sit for 2 days before they can be claimed.</li>
-      </ul>
-    </section>
+      <!-- Draft order -->
+      <section id="draft" class="section card">
+        <h2>Draft Order</h2>
+        <div class="kv">
+          <div>12th Pick</div><div>Previous year's champion</div>
+          <div>11th Pick</div><div>Previous year's runner-up</div>
+          <div>10th / 9th</div><div>Consolation winner / loser</div>
+          <div>8th / 7th</div><div>Whiskey Bowl winner chooses 8th or 7th; loser gets other</div>
+        </div>
+        <h3>Draft Lottery (non-playoff teams)</h3>
+        <table>
+          <thead><tr><th>Finish</th><th style="width:120px">Odds</th></tr></thead>
+          <tbody>
+            <tr><td>12th</td><td>40%</td></tr>
+            <tr><td>11th</td><td>27%</td></tr>
+            <tr><td>10th</td><td>15%</td></tr>
+            <tr><td>9th</td><td>8%</td></tr>
+            <tr><td>8th</td><td>6%</td></tr>
+            <tr><td>7th</td><td>4%</td></tr>
+          </tbody>
+        </table>
+        <p class="muted">Lottery held at the Christmas Party or July 3rd Tournament; otherwise day-of-draft.</p>
+      </section>
 
-    <!-- Scoring -->
-    <section id="scoring" class="section card">
-      <h2>Scoring</h2>
-      <h3>Offense</h3>
-      <table>
-        <thead><tr><th>Event</th><th>Pts</th><th>Event</th><th>Pts</th></tr></thead>
-        <tbody>
-          <tr><td>Passing TD</td><td>4</td><td>Interception</td><td>-2</td></tr>
-          <tr><td>Pass Yards</td><td>.04 / yd</td><td>Rushing TD</td><td>6</td></tr>
-          <tr><td>Rush Yards</td><td>.1 / yd</td><td>Receiving TD</td><td>6</td></tr>
-          <tr><td>Reception</td><td>.5</td><td>Rec Yards</td><td>.1 / yd</td></tr>
-          <tr><td>Return TD</td><td>6</td><td>2-Point Conversion</td><td>2</td></tr>
-          <tr><td>Fumble (off.)</td><td>-2</td><td>Offensive Fumble TD</td><td>6</td></tr>
-        </tbody>
-      </table>
-      <h3>Kicker</h3>
-      <table>
-        <thead><tr><th>Event</th><th>Pts</th><th>Event</th><th>Pts</th></tr></thead>
-        <tbody>
-          <tr><td>FG 0-39</td><td>3</td><td>FG 40-49</td><td>4</td></tr>
-          <tr><td>FG 50+</td><td>5</td><td>PAT Made</td><td>1</td></tr>
-          <tr><td>PAT Miss</td><td>-1</td><td></td><td></td></tr>
-        </tbody>
-      </table>
-      <h3>Defense / Special Teams</h3>
-      <table>
-        <thead><tr><th>Category</th><th>Pts</th><th>Category</th><th>Pts</th></tr></thead>
-        <tbody>
-          <tr><td>Points Allowed 0</td><td>13</td><td>1–6</td><td>10</td></tr>
-          <tr><td>7–13</td><td>6</td><td>14–20</td><td>2.5</td></tr>
-          <tr><td>21–27</td><td>0</td><td>28–34</td><td>-1</td></tr>
-          <tr><td>35+</td><td>-2</td><td>INT</td><td>1.8</td></tr>
-          <tr><td>Sack</td><td>1</td><td>Fum. Recovery</td><td>2</td></tr>
-          <tr><td>TD</td><td>4</td><td>Safety</td><td>2</td></tr>
-          <tr><td>Blocked Kick</td><td>2</td><td>PAT Returned</td><td>2</td></tr>
-          <tr><td>DYA 100–199</td><td>9</td><td>DYA 200–299</td><td>3</td></tr>
-          <tr><td>DYA 400–499</td><td>-0.5</td><td>DYA 500–599</td><td>-1</td></tr>
-        </tbody>
-      </table>
-      <p class="muted">Punt returns count for the player (not the DEF). Kickoff returns for TD count for the defense; kick returns allowed for TD count against the defense.</p>
-    </section>
+      <!-- Trades -->
+      <section id="trades" class="section card">
+        <h2>Trades</h2>
+        <ul>
+          <li><strong>Veto Power:</strong> Commissioner vetoes only for egregious cases or collusion.</li>
+          <li><strong>Off-season:</strong> Keepers only; must be 1-for-1, 2-for-2, etc. Uneven deals process after draft starts. Players traded in the off-season <em>must</em> be kept.</li>
+          <li><strong>Draft Picks:</strong> Equal number of picks each way; future picks allowed. If unspecified, the returned pick is the manager's last remaining pick.</li>
+          <li><strong>Waiting Period:</strong> In-season trades: 24h (12h if Thursday players involved). Off-season: immediate.</li>
+          <li><strong>Deadline:</strong> Whiskey Wednesday (Wednesday before Thanksgiving).</li>
+        </ul>
+      </section>
 
-    <!-- Divisions / Playoffs / Fees -->
-    <section id="divisions" class="section card">
-      <h2>Divisions</h2>
-      <ul>
-        <li><strong>Division Draft:</strong> Pre-draft, bottom four teams draft a pod (top-4 or middle-4 finishers) as divisional rivals (non-snake: 9th → 10th → 11th → 12th).</li>
-        <li><strong>Scheduling:</strong> Play every team once; divisional rivals twice.</li>
-      </ul>
-    </section>
+      <!-- Rosters -->
+      <section id="rosters" class="section card">
+        <h2>Rosters</h2>
+        <table>
+          <thead><tr><th>Slot</th><th>Count</th></tr></thead>
+          <tbody>
+            <tr><td>QB, RB, WR, TE</td><td>1 each</td></tr>
+            <tr><td>RB/WR, R/W/T</td><td>1 each</td></tr>
+            <tr><td>K, D/ST</td><td>1 each</td></tr>
+            <tr><td>Bench</td><td>7</td></tr>
+          </tbody>
+        </table>
+        <ul>
+          <li>Active player required at each position.</li>
+          <li><strong>The Vern Rule:</strong> Starting an inactive player (bye/IR/ruled out pre-Sunday) costs a 6th-round pick; repeat violations move the penalty up each time.</li>
+          <li>Benching to protect a lead is allowed.</li>
+          <li>New fathers (&lt; 6 months) or managers abroad are exempt from same-week "ruled out" surprises.</li>
+        </ul>
+      </section>
 
-    <section id="playoffs" class="section card">
-      <h2>Playoffs</h2>
-      <ul>
-        <li>Top <strong>6</strong> qualify; top <strong>2</strong> get a bye.</li>
-        <li>Runs Week 14 → Week 16.</li>
-        <li>Non-playoff teams may still make roster moves.</li>
-      </ul>
-    </section>
+      <!-- Waivers -->
+      <section id="waivers" class="section card">
+        <h2>Waivers</h2>
+        <ul>
+          <li>All non-rostered players enter waivers at kickoff until Tuesday; bye players enter Monday 8:30 PM ET.</li>
+          <li><strong>FAAB:</strong> $100 budget. Ties resolve by waiver priority; successful claim moves you to the end.</li>
+          <li>Dropped players sit for 2 days before they can be claimed.</li>
+        </ul>
+      </section>
 
-    <section id="fees" class="section card">
-      <h2>League Fees &amp; Payouts</h2>
-      <ul>
-        <li><strong>Fees:</strong> $125 due before NFL Week 1 (PayPal or cash). Unpaid: Commissioner sets lineups.</li>
-      </ul>
-      <h3>Payouts</h3>
-      <table>
-        <thead><tr><th>Prize</th><th>Amount</th></tr></thead>
-        <tbody>
-          <tr><td>Champion</td><td>$660 + Meat Plate</td></tr>
-          <tr><td>Runner-Up</td><td>$330</td></tr>
-          <tr><td>3rd</td><td>$230</td></tr>
-          <tr><td>4th</td><td>$130</td></tr>
-          <tr><td>5th</td><td>Whiskey Trophy</td></tr>
-          <tr><td>6th</td><td>—</td></tr>
-          <tr><td>Most Points (Regular Season)</td><td>$100</td></tr>
-          <tr><td>Fantasy King of the Hill</td><td>$50</td></tr>
-        </tbody>
-      </table>
-    </section>
+      <!-- Scoring -->
+      <section id="scoring" class="section card">
+        <h2>Scoring</h2>
+        <h3>Offense</h3>
+        <table>
+          <thead><tr><th>Event</th><th>Pts</th><th>Event</th><th>Pts</th></tr></thead>
+          <tbody>
+            <tr><td>Passing TD</td><td>4</td><td>Interception</td><td>-2</td></tr>
+            <tr><td>Pass Yards</td><td>.04 / yd</td><td>Rushing TD</td><td>6</td></tr>
+            <tr><td>Rush Yards</td><td>.1 / yd</td><td>Receiving TD</td><td>6</td></tr>
+            <tr><td>Reception</td><td>.5</td><td>Rec Yards</td><td>.1 / yd</td></tr>
+            <tr><td>Return TD</td><td>6</td><td>2-Point Conversion</td><td>2</td></tr>
+            <tr><td>Fumble (off.)</td><td>-2</td><td>Offensive Fumble TD</td><td>6</td></tr>
+          </tbody>
+        </table>
+        <h3>Kicker</h3>
+        <table>
+          <thead><tr><th>Event</th><th>Pts</th><th>Event</th><th>Pts</th></tr></thead>
+          <tbody>
+            <tr><td>FG 0-39</td><td>3</td><td>FG 40-49</td><td>4</td></tr>
+            <tr><td>FG 50+</td><td>5</td><td>PAT Made</td><td>1</td></tr>
+            <tr><td>PAT Miss</td><td>-1</td><td></td><td></td></tr>
+          </tbody>
+        </table>
+        <h3>Defense / Special Teams</h3>
+        <table>
+          <thead><tr><th>Category</th><th>Pts</th><th>Category</th><th>Pts</th></tr></thead>
+          <tbody>
+            <tr><td>Points Allowed 0</td><td>13</td><td>1&ndash;6</td><td>10</td></tr>
+            <tr><td>7&ndash;13</td><td>6</td><td>14&ndash;20</td><td>2.5</td></tr>
+            <tr><td>21&ndash;27</td><td>0</td><td>28&ndash;34</td><td>-1</td></tr>
+            <tr><td>35+</td><td>-2</td><td>INT</td><td>1.8</td></tr>
+            <tr><td>Sack</td><td>1</td><td>Fum. Recovery</td><td>2</td></tr>
+            <tr><td>TD</td><td>4</td><td>Safety</td><td>2</td></tr>
+            <tr><td>Blocked Kick</td><td>2</td><td>PAT Returned</td><td>2</td></tr>
+            <tr><td>DYA 100&ndash;199</td><td>9</td><td>DYA 200&ndash;299</td><td>3</td></tr>
+            <tr><td>DYA 400&ndash;499</td><td>-0.5</td><td>DYA 500&ndash;599</td><td>-1</td></tr>
+          </tbody>
+        </table>
+        <p class="muted">Punt returns count for the player (not the DEF). Kickoff returns for TD count for the defense; kick returns allowed for TD count against the defense.</p>
+      </section>
 
-    <!-- YEAR EXAMPLE (formatted) -->
-    <section id="y2004" class="section card">
-      <h2>2004 Season</h2>
-      <p><strong>Champion:</strong> Ian Lane</p>
+      <!-- Divisions / Playoffs / Fees -->
+      <section id="divisions" class="section card">
+        <h2>Divisions</h2>
+        <ul>
+          <li><strong>Division Draft:</strong> Pre-draft, bottom four teams draft a pod (top-4 or middle-4 finishers) as divisional rivals (non-snake: 9th → 10th → 11th → 12th).</li>
+          <li><strong>Scheduling:</strong> Play every team once; divisional rivals twice.</li>
+        </ul>
+      </section>
 
-      <h3>Playoffs</h3>
-      <table>
-        <thead><tr><th>Round</th><th>Result</th></tr></thead>
-        <tbody>
-          <tr><td>Round 1</td><td>Matt Altman def. Dave Slater (92–86); Ian Lane def. Peter Ott (81–67)</td></tr>
-          <tr><td>Final</td><td>Ian Lane def. Matt Altman (110–68)</td></tr>
-        </tbody>
-      </table>
+      <section id="playoffs" class="section card">
+        <h2>Playoffs</h2>
+        <ul>
+          <li>Top <strong>6</strong> qualify; top <strong>2</strong> get a bye.</li>
+          <li>Runs Week 14 → Week 16.</li>
+          <li>Non-playoff teams may still make roster moves.</li>
+        </ul>
+      </section>
 
-      <h3>Regular Season Standings</h3>
-      <table>
-        <thead><tr><th>Team</th><th>W</th><th>L</th><th>T</th><th>PF</th><th>PA</th></tr></thead>
-        <tbody>
-          <tr><td>Matt Altman</td><td>12</td><td>3</td><td>0</td><td>1330</td><td>1091</td></tr>
-          <tr><td>Peter Ott</td><td>12</td><td>3</td><td>0</td><td>1286</td><td>1049</td></tr>
-          <tr><td>Ian Lane</td><td>11</td><td>4</td><td>0</td><td>1429</td><td>1226</td></tr>
-          <tr><td>Dave Slater</td><td>10</td><td>5</td><td>0</td><td>1286</td><td>1127</td></tr>
-          <tr><td>Joe Trendowski</td><td>9</td><td>5</td><td>1</td><td>1164</td><td>1164</td></tr>
-          <tr><td>Matt Verone</td><td>8</td><td>6</td><td>1</td><td>1327</td><td>1089</td></tr>
-          <tr><td>John Condon</td><td>4</td><td>10</td><td>1</td><td>1230</td><td>1230</td></tr>
-          <tr><td>Chris Haigney</td><td>4</td><td>11</td><td>0</td><td>1063</td><td>1344</td></tr>
-          <tr><td>Matt Winter</td><td>2</td><td>13</td><td>0</td><td>1299</td><td>1299</td></tr>
-          <tr><td>Matt Condon</td><td>1</td><td>13</td><td>1</td><td>1341</td><td>1341</td></tr>
-        </tbody>
-      </table>
+      <section id="fees" class="section card">
+        <h2>League Fees &amp; Payouts</h2>
+        <ul>
+          <li><strong>Fees:</strong> $125 due before NFL Week 1 (PayPal or cash). Unpaid: Commissioner sets lineups.</li>
+        </ul>
+        <h3>Payouts</h3>
+        <table>
+          <thead><tr><th>Prize</th><th>Amount</th></tr></thead>
+          <tbody>
+            <tr><td>Champion</td><td>$660 + Meat Plate</td></tr>
+            <tr><td>Runner-Up</td><td>$330</td></tr>
+            <tr><td>3rd</td><td>$230</td></tr>
+            <tr><td>4th</td><td>$130</td></tr>
+            <tr><td>5th</td><td>Whiskey Trophy</td></tr>
+            <tr><td>6th</td><td>&mdash;</td></tr>
+            <tr><td>Most Points (Regular Season)</td><td>$100</td></tr>
+            <tr><td>Fantasy King of the Hill</td><td>$50</td></tr>
+          </tbody>
+        </table>
+      </section>
 
-      <h3>Season Recap</h3>
-      <p>…(original recap preserved in the transcript below).</p>
+      <!-- 2004 Season -->
+      <section id="y2004" class="section card">
+        <h2>2004 Season</h2>
+        <p><strong>Champion:</strong> Ian Lane</p>
 
-      <h3>Awards &amp; Records</h3>
-      <ul>
-        <li><em>Rookie of the Year:</em> Willis McGahee (Trendowski)</li>
-        <li><em>Steal of the Draft:</em> Curtis Martin (Lane, 5.05)</li>
-        <li><em>Bust of the Draft:</em> Steve McNair (Winter, 2.06)</li>
-        <li><em>Fantasy MVP:</em> Daunte Culpepper (Slater)</li>
-      </ul>
-      <ul>
-        <li>Highest Points: Verone, Wk 8, 154</li>
-        <li>Lowest Points: Winter, Wk 11, 28</li>
-        <li>Longest Win Streak: Altman, 6 (Wks 8–13)</li>
-        <li>Longest Loss Streak: Winter, 11 (Wks 1–11)</li>
-        <li>Biggest Win: Verone 154–61 over Haigney (Wk 8)</li>
-      </ul>
-    </section>
+        <h3>Playoffs</h3>
+        <table>
+          <thead><tr><th>Round</th><th>Result</th></tr></thead>
+          <tbody>
+            <tr><td>Round 1</td><td>Matt Altman def. Dave Slater (92&ndash;86); Ian Lane def. Peter Ott (81&ndash;67)</td></tr>
+            <tr><td>Final</td><td>Ian Lane def. Matt Altman (110&ndash;68)</td></tr>
+          </tbody>
+        </table>
 
-    <!-- Full transcript to preserve everything now -->
-    <section id="transcript" class="section card">
-      <h2>Full 2017 Transcript</h2>
-      <details open>
-        <summary>Show / Hide original text</summary>
-        <div class="body">
-          <pre class="trans">
+        <h3>Regular Season Standings</h3>
+        <table>
+          <thead><tr><th>Team</th><th>W</th><th>L</th><th>T</th><th>PF</th><th>PA</th></tr></thead>
+          <tbody>
+            <tr><td>Matt Altman</td><td>12</td><td>3</td><td>0</td><td>1330</td><td>1091</td></tr>
+            <tr><td>Peter Ott</td><td>12</td><td>3</td><td>0</td><td>1286</td><td>1049</td></tr>
+            <tr><td>Ian Lane</td><td>11</td><td>4</td><td>0</td><td>1429</td><td>1226</td></tr>
+            <tr><td>Dave Slater</td><td>10</td><td>5</td><td>0</td><td>1286</td><td>1127</td></tr>
+            <tr><td>Joe Trendowski</td><td>9</td><td>5</td><td>1</td><td>1164</td><td>1164</td></tr>
+            <tr><td>Matt Verone</td><td>8</td><td>6</td><td>1</td><td>1327</td><td>1089</td></tr>
+            <tr><td>John Condon</td><td>4</td><td>10</td><td>1</td><td>1230</td><td>1230</td></tr>
+            <tr><td>Chris Haigney</td><td>4</td><td>11</td><td>0</td><td>1063</td><td>1344</td></tr>
+            <tr><td>Matt Winter</td><td>2</td><td>13</td><td>0</td><td>1299</td><td>1299</td></tr>
+            <tr><td>Matt Condon</td><td>1</td><td>13</td><td>1</td><td>1341</td><td>1341</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Season Recap</h3>
+        <p>&hellip;(original recap preserved in the transcript below).</p>
+
+        <h3>Awards &amp; Records</h3>
+        <ul>
+          <li><em>Rookie of the Year:</em> Willis McGahee (Trendowski)</li>
+          <li><em>Steal of the Draft:</em> Curtis Martin (Lane, 5.05)</li>
+          <li><em>Bust of the Draft:</em> Steve McNair (Winter, 2.06)</li>
+          <li><em>Fantasy MVP:</em> Daunte Culpepper (Slater)</li>
+        </ul>
+        <ul>
+          <li>Highest Points: Verone, Wk 8, 154</li>
+          <li>Lowest Points: Winter, Wk 11, 28</li>
+          <li>Longest Win Streak: Altman, 6 (Wks 8&ndash;13)</li>
+          <li>Longest Loss Streak: Winter, 11 (Wks 1&ndash;11)</li>
+          <li>Biggest Win: Verone 154&ndash;61 over Haigney (Wk 8)</li>
+        </ul>
+      </section>
+
+      <!-- Full transcript -->
+      <section id="transcript" class="section card">
+        <h2>Full 2017 Transcript</h2>
+        <details>
+          <summary>Show / Hide original text</summary>
+          <div class="body">
+            <pre class="trans">
 The League History
 
 2017 Edition
@@ -350,83 +346,64 @@ At the draft the last place team must dress in a fashion chosen by the champions
 All Champions must get their victory engraved on the Glorious Meat Plate to be saved for all eternity.
 
 Draft Order
-12th Pick: The previous year’s Champion.
-11th Pick: The previous year’s runner up.
+12th Pick: The previous year's Champion.
+11th Pick: The previous year's runner up.
 10th Pick: Team winning the consolation game.
 9th Pick: Team losing the consolation game.
 8th Pick: Winner of the Whiskey Bowl can choose this or 7th pick. Loser will receive the other pick.
 7th Pick: Winner of the Whiskey Bowl can choose this or 7th pick. Loser will receive the other pick.
-Draft Lottery: The remaining picks will be chosen at random via a draft lottery. Each team that did not finish in the playoffs will receive a pre-defined chance to win the 1st pick in next year’s draft. The draft lottery is to be held at either the annual Christmas Party, the annual 3rd of July Beer Pong Tournament. In the unlikely event that due to age, death, incompetence, or life in general those events are canceled, the draft lottery may be held the day of the draft.
-12th Place Finisher: 40%
-11th Place Finisher: 27%
-10th Place Finisher: 15%
-9th Place Finisher: 8%
-8th Place Finisher: 6%
-7th Place Finisher: 4%
+Draft Lottery: The remaining picks will be chosen at random via a draft lottery...
+            </pre>
+          </div>
+        </details>
+        <p class="muted mt-1">We'll keep formatting the remaining years (2005&ndash;2016) into the pretty layout above.</p>
+      </section>
+    </main>
 
-Trades
-Veto Power: The Commissioner maintains veto power over all trades. ...
-[ The remainder of your 2004–2016 sections,
-  awards, records, and afterword are preserved verbatim here.
-  (This is the exact text you pasted.) ]
-          </pre>
-        </div>
-      </details>
-      <p class="muted" style="margin-top:8px">We’ll keep formatting the remaining years (2005–2016) into the pretty layout above. The full original text stays available here in the meantime.</p>
-    </section>
-  </main>
+    <!-- TOC -->
+    <aside class="aside">
+      <div class="card toc" id="toc">
+        <h3>On this page</h3>
+      </div>
+      <div class="card mt-2" style="padding:12px 16px">
+        <p class="muted small mb-0">Tip: Click a heading to get a deep link you can share.</p>
+      </div>
+    </aside>
+  </div>
 
-  <!-- TOC -->
-  <aside class="aside">
-    <div class="card toc" id="toc">
-      <h3>On this page</h3>
-      <!-- JS will populate links -->
-    </div>
-    <div class="card" style="padding:10px 14px;margin-top:12px">
-      <div class="muted">Tip: Click a heading to get a deep link you can share.</div>
-    </div>
-  </aside>
-</div>
+  <footer class="site-footer">
+    <div>&copy; 2004&ndash;<span id="year"></span> Season Ending Roster</div>
+    <div class="foot-meta">History v1 &bull; Source: 2017 book (web edition)</div>
+  </footer>
 
-<!-- footer -->
-<div class="footer">
-  <div>© 2004–<span id="year"></span> Season Ending Roster</div>
-  <div class="muted">History v1 • Source: 2017 book (web edition)</div>
-</div>
+  <script>
+    // Set sticky offset
+    (function setSticky() {
+      function apply() {
+        const bar = document.querySelector('.sitebar');
+        const h = bar ? Math.ceil(bar.getBoundingClientRect().height) : 60;
+        document.documentElement.style.setProperty('--sticky-top', (h + 8) + 'px');
+      }
+      apply();
+      window.addEventListener('resize', apply, { passive: true });
+    })();
 
-<script>
-// sticky offset for sticky table headers / toc
-(function setSticky(){
-  function apply(){
-    const bar=document.querySelector('.sitebar');
-    const h=bar?Math.ceil(bar.getBoundingClientRect().height):56;
-    document.documentElement.style.setProperty('--stickyTop',(h+8)+'px');
-  }
-  apply(); window.addEventListener('resize',apply,{passive:true});
-})();
-// build TOC
-(function toc(){
-  const root=document.getElementById('toc');
-  const heads=[...document.querySelectorAll('main h2')];
-  const mkId = s => s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
-  heads.forEach(h=>{
-    if(!h.id){ h.id = mkId(h.textContent); }
-    const a=document.createElement('a');
-    a.href = '#'+h.id;
-    a.textContent = h.textContent;
-    root.appendChild(a);
-    // include h3 children
-    const subs=[...h.parentElement.querySelectorAll('h3')];
-    subs.forEach(s=>{
-      if(!s.id){ s.id = mkId(h.id+'-'+s.textContent); }
-      const sa=document.createElement('a');
-      sa.href = '#'+s.id; sa.textContent = s.textContent; sa.className='sub';
-      root.appendChild(sa);
-    });
-  });
-})();
-// year in footer
-document.getElementById('year').textContent = new Date().getFullYear();
-</script>
+    // Build TOC
+    (function toc() {
+      const root = document.getElementById('toc');
+      const heads = [...document.querySelectorAll('main h2')];
+      const mkId = s => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+      heads.forEach(h => {
+        if (!h.id) { h.id = mkId(h.textContent); }
+        const a = document.createElement('a');
+        a.href = '#' + h.id;
+        a.textContent = h.textContent;
+        root.appendChild(a);
+      });
+    })();
+
+    // Year in footer
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
