@@ -154,13 +154,39 @@ def normalize_owner(manager: str, team_name: str = None) -> str:
     return manager.lower() if manager else "unknown"
 
 
-def get_playoff_weeks(season: int) -> tuple:
-    """Return playoff start week and championship week for a season."""
-    # Standard: playoffs weeks 14-16, championship week 16
-    # Some years may vary
-    if season >= 2021:
-        return 15, 17  # 17-game season era
-    return 14, 16
+def get_championship_bracket_max_seed(num_teams: int) -> int:
+    """Return max seed for championship bracket based on league size.
+
+    - 10-team leagues (2004-2007): 4-team championship bracket (seeds 1-4)
+    - 12-team leagues (2008+): 6-team championship bracket (seeds 1-6)
+    """
+    return 4 if num_teams <= 10 else 6
+
+
+def get_playoff_weeks(season: int, num_teams: int) -> tuple:
+    """Return (playoff_start_week, playoff_end_week) for a season.
+
+    The NFL final week is excluded from fantasy playoffs:
+    - Pre-2021: NFL week 17 is excluded, playoffs end week 16
+    - 2021+: NFL week 18 is excluded, playoffs end week 17
+
+    Playoff duration:
+    - 4-team brackets (≤10 teams): 2 weeks
+    - 6-team brackets (>10 teams): 3 weeks (except 2008 which used 2 weeks)
+    """
+    # Championship week (last week before NFL final week)
+    playoff_end = 17 if season >= 2021 else 16
+
+    # Number of playoff weeks
+    if num_teams <= 10:
+        num_playoff_weeks = 2  # 4-team bracket
+    elif season == 2008:
+        num_playoff_weeks = 2  # 2008 used 2-week playoffs despite 12 teams
+    else:
+        num_playoff_weeks = 3  # 6-team bracket
+
+    playoff_start = playoff_end - num_playoff_weeks + 1
+    return playoff_start, playoff_end
 
 
 def main():
@@ -177,82 +203,86 @@ def main():
         lambda r: normalize_owner("", r.get("team_name", "")), axis=1
     )
 
-    # Identify playoff games
+    # Build seed lookup: (season, team_name) -> playoff_seed
+    seed_lookup = {}
+    for _, r in standings.iterrows():
+        if pd.notna(r["playoff_seed"]):
+            seed_lookup[(r["season"], r["team_name"])] = int(r["playoff_seed"])
+
+    # Add seeds to matchups
+    matchups["my_seed"] = matchups.apply(
+        lambda r: seed_lookup.get((r["season"], r["team_name"])), axis=1
+    )
+    matchups["opp_seed"] = matchups.apply(
+        lambda r: seed_lookup.get((r["season"], r["opp_name"])), axis=1
+    )
+
+    # Filter to CHAMPIONSHIP BRACKET ONLY (exclude consolation bracket)
+    # Championship bracket: seeds 1-4 for 10-team leagues, seeds 1-6 for 12-team leagues
+    # Also filter to playoff weeks only (based on is_playoffs flag or inferred from week number)
     playoff_rows = []
+    champions_by_season = {}
+
     for season in matchups["season"].unique():
-        playoff_start, champ_week = get_playoff_weeks(int(season))
-        season_playoffs = matchups[
-            (matchups["season"] == season) &
-            (matchups["week"] >= playoff_start)
+        season_matchups = matchups[matchups["season"] == season]
+        num_teams = len(standings[standings["season"] == season])
+        max_champ_seed = get_championship_bracket_max_seed(num_teams)
+
+        # Determine playoff weeks based on season and league size
+        playoff_start, playoff_end = get_playoff_weeks(int(season), num_teams)
+
+        # Championship bracket games: BOTH teams must be in the championship bracket
+        # and within playoff weeks
+        champ_bracket_games = season_matchups[
+            (season_matchups["week"] >= playoff_start) &
+            (season_matchups["week"] <= playoff_end) &
+            (season_matchups["my_seed"].notna()) &
+            (season_matchups["opp_seed"].notna()) &
+            (season_matchups["my_seed"] <= max_champ_seed) &
+            (season_matchups["opp_seed"] <= max_champ_seed)
         ].copy()
-        season_playoffs["is_championship"] = season_playoffs["week"] == champ_week
-        playoff_rows.append(season_playoffs)
+
+        if len(champ_bracket_games) == 0:
+            continue
+
+        playoff_rows.append(champ_bracket_games)
+
+        # Find champion: the team that went UNDEFEATED in the championship bracket
+        team_stats = {}
+        for _, game in champ_bracket_games.iterrows():
+            team = game["team_name"]
+            if team not in team_stats:
+                team_stats[team] = {"wins": 0, "losses": 0, "seed": game["my_seed"]}
+            if game["pts_for"] > game["pts_against"]:
+                team_stats[team]["wins"] += 1
+            elif game["pts_for"] < game["pts_against"]:
+                team_stats[team]["losses"] += 1
+
+        # Champion is the undefeated team (with most wins if multiple)
+        undefeated = [(t, s) for t, s in team_stats.items() if s["losses"] == 0 and s["wins"] > 0]
+        if undefeated:
+            # Sort by wins descending
+            undefeated.sort(key=lambda x: -x[1]["wins"])
+            champ_team, champ_stats = undefeated[0]
+            owner = normalize_owner("", champ_team)
+
+            # Get rank from standings
+            season_standings = standings[standings["season"] == season]
+            team_standing = season_standings[season_standings["team_name"] == champ_team]
+            rank = int(team_standing["rank"].iloc[0]) if len(team_standing) > 0 and pd.notna(team_standing["rank"].iloc[0]) else None
+
+            champions_by_season[str(season)] = {
+                "franchise_owner": owner,
+                "team_name": champ_team,
+                "seed": int(champ_stats["seed"]),
+                "rank": rank
+            }
 
     if not playoff_rows:
         print("No playoff data found")
         return
 
     playoffs = pd.concat(playoff_rows, ignore_index=True)
-
-    # Determine champions by tracking the playoff bracket
-    # We need to identify the actual championship game, not just highest score
-    champions_by_season = {}
-    for season in playoffs["season"].unique():
-        playoff_start, champ_week = get_playoff_weeks(int(season))
-
-        # Get semi-final winners (week before championship)
-        semi_week = champ_week - 1
-        semi_winners = set()
-        semi_games = playoffs[
-            (playoffs["season"] == season) &
-            (playoffs["week"] == semi_week) &
-            (playoffs["pts_for"] > playoffs["pts_against"])
-        ]
-        for _, game in semi_games.iterrows():
-            semi_winners.add(game["team_key"])
-
-        # Championship game is between semi-final winners in championship week
-        champ_week_games = playoffs[
-            (playoffs["season"] == season) &
-            (playoffs["week"] == champ_week) &
-            (playoffs["pts_for"] > playoffs["pts_against"])
-        ]
-
-        # Find the game where winner was a semi-final winner playing another semi-final winner
-        champ_game = None
-        for _, game in champ_week_games.iterrows():
-            if game["team_key"] in semi_winners and game["opp_key"] in semi_winners:
-                champ_game = game
-                break
-
-        # Fallback: if no semi-final tracking works, use the winner who was also in semis
-        if champ_game is None:
-            for _, game in champ_week_games.iterrows():
-                if game["team_key"] in semi_winners:
-                    champ_game = game
-                    break
-
-        # Last fallback: highest scoring winner
-        if champ_game is None and len(champ_week_games) > 0:
-            champ_game = champ_week_games.loc[champ_week_games["pts_for"].idxmax()]
-
-        if champ_game is not None:
-            owner = normalize_owner("", champ_game["team_name"])
-
-            # Get seed from standings
-            season_standings = standings[standings["season"] == season]
-            team_standing = season_standings[
-                season_standings["team_name"] == champ_game["team_name"]
-            ]
-            seed = int(team_standing["playoff_seed"].iloc[0]) if len(team_standing) > 0 and pd.notna(team_standing["playoff_seed"].iloc[0]) else None
-            rank = int(team_standing["rank"].iloc[0]) if len(team_standing) > 0 and pd.notna(team_standing["rank"].iloc[0]) else None
-
-            champions_by_season[str(season)] = {
-                "franchise_owner": owner,
-                "team_name": champ_game["team_name"],
-                "seed": seed,
-                "rank": rank
-            }
 
     # Compute per-owner playoff stats
     per_owner = []
@@ -267,13 +297,21 @@ def main():
 
         titles = [str(s) for s, c in champions_by_season.items() if c["franchise_owner"] == owner]
 
-        # Get playoff appearances from standings (has playoff_seed)
+        # Get playoff appearances - only count championship bracket appearances
         owner_standings = standings[standings["franchise_owner"] == owner]
-        appearances = len(owner_standings[owner_standings["playoff_seed"].notna()])
+        appearances = 0
+        champ_bracket_seeds = []
+        for _, row in owner_standings.iterrows():
+            if pd.notna(row["playoff_seed"]):
+                season = row["season"]
+                num_teams = len(standings[standings["season"] == season])
+                max_champ_seed = get_championship_bracket_max_seed(num_teams)
+                if row["playoff_seed"] <= max_champ_seed:
+                    appearances += 1
+                    champ_bracket_seeds.append(row["playoff_seed"])
 
-        seeds = owner_standings[owner_standings["playoff_seed"].notna()]["playoff_seed"].dropna()
-        best_seed = int(seeds.min()) if len(seeds) > 0 else None
-        worst_seed = int(seeds.max()) if len(seeds) > 0 else None
+        best_seed = int(min(champ_bracket_seeds)) if champ_bracket_seeds else None
+        worst_seed = int(max(champ_bracket_seeds)) if champ_bracket_seeds else None
 
         total_games = wins + losses + ties
         per_owner.append({
@@ -305,7 +343,8 @@ def main():
             "finishes_rows": len(standings),
             "franchises": len(per_owner),
             "seasons": len(champions_by_season),
-            "playoff_games": len(playoffs) // 2  # Each game counted twice
+            "playoff_games": len(playoffs) // 2,  # Each game counted twice, championship bracket only
+            "note": "All playoff stats are CHAMPIONSHIP BRACKET ONLY (excludes consolation bracket)"
         },
         "champions_by_season": champions_by_season,
         "per_owner": per_owner

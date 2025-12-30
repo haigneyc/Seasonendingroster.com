@@ -452,6 +452,20 @@ input[type="checkbox"] {
   font-size: 16px;
 }
 
+.crown-badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  background: rgba(251, 191, 36, 0.15);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 600;
+  color: #fbbf24;
+  white-space: nowrap;
+}
+
 .roster-table {
   width: 100%;
   border-collapse: collapse;

@@ -54,7 +54,7 @@
     // Create roster card HTML
     function createRosterCard(team) {
       const titles = titlesByOwner[team.owner] || 0;
-      const crowns = titles > 0 ? '&#x1F451;'.repeat(Math.min(titles, 5)) + (titles > 5 ? ` +${titles-5}` : '') : '';
+      const crownBadge = titles > 0 ? `<div class="crown-badge" title="${titles} Championship${titles > 1 ? 's' : ''}">&#x1F451; ${titles}</div>` : '';
 
       const playersHtml = team.players.map(p => `
         <tr>
@@ -70,7 +70,7 @@
               <h3>${team.display_name}</h3>
               <div class="team-name">${team.team_name}</div>
             </div>
-            ${crowns ? `<div class="crown-badges">${crowns}</div>` : ''}
+            ${crownBadge}
           </div>
           <table class="roster-table">
             <thead>
