@@ -30,6 +30,7 @@
       <label for="seasonSel"><strong>Season</strong></label>
       <select id="seasonSel"></select>
       <label><input type="checkbox" id="showTeams" /> Show team names</label>
+      <a id="seasonLink" href="#" class="btn" style="margin-left:auto">View Full Season Details</a>
     </div>
 
     <p class="hint mb-2">Winners are highlighted. Consolation bracket (seeds 7-12) is hidden. <span id="src"></span></p>
@@ -214,6 +215,7 @@
         const games = (bySeason.get(season) || []).slice().sort((a, b) => a.week - b.week);
         const rounds = groupRounds(games);
         render(season, rounds, document.getElementById('showTeams').checked);
+        document.getElementById('seasonLink').href = `seasons/${season}.html`;
       }
       sel.addEventListener('change', run);
       document.getElementById('showTeams').addEventListener('change', run);

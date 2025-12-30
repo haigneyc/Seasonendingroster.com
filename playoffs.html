@@ -191,7 +191,7 @@
       const champsBody = document.querySelector("#tblChamps tbody");
       champsBody.innerHTML = champs.map(r => `
         <tr>
-          <td>${esc(r.season)}</td>
+          <td><a href="seasons/${esc(r.season)}.html" style="color:var(--accent);font-weight:600">${esc(r.season)}</a></td>
           <td>${esc(r.franchise_owner)}</td>
           <td>${esc(r.team_name || "")}</td>
           <td class="right">${fmt(r.seed)}</td>
