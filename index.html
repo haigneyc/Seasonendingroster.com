@@ -3,13 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>The League</title>
+  <title>The League - 2025 Rosters</title>
   <style>
     :root { --bg:#0f0f10; --card:#1b1b1d; --cardHover:#252528; --text:#fff; --line:#26262a; --muted:#a0a0a8; }
     * { box-sizing: border-box; }
     body {
       margin: 0; font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-      background: var(--bg); color: var(--text); display: flex; flex-direction: column; align-items: center;
+      background: var(--bg); color: var(--text);
     }
 
     /* ===== Top bar ===== */
@@ -19,7 +19,7 @@
       background: rgba(15,15,16,0.85); border-bottom: 1px solid var(--line);
     }
     .bar-inner {
-      margin: 0 auto; max-width: 1000px; padding: 12px 20px;
+      margin: 0 auto; max-width: 1200px; padding: 12px 20px;
       display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: center;
     }
     .brand { font-size: 18px; font-weight: 700; letter-spacing:.2px; }
@@ -37,60 +37,114 @@
     .tabs a:hover { background: var(--cardHover); border-color: var(--line); }
     .tabs a[aria-current="page"] { background: var(--card); border-color: var(--line); }
 
-    /* ===== Page header below the bar ===== */
-    header { width: 100%; max-width: 1000px; padding: 16px 20px 8px; }
-    h1 { margin: 0 0 6px; font-size: 24px; }
-    .hint { opacity: .85; font-size: 14px; color: var(--muted); }
+    /* ===== Page content ===== */
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 20px; }
+    h1 { margin: 0 0 8px; font-size: 24px; }
+    .hint { opacity: .85; font-size: 14px; color: var(--muted); margin-bottom: 20px; }
 
-    /* ===== Gallery ===== */
-    .gallery {
-      width: 100%; max-width: 1000px; padding: 20px; display: grid; gap: 14px;
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    /* ===== Roster Grid ===== */
+    .roster-grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     }
-    .item {
-      background: var(--card); border-radius: 12px; padding: 10px; cursor: zoom-in; transition: background .2s ease, transform .08s ease;
+
+    .roster-card {
+      background: var(--card);
       border: 1px solid var(--line);
-    }
-    .item:hover { background: var(--cardHover); transform: translateY(-1px); }
-    .thumb {
-      width: 100%; height: 0; padding-bottom: 100%; border-radius: 8px; overflow: hidden; position: relative;
-    }
-    .thumb img {
-      position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block;
-    }
-    .caption { margin-top: 8px; font-size: 13px; opacity: .95; text-align: center; }
-
-    /* ===== Crown strip ===== */
-    .crown-strip{
-      position:absolute; top:6px; left:6px;
-      display:flex; gap:2px; font-size:18px; line-height:1;
-      filter: drop-shadow(0 1px 2px rgba(0,0,0,.8));
-      user-select:none; pointer-events:none;
-    }
-    .crown-strip .count{
-      margin-left:6px; font-size:12px; padding:2px 6px; border-radius:999px;
-      background: rgba(0,0,0,.55); border:1px solid rgba(255,255,255,.15);
+      border-radius: 12px;
+      overflow: hidden;
     }
 
-    /* ===== Lightbox ===== */
-    .lightbox {
-      position: fixed; inset: 0; background: rgba(0,0,0,.85);
-      display: none; align-items: center; justify-content: center; padding: 20px; z-index: 9999;
+    .roster-header {
+      background: linear-gradient(135deg, #1e3a5f 0%, #2d1b4e 100%);
+      padding: 12px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
-    .lightbox.open { display: flex; }
-    .lightbox img {
-      max-width: 100%; max-height: 85vh; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,.6);
+
+    .roster-header h3 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 600;
     }
-    .close, .nav {
-      position: fixed; top: 14px; font-size: 14px; background: rgba(255,255,255,.12);
-      border: 1px solid rgba(255,255,255,.2); color: #fff; padding: 10px 12px; border-radius: 10px; cursor: pointer;
-      backdrop-filter: blur(6px);
+
+    .roster-header .team-name {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 2px;
     }
-    .close { right: 14px; }
-    .nav { top: 50%; transform: translateY(-50%); }
-    .prev { left: 14px; }
-    .next { right: 14px; }
-    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+    .crown-badges {
+      display: flex;
+      gap: 2px;
+      font-size: 16px;
+    }
+
+    .roster-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .roster-table th {
+      text-align: left;
+      padding: 8px 12px;
+      background: rgba(0,0,0,0.2);
+      color: var(--muted);
+      font-weight: 500;
+      font-size: 11px;
+      text-transform: uppercase;
+    }
+
+    .roster-table td {
+      padding: 6px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .roster-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .roster-table tr:hover {
+      background: var(--cardHover);
+    }
+
+    .pos {
+      display: inline-block;
+      min-width: 32px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .pos-QB { background: #c41e3a; }
+    .pos-RB { background: #00ceb8; color: #000; }
+    .pos-WR { background: #58a7ff; color: #000; }
+    .pos-TE { background: #ffae58; color: #000; }
+    .pos-K { background: #bd10e0; }
+    .pos-DEF { background: #8b5a2b; }
+    .pos-BN { background: #444; }
+    .pos-IR { background: #666; }
+
+    .player-team {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    /* Footer */
+    .site-footer {
+      margin-top: 40px;
+      padding: 20px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+      border-top: 1px solid var(--line);
+    }
+    .foot-meta { margin-top: 6px; font-size: 11px; }
   </style>
 </head>
 <body>
@@ -99,10 +153,10 @@
     <div class="bar-inner">
       <div>
         <div class="brand">Season Ending Roster</div>
-        <div class="sub">Pick a clown to see his 2024 roster.</div>
+        <div class="sub">2025 Season Final Rosters</div>
       </div>
       <nav class="tabs" aria-label="Primary">
-        <a href="index.html">Home</a>
+        <a href="index.html" aria-current="page">Home</a>
         <a href="franchises.html">Franchises</a>
         <a href="playoffs.html">Playoffs</a>
         <a href="brackets.html">Playoff Brackets</a>
@@ -112,293 +166,127 @@
     </div>
   </div>
 
-  <!-- Optional page header area for breadcrumbs or notes -->
-  <header></header>
+  <div class="wrap">
+    <h1>2025 Season Ending Rosters</h1>
+    <p class="hint">Final rosters for each franchise at the end of the 2025 season.</p>
 
-  <main class="gallery" id="gallery">
-    <!-- Existing figures preserved -->
-    <figure class="item" data-full="images/IMG_6024.jpeg" data-alt="Loser">
-      <div class="thumb"><img src="images/IMG_5371.jpeg" alt="Commish"></div>
-      <figcaption class="caption">Commish</figcaption>
-    </figure>
-
-    <figure class="item" data-full="images/IMG_6025.jpeg" data-alt="Loser">
-      <div class="thumb"><img src="images/IMG_5140.png" alt="Misery"></div>
-      <figcaption class="caption">Winter</figcaption>
-    </figure>
-
-    <figure class="item" data-full="images/IMG_6020.jpeg" data-alt="Loser">
-      <div class="thumb"><img src="images/IMG_6750.jpeg" alt="Frog"></div>
-      <figcaption class="caption">Johnny</figcaption>
-    </figure>
-
-    <figure class="item" data-full="images/IMG_6017.jpeg" data-alt="almost almost almost almost champ">
-      <div class="thumb"><img src="images/IMG_1024.jpeg" alt="Steed on Steed"></div>
-      <figcaption class="caption">Sterbank</figcaption>
-    </figure>
-
-    <figure class="item" data-full="images/IMG_6016.jpeg" data-alt="Almost almost almost champ">
-      <div class="thumb"><img src="images/IMG_2929.jpeg" alt="EEEÈÊĚẼĒĖĘÉË"></div>
-      <figcaption class="caption">Ian</figcaption>
-    </figure>
-
-    <figure class="item" data-full="images/IMG_6014.jpeg" data-alt="Almost Champ">
-      <div class="thumb"><img src="images/IMG_0973.jpeg" alt="Blackout"></div>
-      <figcaption class="caption">Altman</figcaption>
-    </figure>
-
-    <figure class="item" data-full="images/IMG_6018.jpeg" data-alt="Almost almost almost almost almost champ">
-      <div class="thumb"><img src="images/IMG_1631.jpeg" alt="OttOttOttOttOttOttOtt"></div>
-      <figcaption class="caption">Ott</figcaption>
-    </figure>
-
-    <figure class="item" data-full="images/IMG_6022.jpeg" data-alt="Loser">
-      <div class="thumb"><img src="images/IMG_0328.jpeg" alt="Former Fortune Teller"></div>
-      <figcaption class="caption">Slater</figcaption>
-    </figure>
-
-    <figure class="item" data-full="images/IMG_6015.jpeg" data-alt="Almost almost champ">
-      <div class="thumb"><img src="images/IMG_0779.jpeg" alt="Man remember that story when the crazed italian cab driver hit the guy riding the vespa and drove off manically cackling? i think about that every now and then"></div>
-      <figcaption class="caption">Matty</figcaption>
-    </figure>
-
-    <figure class="item" data-full="images/IMG_6021.jpeg" data-alt="Loser">
-      <div class="thumb"><img src="images/IMG_0057.jpeg" alt="ML stands for Motorcycle Lover"></div>
-      <figcaption class="caption">ML</figcaption>
-    </figure>
-
-    <figure class="item" data-full="images/IMG_6013.jpeg" data-alt="Champ">
-      <div class="thumb"><img src="images/IMG_1550.jpeg" alt="3 time champ..."></div>
-      <figcaption class="caption">V</figcaption>
-    </figure>
-
-    <figure class="item" data-full="images/IMG_6023.jpeg" data-alt="Loser">
-      <div class="thumb"><img src="images/IMG_2139.jpeg" alt="Can't believe he's riding his coatails"></div>
-      <figcaption class="caption">Brian JK Cory</figcaption>
-    </figure>
-  </main>
-
-  <!-- Lightbox -->
-  <div class="lightbox" id="lightbox" aria-modal="true" role="dialog">
-    <button class="close" id="closeBtn" aria-label="Close full image">Close</button>
-    <button class="nav prev" id="prevBtn" aria-label="Previous image">‹</button>
-    <img id="fullImg" alt="" />
-    <button class="nav next" id="nextBtn" aria-label="Next image">›</button>
-    <span class="sr-only" id="srHelp">Tap anywhere to close</span>
+    <div class="roster-grid" id="rosterGrid">
+      <!-- Roster cards will be populated by JavaScript -->
+      <div style="text-align: center; padding: 40px; color: var(--muted);">Loading rosters...</div>
+    </div>
   </div>
 
   <script>
-    (function () {
-      const items = Array.from(document.querySelectorAll('.item'));
-      const box = document.getElementById('lightbox');
-      const full = document.getElementById('fullImg');
-      const closeBtn = document.getElementById('closeBtn');
-      const prevBtn = document.getElementById('prevBtn');
-      const nextBtn = document.getElementById('nextBtn');
-      let i = -1;
+    // Franchise titles data (will be loaded from CSV)
+    let titlesByOwner = {};
 
-      function openAt(idx) {
-        i = idx;
-        const el = items[i];
-        full.src = el.dataset.full;
-        full.alt = el.dataset.alt || '';
-        box.classList.add('open');
-        document.body.style.overflow = 'hidden';
-        // Preload neighbors
-        [i-1, i+1].forEach(j => {
-          if (items[j]) { const img = new Image(); img.src = items[j].dataset.full; }
-        });
+    // Position CSS class mapping
+    const posClass = (pos) => {
+      const base = pos.replace(/[^A-Z]/gi, '').toUpperCase();
+      if (['QB', 'RB', 'WR', 'TE', 'K', 'DEF', 'BN', 'IR'].includes(base)) {
+        return `pos-${base}`;
       }
-      function close() {
-        box.classList.remove('open');
-        document.body.style.overflow = '';
-        full.src = '';
-      }
-      function prev() { if (i > 0) openAt(i - 1); }
-      function next() { if (i < items.length - 1) openAt(i + 1); }
+      if (pos.includes('W/R') || pos.includes('FLEX')) return 'pos-WR';
+      return 'pos-BN';
+    };
 
-      items.forEach((el, idx) => el.addEventListener('click', () => openAt(idx)));
-      closeBtn.addEventListener('click', close);
-      prevBtn.addEventListener('click', (e) => { e.stopPropagation(); prev(); });
-      nextBtn.addEventListener('click', (e) => { e.stopPropagation(); next(); });
-      box.addEventListener('click', close);
+    // Create roster card HTML
+    function createRosterCard(team) {
+      const titles = titlesByOwner[team.owner] || 0;
+      const crowns = titles > 0 ? '👑'.repeat(Math.min(titles, 5)) + (titles > 5 ? ` +${titles-5}` : '') : '';
 
-      // Keyboard support
-      window.addEventListener('keydown', (e) => {
-        if (!box.classList.contains('open')) return;
-        if (e.key === 'Escape') close();
-        if (e.key === 'ArrowLeft') prev();
-        if (e.key === 'ArrowRight') next();
-      }, { passive: true });
-    })();
+      const playersHtml = team.players.map(p => `
+        <tr>
+          <td><span class="pos ${posClass(p.position)}">${p.position}</span></td>
+          <td>${p.name} <span class="player-team">${p.team}</span></td>
+        </tr>
+      `).join('');
 
-    document.getElementById('footYear').textContent = new Date().getFullYear();
+      return `
+        <div class="roster-card">
+          <div class="roster-header">
+            <div>
+              <h3>${team.display_name}</h3>
+              <div class="team-name">${team.team_name}</div>
+            </div>
+            ${crowns ? `<div class="crown-badges">${crowns}</div>` : ''}
+          </div>
+          <table class="roster-table">
+            <thead>
+              <tr>
+                <th style="width: 50px;">Pos</th>
+                <th>Player</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${playersHtml}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
 
-    // ===== Footer data/version badge (unchanged) =====
-    (async function(){
-      const CAND = (p)=>[
-        `data/processed/${p}`, `/data/processed/${p}`,
-        `data/proccessed/${p}`, `/data/proccessed/${p}`
+    // Load titles from playoff_metrics.json
+    async function loadTitles() {
+      const paths = [
+        'data/processed/playoff_metrics.json',
+        '/data/processed/playoff_metrics.json'
       ];
-      async function fetchFirst(paths){
-        for(const url of paths){
-          try{
-            const r = await fetch(url, {cache:"no-store"});
-            if (r.ok) {
-              const text = await r.text();
-              const lm = r.headers.get("last-modified");
-              return {url, text, lastModified: lm};
-            }
-          }catch(e){}
-        }
-        return null;
-      }
-      function toHex(buf){
-        return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("");
-      }
 
-      const sources = [
-        ...CAND("playoff_metrics.json"),
-        ...CAND("metrics.json"),
-        ...CAND("franchise_career_stats.csv"),
+      for (const url of paths) {
+        try {
+          const r = await fetch(url, {cache: 'no-store'});
+          if (r.ok) {
+            const data = await r.json();
+            const perOwner = data.per_owner || [];
+            perOwner.forEach(o => {
+              titlesByOwner[o.franchise_owner] = o.titles || 0;
+            });
+            return;
+          }
+        } catch (e) {}
+      }
+    }
+
+    // Load and display rosters
+    async function loadRosters() {
+      await loadTitles();
+
+      const paths = [
+        'site_data/rosters_2025.json',
+        '/site_data/rosters_2025.json'
       ];
-      const res = await fetchFirst(sources);
-      const foot = document.getElementById("siteFoot");
-      const vEl = foot.querySelector(".v");
-      const uEl = foot.querySelector(".u");
-      const sEl = foot.querySelector(".src");
 
-      if (!res){
-        vEl.textContent = "v–";
-        uEl.textContent = "no data";
-        sEl.textContent = "not found";
+      let rosters = null;
+      for (const url of paths) {
+        try {
+          const r = await fetch(url, {cache: 'no-store'});
+          if (r.ok) {
+            rosters = await r.json();
+            break;
+          }
+        } catch (e) {}
+      }
+
+      const grid = document.getElementById('rosterGrid');
+
+      if (!rosters || rosters.length === 0) {
+        grid.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--muted);">No roster data available.</div>';
         return;
       }
 
-      const enc = new TextEncoder().encode(res.text);
-      const hashBuf = await crypto.subtle.digest("SHA-256", enc);
-      const ver = toHex(hashBuf).slice(0, 8);
+      grid.innerHTML = rosters.map(team => createRosterCard(team)).join('');
+    }
 
-      const when = res.lastModified ? new Date(res.lastModified) : new Date();
-      vEl.textContent = "v" + ver;
-      uEl.textContent = when.toLocaleString();
-      sEl.textContent = res.url.replace(location.origin, "");
-    })();
-
-    // ===== Crown badges from franchise_career_stats.csv =====
-    (async function addCrowns(){
-      const CAND = (p)=>[
-        `data/processed/${p}`, `/data/processed/${p}`,
-        `data/proccessed/${p}`, `/data/proccessed/${p}`
-      ];
-      async function fetchCSV(){
-        for (const url of CAND("franchise_career_stats.csv")){
-          try{
-            const r = await fetch(url, {cache:"no-store"});
-            if (r.ok) return await r.text();
-          }catch(e){}
-        }
-        return null;
-      }
-      function parseCSVRows(text){
-        // minimal CSV row parser (handles quoted commas)
-        const rows=[]; let cur=[], buf="", q=false;
-        for (let i=0;i<text.length;i++){
-          const ch=text[i], nx=text[i+1];
-          if (ch === '"'){ if (q && nx === '"'){ buf+='"'; i++; } else { q=!q; } }
-          else if (ch === ',' && !q){ cur.push(buf); buf=""; }
-          else if ((ch === '\n' || ch === '\r') && !q){
-            if (buf.length || cur.length){ cur.push(buf); rows.push(cur); cur=[]; buf=""; }
-            // swallow paired \r\n
-            if (ch === '\r' && nx === '\n') i++;
-          } else { buf += ch; }
-        }
-        if (buf.length || cur.length){ cur.push(buf); rows.push(cur); }
-        return rows;
-      }
-      function norm(s){ return s.toLowerCase().replace(/\s+/g,' ').trim(); }
-
-      // Fallback if CSV missing — at least cover the requested aliases
-      const fallback = {
-        haigney: 3, kratz: 2
-      };
-
-      const csvText = await fetchCSV();
-      let titlesByFranchise = {};
-      if (csvText){
-        const rows = parseCSVRows(csvText);
-        const header = rows[0].map(h=>norm(h));
-        const iFr = header.indexOf('franchise');
-        const iTi = header.indexOf('titles');
-        if (iFr !== -1 && iTi !== -1){
-          for (let r=1;r<rows.length;r++){
-            const fr = norm(rows[r][iFr] ?? "");
-            const ti = parseInt((rows[r][iTi] ?? "0").toString().replace(/[^0-9]/g,''),10) || 0;
-            if (fr) titlesByFranchise[fr] = ti;
-          }
-        }
-      } else {
-        titlesByFranchise = fallback;
-      }
-
-      // Caption → franchise key mapping (aliases)
-      const alias = {
-        'commish': 'haigney',
-        'brian jk cory': 'kratz',
-        'v': 'vern',
-        'ml': 'ml',
-        'winter': 'winter',
-        'ott': 'ott',
-        'slater': 'slater',
-        'altman': 'altman',
-        'ian': 'ian',
-        'sterbank': 'sterbank',
-        'matty': 'matty'
-        // If needed: 'johnny': 'trendo'
-      };
-
-      function captionToFranchise(caption){
-        const cap = norm(caption);
-        if (alias[cap]) return alias[cap];
-        // fallback: try exact match to a franchise key in CSV
-        if (titlesByFranchise[cap] != null) return cap;
-        // last resort: single-letter 'v' etc handled above
-        return null;
-      }
-
-      document.querySelectorAll('.item').forEach(fig=>{
-        const cap = fig.querySelector('.caption')?.textContent || '';
-        const fr = captionToFranchise(cap);
-        if (!fr) return;
-        const titles = titlesByFranchise[fr] ?? 0;
-        if (titles > 0){
-          const strip = document.createElement('div');
-          strip.className = 'crown-strip';
-          // Show up to 5 emojis, then a +N counter to avoid overflow
-          const maxCrowns = 5;
-          const crownsToShow = Math.min(titles, maxCrowns);
-          for (let i=0;i<crownsToShow;i++){
-            const span = document.createElement('span');
-            span.textContent = '👑';
-            strip.appendChild(span);
-          }
-          if (titles > maxCrowns){
-            const more = document.createElement('span');
-            more.className = 'count';
-            more.textContent = `+${titles - maxCrowns}`;
-            strip.appendChild(more);
-          }
-          fig.querySelector('.thumb').appendChild(strip);
-        }
-      });
-    })();
+    // Initialize
+    loadRosters();
+    document.getElementById('footYear').textContent = new Date().getFullYear();
   </script>
 
   <footer class="site-footer" id="siteFoot">
     <div>© 2004–<span id="footYear"></span> Season Ending Roster</div>
     <div class="foot-meta">
-      Data <span class="v">v—</span> • Updated <span class="u">—</span>
-      <span class="src-wrap"> • <span class="src"></span></span>
+      Data from Yahoo Fantasy Football API
     </div>
   </footer>
 </body>

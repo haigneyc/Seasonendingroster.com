@@ -1,0 +1,1991 @@
+[
+  {
+    "owner": "altman",
+    "display_name": "Altman",
+    "team_name": "Dick$hinersConnivers",
+    "manager_nickname": "five1three",
+    "players": [
+      {
+        "name": "Tyler Shough",
+        "position": "QB",
+        "eligible_positions": [
+          "QB"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Ja'Marr Chase",
+        "position": "WR",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Jayden Reed",
+        "position": "WR",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Blake Corum",
+        "position": "RB",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Darren Waller",
+        "position": "TE",
+        "eligible_positions": [
+          "TE",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Jason Myers",
+        "position": "K",
+        "eligible_positions": [
+          "K"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Chimere Dike",
+        "position": "W/R",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Malik Washington",
+        "position": "W/R/T",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Jacory Croskey-Merritt",
+        "position": "W/R/T",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Devaughn Vele",
+        "position": "BN",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T",
+          "IR"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Daniel Jones",
+        "position": "BN",
+        "eligible_positions": [
+          "QB",
+          "IR"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Emanuel Wilson",
+        "position": "BN",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Parker Washington",
+        "position": "BN",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Theo Johnson",
+        "position": "BN",
+        "eligible_positions": [
+          "TE",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Chuba Hubbard",
+        "position": "BN",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Travis Hunter",
+        "position": "BN",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T",
+          "IR"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Malik Nabers",
+        "position": "IR",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T",
+          "IR"
+        ],
+        "team": ""
+      }
+    ]
+  },
+  {
+    "owner": "kratz",
+    "display_name": "Brian JK Cory",
+    "team_name": "howthewesTWOn",
+    "manager_nickname": "Joshua",
+    "players": [
+      {
+        "name": "Sam Darnold",
+        "position": "QB",
+        "eligible_positions": [
+          "QB"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Josh Downs",
+        "position": "WR",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Luther Burden III",
+        "position": "WR",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Kyle Monangai",
+        "position": "RB",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "David Njoku",
+        "position": "TE",
+        "eligible_positions": [
+          "TE",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Chris Boswell",
+        "position": "K",
+        "eligible_positions": [
+          "K"
+        ],
+        "team": ""
+      },
+      {
+        "name": "John Metchie III",
+        "position": "W/R",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Christian Watson",
+        "position": "W/R/T",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Xavier Worthy",
+        "position": "W/R/T",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Jauan Jennings",
+        "position": "BN",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Brian Thomas Jr.",
+        "position": "BN",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Juwan Johnson",
+        "position": "BN",
+        "eligible_positions": [
+          "TE",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Ladd McConkey",
+        "position": "BN",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Josh Jacobs",
+        "position": "BN",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Puka Nacua",
+        "position": "BN",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Jordan Mason",
+        "position": "BN",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      }
+    ]
+  },
+  {
+    "owner": "haigney",
+    "display_name": "Commish",
+    "team_name": "The Horsemasters",
+    "manager_nickname": "hags",
+    "players": [
+      {
+        "name": "Jared Goff",
+        "position": "QB",
+        "eligible_positions": [
+          "QB"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Jerry Jeudy",
+        "position": "WR",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "CeeDee Lamb",
+        "position": "WR",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Tyjae Spears",
+        "position": "RB",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Brenton Strange",
+        "position": "TE",
+        "eligible_positions": [
+          "TE",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Matt Prater",
+        "position": "K",
+        "eligible_positions": [
+          "K"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Dontayvion Wicks",
+        "position": "W/R",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Nick Chubb",
+        "position": "W/R/T",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Elic Ayomanor",
+        "position": "W/R/T",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Kayshon Boutte",
+        "position": "BN",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Matthew Golden",
+        "position": "BN",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Nick Westbrook-Ikhine",
+        "position": "BN",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Sam LaPorta",
+        "position": "BN",
+        "eligible_positions": [
+          "TE",
+          "W/R/T",
+          "IR"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Jayden Daniels",
+        "position": "BN",
+        "eligible_positions": [
+          "QB",
+          "IR"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Dylan Sampson",
+        "position": "BN",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Isaiah Bond",
+        "position": "BN",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Garrett Wilson",
+        "position": "IR",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T",
+          "IR"
+        ],
+        "team": ""
+      }
+    ]
+  },
+  {
+    "owner": "ian",
+    "display_name": "Ian",
+    "team_name": "The Future Kings of Trash",
+    "manager_nickname": "Ian Lane",
+    "players": [
+      {
+        "name": "Tyrod Taylor",
+        "position": "QB",
+        "eligible_positions": [
+          "QB"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Nico Collins",
+        "position": "WR",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Terry McLaurin",
+        "position": "WR",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Saquon Barkley",
+        "position": "RB",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Jake Ferguson",
+        "position": "TE",
+        "eligible_positions": [
+          "TE",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Ka'imi Fairbairn",
+        "position": "K",
+        "eligible_positions": [
+          "K"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Tee Higgins",
+        "position": "W/R",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Tony Pollard",
+        "position": "W/R/T",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Chris Olave",
+        "position": "W/R/T",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Drake Maye",
+        "position": "BN",
+        "eligible_positions": [
+          "QB"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Rachaad White",
+        "position": "BN",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Zach Ertz",
+        "position": "BN",
+        "eligible_positions": [
+          "TE",
+          "W/R/T",
+          "IR"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Christian Kirk",
+        "position": "BN",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Olamide Zaccheaus",
+        "position": "BN",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Justin Fields",
+        "position": "BN",
+        "eligible_positions": [
+          "QB",
+          "IR"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Brandon Aiyuk",
+        "position": "BN",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      }
+    ]
+  },
+  {
+    "owner": "johnny",
+    "display_name": "Johnny",
+    "team_name": "The Assbags",
+    "manager_nickname": "John Condon",
+    "players": [
+      {
+        "name": "Jalen Hurts",
+        "position": "QB",
+        "eligible_positions": [
+          "QB"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Jaylen Waddle",
+        "position": "WR",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Stefon Diggs",
+        "position": "WR",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "D'Andre Swift",
+        "position": "RB",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Terrance Ferguson",
+        "position": "TE",
+        "eligible_positions": [
+          "TE",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Eddy Pineiro",
+        "position": "K",
+        "eligible_positions": [
+          "K"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Kenneth Walker III",
+        "position": "W/R",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "DeVonta Smith",
+        "position": "W/R/T",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "De'Von Achane",
+        "position": "W/R/T",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Luke Farrell",
+        "position": "BN",
+        "eligible_positions": [
+          "TE",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "George Kittle",
+        "position": "BN",
+        "eligible_positions": [
+          "TE",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Jordan Addison",
+        "position": "BN",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Jordan Love",
+        "position": "BN",
+        "eligible_positions": [
+          "QB"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Zach Charbonnet",
+        "position": "BN",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Ricky Pearsall",
+        "position": "BN",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "AJ Barner",
+        "position": "BN",
+        "eligible_positions": [
+          "TE",
+          "W/R/T"
+        ],
+        "team": ""
+      }
+    ]
+  },
+  {
+    "owner": "ml",
+    "display_name": "ML",
+    "team_name": "Reginald (vel) Johnson Harvey",
+    "manager_nickname": "michael",
+    "players": [
+      {
+        "name": "Caleb Williams",
+        "position": "QB",
+        "eligible_positions": [
+          "QB"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Drake London",
+        "position": "WR",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Deebo Samuel",
+        "position": "WR",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Breece Hall",
+        "position": "RB",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Trey McBride",
+        "position": "TE",
+        "eligible_positions": [
+          "TE",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Jake Bates",
+        "position": "K",
+        "eligible_positions": [
+          "K"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Ashton Jeanty",
+        "position": "W/R",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "RJ Harvey",
+        "position": "W/R/T",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Michael Carter",
+        "position": "W/R/T",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "DJ Moore",
+        "position": "BN",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "C.J. Stroud",
+        "position": "BN",
+        "eligible_positions": [
+          "QB"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Wan'Dale Robinson",
+        "position": "BN",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "David Montgomery",
+        "position": "BN",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Rashee Rice",
+        "position": "BN",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T",
+          "IR"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Quentin Johnston",
+        "position": "BN",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Tyler Allgeier",
+        "position": "BN",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Cam Skattebo",
+        "position": "IR",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T",
+          "IR"
+        ],
+        "team": ""
+      }
+    ]
+  },
+  {
+    "owner": "matty",
+    "display_name": "Matty",
+    "team_name": "Food Bag",
+    "manager_nickname": "Matt",
+    "players": [
+      {
+        "name": "Trevor Lawrence",
+        "position": "QB",
+        "eligible_positions": [
+          "QB"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Jaxon Smith-Njigba",
+        "position": "WR",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Emeka Egbuka",
+        "position": "WR",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "James Cook III",
+        "position": "RB",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Dallas Goedert",
+        "position": "TE",
+        "eligible_positions": [
+          "TE",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Tyler Loop",
+        "position": "K",
+        "eligible_positions": [
+          "K"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Jonathan Taylor",
+        "position": "W/R",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Michael Wilson",
+        "position": "W/R/T",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Michael Pittman Jr.",
+        "position": "W/R/T",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Darnell Mooney",
+        "position": "BN",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Troy Franklin",
+        "position": "BN",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Justin Herbert",
+        "position": "BN",
+        "eligible_positions": [
+          "QB"
+        ],
+        "team": ""
+      },
+      {
+        "name": "T.J. Hockenson",
+        "position": "BN",
+        "eligible_positions": [
+          "TE",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Rashod Bateman",
+        "position": "BN",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Joshua Palmer",
+        "position": "BN",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Ty Johnson",
+        "position": "BN",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      }
+    ]
+  },
+  {
+    "owner": "ott",
+    "display_name": "Ott",
+    "team_name": "Ottoman Empire",
+    "manager_nickname": "peterO",
+    "players": [
+      {
+        "name": "Lamar Jackson",
+        "position": "QB",
+        "eligible_positions": [
+          "QB"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Khalil Shakir",
+        "position": "WR",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Amon-Ra St. Brown",
+        "position": "WR",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Kareem Hunt",
+        "position": "RB",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Travis Kelce",
+        "position": "TE",
+        "eligible_positions": [
+          "TE",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Harrison Butker",
+        "position": "K",
+        "eligible_positions": [
+          "K"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Tre Tucker",
+        "position": "W/R",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Isiah Pacheco",
+        "position": "W/R/T",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Colston Loveland",
+        "position": "W/R/T",
+        "eligible_positions": [
+          "TE",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Marvin Harrison Jr.",
+        "position": "BN",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Sean Tucker",
+        "position": "BN",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Alvin Kamara",
+        "position": "BN",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Evan Engram",
+        "position": "BN",
+        "eligible_positions": [
+          "TE",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Joe Burrow",
+        "position": "BN",
+        "eligible_positions": [
+          "QB"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Brock Purdy",
+        "position": "BN",
+        "eligible_positions": [
+          "QB"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Andrei Iosivas",
+        "position": "BN",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      }
+    ]
+  },
+  {
+    "owner": "slater",
+    "display_name": "Slater",
+    "team_name": "Don\u2019t Rock The Goat",
+    "manager_nickname": "Goat",
+    "players": [
+      {
+        "name": "Dak Prescott",
+        "position": "QB",
+        "eligible_positions": [
+          "QB"
+        ],
+        "team": ""
+      },
+      {
+        "name": "George Pickens",
+        "position": "WR",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Adam Thielen",
+        "position": "WR",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Aaron Jones Sr.",
+        "position": "RB",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Hunter Henry",
+        "position": "TE",
+        "eligible_positions": [
+          "TE",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Brandon Aubrey",
+        "position": "K",
+        "eligible_positions": [
+          "K"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Bijan Robinson",
+        "position": "W/R",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Chase Brown",
+        "position": "W/R/T",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Bucky Irving",
+        "position": "W/R/T",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Taysom Hill",
+        "position": "BN",
+        "eligible_positions": [
+          "TE",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Kenneth Gainwell",
+        "position": "BN",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Jalen Coker",
+        "position": "BN",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Davante Adams",
+        "position": "BN",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Rome Odunze",
+        "position": "BN",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Bhayshul Tuten",
+        "position": "BN",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Andy Borregales",
+        "position": "BN",
+        "eligible_positions": [
+          "K"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Quinshon Judkins",
+        "position": "IR",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T",
+          "IR"
+        ],
+        "team": ""
+      }
+    ]
+  },
+  {
+    "owner": "sterbank",
+    "display_name": "Sterbank",
+    "team_name": "The Mustard Museum",
+    "manager_nickname": "Koroco",
+    "players": [
+      {
+        "name": "Jacoby Brissett",
+        "position": "QB",
+        "eligible_positions": [
+          "QB"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Justin Jefferson",
+        "position": "WR",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Tetairoa McMillan",
+        "position": "WR",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Jahmyr Gibbs",
+        "position": "RB",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Harold Fannin Jr.",
+        "position": "TE",
+        "eligible_positions": [
+          "TE",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Chase McLaughlin",
+        "position": "K",
+        "eligible_positions": [
+          "K"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Chris Godwin Jr.",
+        "position": "W/R",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Jaylen Warren",
+        "position": "W/R/T",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "TreVeyon Henderson",
+        "position": "W/R/T",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Brock Bowers",
+        "position": "BN",
+        "eligible_positions": [
+          "TE",
+          "W/R/T",
+          "IR"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Woody Marks",
+        "position": "BN",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Bo Nix",
+        "position": "BN",
+        "eligible_positions": [
+          "QB"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Kimani Vidal",
+        "position": "BN",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Kaleb Johnson",
+        "position": "BN",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Jawhar Jordan",
+        "position": "BN",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Audric Estime",
+        "position": "BN",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Devin Neal",
+        "position": "IR",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T",
+          "IR"
+        ],
+        "team": ""
+      }
+    ]
+  },
+  {
+    "owner": "vern",
+    "display_name": "V",
+    "team_name": "the stunods",
+    "manager_nickname": "Matt",
+    "players": [
+      {
+        "name": "Baker Mayfield",
+        "position": "QB",
+        "eligible_positions": [
+          "QB"
+        ],
+        "team": ""
+      },
+      {
+        "name": "A.J. Brown",
+        "position": "WR",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Mike Evans",
+        "position": "WR",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Derrick Henry",
+        "position": "RB",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Chig Okonkwo",
+        "position": "TE",
+        "eligible_positions": [
+          "TE",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Evan McPherson",
+        "position": "K",
+        "eligible_positions": [
+          "K"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Kyren Williams",
+        "position": "W/R",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Javonte Williams",
+        "position": "W/R/T",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Rico Dowdle",
+        "position": "W/R/T",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Romeo Doubs",
+        "position": "BN",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Matthew Stafford",
+        "position": "BN",
+        "eligible_positions": [
+          "QB"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Alec Pierce",
+        "position": "BN",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Pat Freiermuth",
+        "position": "BN",
+        "eligible_positions": [
+          "TE",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Keenan Allen",
+        "position": "BN",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Keon Coleman",
+        "position": "BN",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Tucker Kraft",
+        "position": "BN",
+        "eligible_positions": [
+          "TE",
+          "W/R/T",
+          "IR"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Trey Benson",
+        "position": "IR",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T",
+          "IR"
+        ],
+        "team": ""
+      }
+    ]
+  },
+  {
+    "owner": "winter",
+    "display_name": "Winter",
+    "team_name": "The RDCs",
+    "manager_nickname": "Kurt Russel",
+    "players": [
+      {
+        "name": "Josh Allen",
+        "position": "QB",
+        "eligible_positions": [
+          "QB"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Courtland Sutton",
+        "position": "WR",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Zay Flowers",
+        "position": "WR",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Omarion Hampton",
+        "position": "RB",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Kyle Pitts Sr.",
+        "position": "TE",
+        "eligible_positions": [
+          "TE",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Cam Little",
+        "position": "K",
+        "eligible_positions": [
+          "K"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Travis Etienne Jr.",
+        "position": "W/R",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Tyrone Tracy Jr.",
+        "position": "W/R/T",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Christian McCaffrey",
+        "position": "W/R/T",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Jameson Williams",
+        "position": "BN",
+        "eligible_positions": [
+          "WR",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Tyler Warren",
+        "position": "BN",
+        "eligible_positions": [
+          "TE",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Brian Robinson Jr.",
+        "position": "BN",
+        "eligible_positions": [
+          "RB",
+          "W/R",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Colby Parkinson",
+        "position": "BN",
+        "eligible_positions": [
+          "TE",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Michael Mayer",
+        "position": "BN",
+        "eligible_positions": [
+          "TE",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Dawson Knox",
+        "position": "BN",
+        "eligible_positions": [
+          "TE",
+          "W/R/T"
+        ],
+        "team": ""
+      },
+      {
+        "name": "Cole Kmet",
+        "position": "BN",
+        "eligible_positions": [
+          "TE",
+          "W/R/T"
+        ],
+        "team": ""
+      }
+    ]
+  }
+]
