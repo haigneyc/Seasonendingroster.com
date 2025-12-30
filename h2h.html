@@ -5,6 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Head-to-Head</title>
   <link rel="stylesheet" href="assets/styles.css" />
+  <style>
+    /* Tables inside card-body don't need sticky headers or corner radius */
+    .card-body table thead th {
+      position: static;
+      box-shadow: none;
+      border-radius: 0;
+    }
+    .card-body table tbody tr:last-child td {
+      border-radius: 0;
+    }
+  </style>
 </head>
 <body>
   <div class="sitebar">
@@ -112,7 +123,7 @@
       }
 
       function parseCSV(text) {
-        const out = []; const rows = []; let i = 0, cur = "", inQ = false;
+        const rows = []; let i = 0, cur = "", inQ = false;
         const push = () => { rows[rows.length - 1].push(cur); cur = ""; };
         const start = () => rows.push([]); start();
         while (i < text.length) {
@@ -125,20 +136,66 @@
         return rows.map(r => Object.fromEntries(header.map((h, i) => [h, r[i] ?? ""])));
       }
 
-      const boolish = v => String(v).toLowerCase().match(/^(1|t|true|y|yes)$/);
       const num = x => (x === "" || x == null) ? null : Number(x);
       const esc = s => String(s).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
 
-      const mres = await fetchText(CAND("matchups.csv"));
+      // Load matchups and standings
+      const [mres, sres] = await Promise.all([
+        fetchText(CAND("matchups.csv")),
+        fetchText(CAND("standings_by_season.csv"))
+      ]);
+
       if (!mres.text) { document.getElementById("summary").textContent = "matchups.csv not found."; return; }
 
-      const games = parseCSV(mres.text).map(r => ({
-        season: r.season, week: num(r.week), playoffs: boolish(r.is_playoffs),
-        A: r.franchise_owner_a, B: r.franchise_owner_b,
-        ptsA: num(r.points_a), ptsB: num(r.points_b),
-        winner: r.winner_owner || "", tie: boolish(r.is_tie)
-      }));
+      // Build team_key -> manager mapping from standings
+      const managerMap = {};
+      if (sres.text) {
+        parseCSV(sres.text).forEach(r => {
+          if (r.team_key && r.manager) managerMap[r.team_key] = r.manager;
+        });
+      }
 
+      // Parse matchups - each row is one team's perspective of a game
+      // We deduplicate by taking only the "home" side (where team_key < opp_key)
+      const rawRows = parseCSV(mres.text);
+      const games = [];
+      const seen = new Set();
+
+      for (const r of rawRows) {
+        const season = r.season;
+        const week = num(r.week);
+        const teamKey = r.team_key;
+        const oppKey = r.opp_key;
+        const ptsFor = num(r.pts_for);
+        const ptsAgainst = num(r.pts_against);
+
+        // Create unique game key (sorted to dedupe)
+        const gameKey = `${season}-${week}-${[teamKey, oppKey].sort().join('-')}`;
+        if (seen.has(gameKey)) continue;
+        seen.add(gameKey);
+
+        // Get manager names, fallback to team_name
+        const ownerA = managerMap[teamKey] || r.team_name || teamKey;
+        const ownerB = managerMap[oppKey] || r.opp_name || oppKey;
+
+        // Determine winner
+        let winner = null;
+        let tie = false;
+        if (ptsFor != null && ptsAgainst != null) {
+          if (ptsFor > ptsAgainst) winner = ownerA;
+          else if (ptsAgainst > ptsFor) winner = ownerB;
+          else tie = true;
+        }
+
+        games.push({
+          season, week,
+          A: ownerA, B: ownerB,
+          ptsA: ptsFor, ptsB: ptsAgainst,
+          winner, tie
+        });
+      }
+
+      // Get unique owners sorted
       const owners = [...new Set(games.flatMap(g => [g.A, g.B]))].filter(Boolean).sort((a, b) => a.localeCompare(b));
 
       const ownerA = document.getElementById("ownerA"), ownerB = document.getElementById("ownerB"), playoffsOnly = document.getElementById("playoffsOnly");
@@ -168,17 +225,23 @@
       playoffsOnly.addEventListener('change', () => { syncURL(); render(); });
       syncURL();
 
-      // Top Rivalries
+      // Top Rivalries (note: playoffs filter not applied to top rivalries)
       const pairKey = (x, y) => [x, y].sort().join(" vs ");
       const agg = {};
       for (const g of games) {
         const k = pairKey(g.A, g.B);
-        const rec = agg[k] || (agg[k] = { A: g.A, B: g.B, games: 0, wA: 0, lA: 0, t: 0, pfA: 0, paA: 0 });
-        rec.games++; rec.pfA += g.ptsA || 0; rec.paA += g.ptsB || 0;
+        if (!agg[k]) agg[k] = { A: g.A, B: g.B, games: 0, wA: 0, lA: 0, t: 0, pfA: 0, paA: 0 };
+        const rec = agg[k];
+        rec.games++;
+        // Normalize points from A's perspective in the pair
+        const isAFirst = g.A === rec.A;
+        rec.pfA += (isAFirst ? g.ptsA : g.ptsB) || 0;
+        rec.paA += (isAFirst ? g.ptsB : g.ptsA) || 0;
         if (g.tie) rec.t++;
-        else if (g.winner === g.A) rec.wA++; else rec.lA++;
+        else if (g.winner === rec.A) rec.wA++;
+        else if (g.winner === rec.B) rec.lA++;
       }
-      const top = Object.entries(agg).map(([k, v]) => ({ owners: k, ...v })).sort((a, b) => b.games - a.games).slice(0, 15);
+      const top = Object.entries(agg).map(([k, v]) => ({ owners: k, ...v })).sort((a, b) => b.games - a.games).slice(0, 10);
       document.querySelector("#tblTop tbody").innerHTML = top.map(r => `
         <tr>
           <td>${esc(r.owners)}</td>
@@ -190,22 +253,29 @@
 
       function render() {
         const A = ownerA.value, B = ownerB.value;
+        // Note: playoffs filter disabled since we don't have playoff flag in CSV yet
         const filt = games.filter(g => (g.A === A && g.B === B) || (g.A === B && g.B === A))
-          .filter(g => playoffsOnly.checked ? g.playoffs : true)
           .sort((x, y) => (Number(x.season) - Number(y.season)) || ((x.week || 0) - (y.week || 0)));
 
         let wins = 0, losses = 0, ties = 0, pf = 0, pa = 0;
         const rows = filt.map(g => {
-          let asA = (g.A === A);
+          const asA = (g.A === A);
           const myPts = asA ? g.ptsA : g.ptsB;
           const oppPts = asA ? g.ptsB : g.ptsA;
+          const opp = asA ? g.B : g.A;
           pf += myPts || 0; pa += oppPts || 0;
-          let res = "T"; if (!g.tie) { res = (g.winner === A) ? "W" : "L"; if (res === "W") wins++; else losses++; } else ties++;
+          let res = "T";
+          if (!g.tie && g.winner) {
+            res = (g.winner === A) ? "W" : "L";
+            if (res === "W") wins++; else losses++;
+          } else if (g.tie) {
+            ties++;
+          }
           return `<tr>
             <td>${esc(g.season)}</td>
             <td>${g.week == null ? '&mdash;' : g.week}</td>
             <td>${esc(A)}</td><td class="right">${myPts == null ? '&mdash;' : myPts.toFixed(1)}</td>
-            <td>${esc(asA ? g.B : g.A)}</td><td class="right">${oppPts == null ? '&mdash;' : oppPts.toFixed(1)}</td>
+            <td>${esc(opp)}</td><td class="right">${oppPts == null ? '&mdash;' : oppPts.toFixed(1)}</td>
             <td class="${res === 'W' ? 'win' : res === 'L' ? 'loss' : 'tie'}">${res}</td>
           </tr>`;
         }).join("");
@@ -215,16 +285,13 @@
         document.getElementById("summary").innerHTML =
           gms ? `<strong>${esc(A)}</strong> vs <strong>${esc(B)}</strong> &mdash; <span class="badge">${wins}-${losses}-${ties}</span>
                  &bull; Win% ${pct === null ? '&mdash;' : (pct * 100).toFixed(1)}%
-                 &bull; PF ${pf.toFixed(1)} / PA ${pa.toFixed(1)} ${playoffsOnly.checked ? '<span class="badge">Playoffs</span>' : ''}`
-              : `No games between ${esc(A)} and ${esc(B)}${playoffsOnly.checked ? ' in playoffs' : ''}.`;
+                 &bull; PF ${pf.toFixed(1)} / PA ${pa.toFixed(1)}`
+              : `No games between ${esc(A)} and ${esc(B)}.`;
 
         document.querySelector("#tblLog tbody").innerHTML = rows || `<tr><td class="muted" colspan="7">No games.</td></tr>`;
         document.getElementById("note").textContent = `${gms} games`;
       }
 
-      ownerA.addEventListener("change", render);
-      ownerB.addEventListener("change", render);
-      playoffsOnly.addEventListener("change", render);
       render();
     })();
   </script>
