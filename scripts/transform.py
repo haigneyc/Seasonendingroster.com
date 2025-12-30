@@ -44,6 +44,40 @@ def get_manager_nickname(t: dict) -> str:
     return mgr.get("nickname", "")
 
 
+def get_division_map(settings: dict) -> dict:
+    """Build a map of division_id -> division_name from settings."""
+    divisions = settings.get("divisions", [])
+    div_map = {}
+    for d in divisions:
+        div_info = d.get("division", {})
+        div_id = div_info.get("division_id")
+        div_name = div_info.get("name", "")
+        if div_id is not None:
+            div_map[str(div_id)] = div_name
+    return div_map
+
+
+def get_team_activity(team_info: dict) -> dict:
+    """Extract team activity stats from team data."""
+    # Convert to int, handling string values
+    def to_int(val):
+        if val is None or val == "":
+            return None
+        try:
+            return int(val)
+        except (ValueError, TypeError):
+            return None
+
+    return {
+        "number_of_moves": to_int(team_info.get("number_of_moves")),
+        "number_of_trades": to_int(team_info.get("number_of_trades")),
+        "faab_balance": to_int(team_info.get("faab_balance")),
+        "waiver_priority": to_int(team_info.get("waiver_priority")),
+        "division_id": team_info.get("division_id"),
+        "draft_grade": team_info.get("draft_grade"),
+    }
+
+
 def transform_standings():
     rows = []
     for season_dir in sorted(RAW_DIR.iterdir()):
@@ -55,8 +89,12 @@ def transform_standings():
         if not (settings_p.exists() and standings_p.exists()):
             continue
 
-        season = load_json(settings_p)["season"]
+        settings = load_json(settings_p)
+        season = settings["season"]
         standings_list = load_json(standings_p)
+
+        # Build division name map from settings
+        div_map = get_division_map(settings)
 
         # Handle both list and dict formats
         if isinstance(standings_list, dict):
@@ -64,12 +102,14 @@ def transform_standings():
                 v for v in standings_list.values() if isinstance(v, dict)
             ]
 
-        # Load team manager info from teams.json if available
+        # Load team manager info and activity from teams.json if available
         team_managers = {}
+        team_activity = {}
         if teams_p.exists():
             teams_data = normalize_team_map(load_json(teams_p))
             for team_key, team_info in teams_data.items():
                 team_managers[team_key] = get_manager_nickname(team_info)
+                team_activity[team_key] = get_team_activity(team_info)
 
         for t in standings_list:
             try:
@@ -77,6 +117,8 @@ def transform_standings():
                 if "outcome_totals" in t:
                     ot = t["outcome_totals"]
                     team_key = t["team_key"]
+                    activity = team_activity.get(team_key, {})
+                    div_id = activity.get("division_id")
                     rows.append({
                         "season": season,
                         "team_key": team_key,
@@ -84,6 +126,8 @@ def transform_standings():
                         "manager": team_managers.get(team_key, get_manager_nickname(t)),
                         "rank": int(t.get("rank", 0)) if t.get("rank") else None,
                         "playoff_seed": t.get("playoff_seed"),
+                        "division_id": div_id,
+                        "division_name": div_map.get(str(div_id), "") if div_id else "",
                         "wins": int(ot.get("wins", 0)),
                         "losses": int(ot.get("losses", 0)),
                         "ties": int(ot.get("ties", 0)),
@@ -92,18 +136,28 @@ def transform_standings():
                         "streak_value": t.get("streak", {}).get("value"),
                         "points_for": float(t.get("points_for", 0)),
                         "points_against": float(t.get("points_against", 0)),
+                        "number_of_moves": activity.get("number_of_moves"),
+                        "number_of_trades": activity.get("number_of_trades"),
+                        "faab_balance": activity.get("faab_balance"),
+                        "waiver_priority": activity.get("waiver_priority"),
+                        "draft_grade": activity.get("draft_grade"),
                     })
                 # Old format: nested standings
                 elif "standings" in t:
                     st = t["standings"]
                     ot = st["outcome_totals"]
+                    team_key = t["team_key"]
+                    activity = team_activity.get(team_key, {})
+                    div_id = activity.get("division_id")
                     rows.append({
                         "season": season,
-                        "team_key": t["team_key"],
+                        "team_key": team_key,
                         "team_name": t["name"],
                         "manager": get_manager_nickname(t),
                         "rank": int(st.get("rank", 0)),
                         "playoff_seed": t.get("playoff_seed"),
+                        "division_id": div_id,
+                        "division_name": div_map.get(str(div_id), "") if div_id else "",
                         "wins": int(ot.get("wins", 0)),
                         "losses": int(ot.get("losses", 0)),
                         "ties": int(ot.get("ties", 0)),
@@ -112,6 +166,11 @@ def transform_standings():
                         "streak_value": st.get("streak", {}).get("value"),
                         "points_for": float(t.get("team_points", {}).get("total", 0)),
                         "points_against": float(t.get("team_points_against", {}).get("total", 0)),
+                        "number_of_moves": activity.get("number_of_moves"),
+                        "number_of_trades": activity.get("number_of_trades"),
+                        "faab_balance": activity.get("faab_balance"),
+                        "waiver_priority": activity.get("waiver_priority"),
+                        "draft_grade": activity.get("draft_grade"),
                     })
             except Exception as e:
                 print(f"⚠️ Skipping team in {season}: {e}")
