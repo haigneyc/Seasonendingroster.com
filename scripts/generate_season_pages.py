@@ -733,20 +733,22 @@ def generate_season_page(season: int, matchups: pd.DataFrame, standings: pd.Data
             margin-bottom: 8px;
         }}
         .champion-banner {{
-            background: linear-gradient(135deg, var(--accent) 0%, #b8860b 100%);
-            color: #000;
+            background: linear-gradient(135deg, #1a3a6e 0%, #2a5298 100%);
+            color: #ffffff;
             padding: 20px 24px;
             border-radius: 8px;
             margin-bottom: 24px;
             text-align: center;
+            box-shadow: 0 4px 12px rgba(26, 58, 110, 0.15);
         }}
         .champion-banner h2 {{
             margin: 0 0 8px;
             font-size: 1.5rem;
+            color: #fbbf24;
         }}
         .champion-banner .team-name {{
             font-style: italic;
-            opacity: 0.9;
+            opacity: 0.85;
         }}
         .section {{
             background: var(--card);

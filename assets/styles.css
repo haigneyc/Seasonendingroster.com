@@ -3,21 +3,26 @@
 
 /* CSS Custom Properties */
 :root {
-  /* Colors */
-  --bg: #0a0a0b;
-  --bg-elevated: #111113;
-  --card: #161618;
-  --card-hover: #1c1c1f;
-  --text: #fafafa;
-  --text-secondary: #a1a1aa;
-  --muted: #71717a;
-  --line: #27272a;
-  --line-subtle: #1f1f22;
-  --accent: #3b82f6;
-  --accent-hover: #60a5fa;
-  --success: #22c55e;
-  --warning: #f59e0b;
-  --error: #ef4444;
+  /* Colors - Light theme with Dark Royal Blue accent
+     Color Theory: Split-complementary scheme
+     Primary: Dark Royal Blue (#1a3a6e)
+     Accents: Grey scale for structure, white for surfaces
+     Complementary: Teal green for success states */
+  --bg: #f4f6f9;
+  --bg-elevated: #ffffff;
+  --card: #ffffff;
+  --card-hover: #f0f3f7;
+  --text: #1e2a3a;
+  --text-secondary: #5c6b7a;
+  --muted: #8d99a8;
+  --line: #dce1e8;
+  --line-subtle: #e8ecf1;
+  --accent: #1a3a6e;
+  --accent-hover: #2a5298;
+  --accent-light: rgba(26, 58, 110, 0.08);
+  --success: #0d8a6a;
+  --warning: #d4820a;
+  --error: #d64545;
 
   /* Spacing */
   --radius-sm: 6px;
@@ -29,11 +34,11 @@
   --max-width: 1200px;
   --sticky-top: 60px;
 
-  /* Shadows */
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
-  --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.15);
+  /* Shadows - lighter for light theme */
+  --shadow-sm: 0 1px 3px rgba(30, 42, 58, 0.06), 0 1px 2px rgba(30, 42, 58, 0.08);
+  --shadow-md: 0 4px 12px rgba(30, 42, 58, 0.08), 0 2px 4px rgba(30, 42, 58, 0.06);
+  --shadow-lg: 0 8px 24px rgba(30, 42, 58, 0.1), 0 4px 8px rgba(30, 42, 58, 0.06);
+  --shadow-glow: 0 0 20px rgba(26, 58, 110, 0.12);
 }
 
 /* Reset & Base */
@@ -85,8 +90,9 @@ a:hover {
   width: 100%;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  background: rgba(10, 10, 11, 0.85);
+  background: rgba(255, 255, 255, 0.92);
   border-bottom: 1px solid var(--line);
+  box-shadow: var(--shadow-sm);
 }
 
 .bar-inner {
@@ -201,7 +207,7 @@ a:hover {
 
 .card-header {
   padding: 16px 20px;
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+  background: linear-gradient(135deg, rgba(26, 58, 110, 0.06) 0%, rgba(42, 82, 152, 0.06) 100%);
   border-bottom: 1px solid var(--line);
 }
 
@@ -339,7 +345,7 @@ input[type="text"]:focus,
 select:focus {
   outline: none;
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+  box-shadow: 0 0 0 3px rgba(26, 58, 110, 0.12);
 }
 
 input[type="search"]::placeholder {
@@ -450,7 +456,7 @@ input[type="checkbox"] {
 }
 
 .roster-header {
-  background: linear-gradient(135deg, #1e3a5f 0%, #2d1b4e 100%);
+  background: linear-gradient(135deg, #1a3a6e 0%, #2a5298 100%);
   padding: 14px 18px;
   display: flex;
   justify-content: space-between;
@@ -461,11 +467,12 @@ input[type="checkbox"] {
   margin: 0;
   font-size: 15px;
   font-weight: 600;
+  color: #ffffff;
 }
 
 .roster-header .team-name {
   font-size: 11px;
-  color: var(--text-secondary);
+  color: rgba(255, 255, 255, 0.75);
   margin-top: 3px;
 }
 
@@ -498,7 +505,7 @@ input[type="checkbox"] {
 .roster-table th {
   text-align: left;
   padding: 10px 14px;
-  background: rgba(0, 0, 0, 0.25);
+  background: rgba(26, 58, 110, 0.06);
   color: var(--text-secondary);
   font-weight: 500;
   font-size: 11px;
