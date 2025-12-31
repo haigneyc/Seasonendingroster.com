@@ -721,6 +721,19 @@ def generate_season_page(season: int, matchups: pd.DataFrame, standings: pd.Data
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{season} Season - Season Ending Roster</title>
+    <meta name="description" content="{season} season results for Season Ending Roster fantasy football league. Champion: {champ_name}." />
+
+    <!-- Open Graph / Facebook / iMessage -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://seasonendingroster.com/seasons/{season}.html" />
+    <meta property="og:title" content="{season} Season - Season Ending Roster" />
+    <meta property="og:description" content="{season} season results. Champion: {champ_name}." />
+    <meta property="og:image" content="https://seasonendingroster.com/images/og-image.png" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://seasonendingroster.com/images/og-image.png" />
+
     <link rel="stylesheet" href="../assets/styles.css" />
     <style>
         .season-wrap {{
@@ -948,6 +961,19 @@ def generate_seasons_index(seasons: list, champions: dict) -> str:
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>All Seasons - Season Ending Roster</title>
+    <meta name="description" content="Browse all seasons of Season Ending Roster fantasy football league from 2004 to present." />
+
+    <!-- Open Graph / Facebook / iMessage -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://seasonendingroster.com/seasons/" />
+    <meta property="og:title" content="All Seasons - Season Ending Roster" />
+    <meta property="og:description" content="Browse all seasons of Season Ending Roster fantasy football league from 2004 to present." />
+    <meta property="og:image" content="https://seasonendingroster.com/images/og-image.png" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://seasonendingroster.com/images/og-image.png" />
+
     <link rel="stylesheet" href="../assets/styles.css" />
     <style>
         .seasons-wrap {{
