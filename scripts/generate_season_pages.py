@@ -585,13 +585,16 @@ def generate_playoff_bracket(season: int, matchups: pd.DataFrame, standings: pd.
 
 def generate_standings_table(season: int, standings: pd.DataFrame) -> str:
     """Generate HTML table for regular season standings."""
-    season_standings = standings[standings["season"] == season].sort_values("rank")
+    season_standings = standings[standings["season"] == season].copy()
+    # Sort by playoff_seed (Final Standing), putting teams without seed at the end
+    season_standings["sort_seed"] = season_standings["playoff_seed"].fillna(999)
+    season_standings = season_standings.sort_values("sort_seed")
 
     html = '''
     <table class="standings-table">
         <thead>
             <tr>
-                <th>Rank</th>
+                <th>Final Standing</th>
                 <th>Team</th>
                 <th>Manager</th>
                 <th>W</th>
@@ -599,7 +602,7 @@ def generate_standings_table(season: int, standings: pd.DataFrame) -> str:
                 <th>T</th>
                 <th>PF</th>
                 <th>PA</th>
-                <th>Seed</th>
+                <th>Playoff Rank</th>
             </tr>
         </thead>
         <tbody>
@@ -607,7 +610,8 @@ def generate_standings_table(season: int, standings: pd.DataFrame) -> str:
 
     for _, r in season_standings.iterrows():
         manager_name = OWNER_NAMES.get(r["manager"], r["manager"])
-        seed = int(r["playoff_seed"]) if pd.notna(r["playoff_seed"]) else "-"
+        final_standing = int(r["playoff_seed"]) if pd.notna(r["playoff_seed"]) else "-"
+        playoff_rank = int(r["rank"]) if pd.notna(r["rank"]) else "-"
         pf = f'{r["points_for"]:.1f}' if pd.notna(r["points_for"]) else "-"
         pa = f'{r["points_against"]:.1f}' if pd.notna(r["points_against"]) else "-"
         wins = int(r["wins"]) if pd.notna(r["wins"]) else 0
@@ -616,7 +620,7 @@ def generate_standings_table(season: int, standings: pd.DataFrame) -> str:
 
         html += f'''
             <tr>
-                <td>{int(r["rank"])}</td>
+                <td>{final_standing}</td>
                 <td>{r["team_name"]}</td>
                 <td>{manager_name}</td>
                 <td>{wins}</td>
@@ -624,7 +628,7 @@ def generate_standings_table(season: int, standings: pd.DataFrame) -> str:
                 <td>{ties}</td>
                 <td>{pf}</td>
                 <td>{pa}</td>
-                <td>{seed}</td>
+                <td>{playoff_rank}</td>
             </tr>
         '''
 
